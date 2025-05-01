@@ -12,5 +12,9 @@
   "keywords": [],
   "author": "jadd0",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "env": "^0.0.2"
+  }
 }
