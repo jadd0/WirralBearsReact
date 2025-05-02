@@ -12,9 +12,21 @@
   "keywords": [],
   "author": "jadd0",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "dotenv": "^16.5.0",
     "env": "^0.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jadd0/WirralBearsReact.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jadd0/WirralBearsReact/issues"
+  },
+  "homepage": "https://github.com/jadd0/WirralBearsReact#readme",
+  "description": "",
+  "workspaces": [
+    "",
+    "shared"
+  ]
 }
