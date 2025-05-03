@@ -7,6 +7,7 @@ import { useMe } from './hooks/auth.hooks';
 import { useState } from 'react';
 
 import Home from './pages/Home.page';
+import LoginPage from './pages/Login.page';
 
 /**
  * A router that protects the routes it wraps by checking if the user is authenticated.
@@ -75,16 +76,14 @@ function UnauthenticatedRouter() {
 }
 
 function App() {
-	const { pathname } = useLocation();
 
 	return (
 		<div className="w-screen h-screen flex flex-row flex-nowrap justify-start">
 			<Routes>
-      <Route index element={<Home />} />
-
-      </Routes>
-      <Toaster position="top-right" closeButton={false} />
-
+				<Route index element={<Home />} />
+				<Route path="/login" element={<LoginPage />} />
+			</Routes>
+			<Toaster position="top-right" closeButton={false} />
 		</div>
 	);
 }

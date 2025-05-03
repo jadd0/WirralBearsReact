@@ -25,9 +25,10 @@ passport.deserializeUser(async (id: string, done) => {
     }
 
     done(null, {
-      name: user.name,
+      bio: user.bio ?? undefined,
+      profile_picture_url: user.profile_picture_url ?? undefined,
       id: user.id,
-      email: user.email,
+      username: user.username,
     });
   } catch (error) {
     done(error);
