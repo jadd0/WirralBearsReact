@@ -8,6 +8,7 @@ import { useState } from 'react';
 
 import Home from './pages/Home.page';
 import LoginPage from './pages/Login.page';
+import Logout from './pages/Logout.page';
 
 /**
  * A router that protects the routes it wraps by checking if the user is authenticated.
@@ -76,10 +77,13 @@ function UnauthenticatedRouter() {
 }
 
 function App() {
-
 	return (
 		<div className="w-screen h-screen flex flex-row flex-nowrap justify-start">
 			<Routes>
+				<Route element={<AuthenticatedRouter />}>
+					<Route path="/admin" element={<div>Admin</div>} />
+					<Route path="/logout" element={<Logout />} />
+				</Route>
 				<Route index element={<Home />} />
 				<Route path="/login" element={<LoginPage />} />
 			</Routes>

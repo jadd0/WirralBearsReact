@@ -138,7 +138,7 @@ export function LoginForm({
               <span className="flex items-center justify-center text-nowrap">
                 Sign in to&nbsp;
                 <p className="font-black font-stretch-ultra-condensed">
-                  FLAYVA
+                  WIRRALBEARS
                 </p>
               </span>
             </CardTitle>
