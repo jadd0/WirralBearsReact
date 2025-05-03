@@ -27,6 +27,8 @@
   "description": "",
   "workspaces": [
     "",
-    "shared"
+    "shared",
+    "backend",
+    "frontend"
   ]
 }

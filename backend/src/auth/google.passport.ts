@@ -22,6 +22,7 @@ export const googleStrategy = new GoogleStrategy(
             eq(account_connections.providerAccountId, profile.id)
           )
         );
+        console.log({existingAccounts})
 
       if (existingAccounts.length > 0) {
         // An account exists; fetch the corresponding user record.
@@ -43,6 +44,8 @@ export const googleStrategy = new GoogleStrategy(
         return done(new Error("User not found for the authenticated account"));
       }
 
+      console.log("second")
+
       // Account not found; create a new user.
       await db.transaction(async (tx) => {
         const insertedUsers = await tx
@@ -54,6 +57,8 @@ export const googleStrategy = new GoogleStrategy(
           .returning();
 
         const newUser = insertedUsers[0];
+
+        console.log(newUser)
 
         await tx.insert(account_connections).values({
           userId: newUser.id,
