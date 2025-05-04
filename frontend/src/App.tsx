@@ -6,9 +6,13 @@ import { OnLoadingErrorView, LoadingView } from './components/layout/Loading';
 import { useMe } from './hooks/auth.hooks';
 import { useState } from 'react';
 
+import AnInclusiveApproachPage from './pages/AnInclusiveApproach.page';
+import AssurancesPage from './pages/Assurances.page';
+import BallForAllPage from './pages/BallForAll.page';
 import Home from './pages/Home.page';
 import LoginPage from './pages/Login.page';
 import Logout from './pages/Logout.page';
+import SponsorshipPage from './pages/Sponsorship.page';
 
 /**
  * A router that protects the routes it wraps by checking if the user is authenticated.
@@ -84,8 +88,17 @@ function App() {
 					<Route path="/admin" element={<div>Admin</div>} />
 					<Route path="/logout" element={<Logout />} />
 				</Route>
+				<Route
+					path="/aninclusiveapproach"
+					element={<AnInclusiveApproachPage />}
+				/>
+				<Route path="/assurances" element={<AssurancesPage />} />
+
+				<Route path="/ballforall" element={<BallForAllPage />} />
+
 				<Route index element={<Home />} />
 				<Route path="/login" element={<LoginPage />} />
+				<Route path="/sponsorship" element={<SponsorshipPage />} />
 			</Routes>
 			<Toaster position="top-right" closeButton={false} />
 		</div>
