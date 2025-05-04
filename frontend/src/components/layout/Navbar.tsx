@@ -53,7 +53,7 @@ export function Navbar() {
 				</nav>
 			</div>
 			{/* UnderNav */}
-			<div className="hidden md:block sticky top-[37px] z-40 w-full h-[20px] backdrop-blur bg-neutral-200/70" />
+			<div className="hidden md:block sticky top-[0px] z-40 w-full h-[37px] backdrop-blur bg-neutral-200/70" />
 
 			{/* Mobile Navbar */}
 			<nav className="md:hidden bg-[#333] sticky top-0 z-50">
