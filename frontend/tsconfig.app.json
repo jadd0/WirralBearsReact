@@ -43,5 +43,5 @@
       "@apptypes/*": ["src/types/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "tailwind.config.ts"]
 }

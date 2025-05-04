@@ -7,6 +7,7 @@ import { BallForAllGrid } from "@components/layout/BallForAllGrid";
 import { Footer } from "@components/layout/Footer";
 import { Image } from "@wirralbears-monorepo/shared/types";
 
+// TODO: use API to get images from server
 const carouselImages: Image[] = [
   { id: 1, src: "https://picsum.photos/800/400?random=1", name: "1"},
   { id: 2, src: "https://picsum.photos/800/400?random=2", name: "2" },
@@ -17,7 +18,6 @@ const carouselImages: Image[] = [
 export default function HomePage() {
   return (
     <div className="bg-gray-200 min-h-screen w-full font-sans">
-      {/* Animated intro could be implemented with a modal or animation library if needed */}
       <LogoBanner />
       <InfoBox title="About Us">
         <p>
@@ -27,7 +27,6 @@ export default function HomePage() {
         </p>
       </InfoBox>
       <div className="container mx-auto my-8">
-        <h1 className="text-2xl font-bold mb-4">Image Carousel</h1>
         <CarouselComponent images={carouselImages}/>
       </div>
       <InfoBox title="Thinking of joining?" className="mb-8">
