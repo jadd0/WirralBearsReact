@@ -78,7 +78,7 @@ function App() {
 	);
 
 	return (
-		<div className="flex flex-col min-h-screen w-full bg-gray-200">
+		<div className="font-sans tracking-wide flex flex-col min-h-screen w-full bg-gray-#d3d2d2">
 			{shouldShowNav && <Navbar />}
 			<main className="flex-1 w-full flex flex-col items-center box-border">
 				<Routes>

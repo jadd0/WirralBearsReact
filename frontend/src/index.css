@@ -1,10 +1,16 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-
+@font-face {
+  font-family: 'Quicksand';
+  src: url('/fonts/Quicksand.ttf') format('truetype');
+}
 
 :root {
-  --background: oklch(1 0 0);
+  --background: #d3d2d2;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);

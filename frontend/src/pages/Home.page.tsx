@@ -28,7 +28,7 @@ export default function HomePage() {
       </InfoBox>
       <div className="container mx-auto my-8">
         <h1 className="text-2xl font-bold mb-4">Image Carousel</h1>
-        <CarouselComponent images={carouselImages} />
+        <CarouselComponent images={carouselImages}/>
       </div>
       <InfoBox title="Thinking of joining?" className="mb-8">
         <p>

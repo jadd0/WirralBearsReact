@@ -28,18 +28,13 @@ export function Navbar() {
 		<>
 			{/* Desktop Navbar */}
 			<div className="hidden md:block sticky top-0 z-50 opacity-90">
-				<nav className="bg-[#333] font-semibold text-base h-[37px] flex items-center justify-center px-7 overflow-hidden">
+				<nav className="bg-[#333] text-base h-[37px] flex items-center justify-center px-7 overflow-hidden">
 					{navLinks.map((link) => (
 						<NavLink
 							key={link.key}
 							to={link.to}
-							className={({ isActive }) =>
-								`px-4 py-2 transition-colors duration-200 text-[16px] 
-                ${
-									isActive
-										? 'text-white font-bold underline'
-										: 'text-gray-400 hover:text-white'
-								}`
+							className={
+								'font-extralight px-4 py-2 transition-colors duration-200 text-[15px] text-gray-400 hover:text-white'
 							}
 						>
 							{link.label}
@@ -49,7 +44,9 @@ export function Navbar() {
 						href="https://wirral-bears.myspreadshop.co.uk"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="px-4 py-2 text-[16px] text-gray-400 hover:text-white transition-colors duration-200"
+						className={
+							'font-extralight px-4 py-2 transition-colors duration-200 text-[15px] text-gray-400 hover:text-white'
+						}
 					>
 						Shop
 					</a>

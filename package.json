@@ -13,8 +13,10 @@
   "author": "jadd0",
   "license": "ISC",
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.5",
     "dotenv": "^16.5.0",
-    "env": "^0.0.2"
+    "env": "^0.0.2",
+    "tailwindcss": "^4.1.5"
   },
   "repository": {
     "type": "git",
