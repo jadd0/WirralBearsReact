@@ -17,7 +17,8 @@ const carouselImages: Image[] = [
 
 export default function HomePage() {
   return (
-    <div className="bg-gray-200 min-h-screen w-full font-sans">
+    <div className="min-h-screen w-full font-sans">
+      {/* Animated intro could be implemented with a modal or animation library if needed */}
       <LogoBanner />
       <InfoBox title="About Us">
         <p>

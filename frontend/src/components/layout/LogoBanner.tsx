@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
+import WirralBearsLogo from '@assets/images/WirralBearsBanner.png';
 
 export function LogoBanner({ className = "" }) {
   return (
-    <Link to="/" className="flex justify-center my-4">
+    <div className="w-full flex justify-center mb-10">
+          <Link to="/" className=" my-4 max-w-150">
       <img
-        src="/images/bears b star1.png"
+        src={WirralBearsLogo}
         className={`bear ${className}`}
-        alt="Wirral Bears Logo"
       />
     </Link>
+    </div>
+
   );
 }
