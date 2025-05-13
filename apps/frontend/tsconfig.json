@@ -8,9 +8,6 @@
       "path": "../../packages/constants"
     },
     {
-      "path": "../../packages/validation"
-    },
-    {
       "path": "../../packages/types"
     },
     {

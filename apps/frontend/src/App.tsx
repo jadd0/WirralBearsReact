@@ -4,6 +4,7 @@ import { toast, Toaster } from 'sonner';
 import { OnLoadingErrorView, LoadingView } from './components/layout/Loading';
 import { useMe } from './hooks/auth.hooks';
 import { Navbar } from './components/layout/Navbar';
+import { Outlet, Navigate } from "react-router-dom";
 
 import AnInclusiveApproachPage from './pages/AnInclusiveApproach.page';
 import AssurancesPage from './pages/Assurances.page';

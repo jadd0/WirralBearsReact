@@ -109,7 +109,7 @@ importers:
         specifier: ^8.5.3
         version: 8.5.3
       tailwindcss:
-        specifier: ^4.1.5
+        specifier: ^4.1.6
         version: 4.1.6
       tw-animate-css:
         specifier: ^1.2.8

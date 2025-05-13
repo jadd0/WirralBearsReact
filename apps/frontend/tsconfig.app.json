@@ -5,9 +5,6 @@
       "path": "../../packages/constants"
     },
     {
-      "path": "../../packages/validation"
-    },
-    {
       "path": "../../packages/types"
     },
     {
@@ -45,7 +42,7 @@
       "@queries/*": ["src/queries/*"],
       "@hooks/*": ["src/hooks/*"],
       "@pages/*": ["src/pages/*"],
-      "@flayva-monorepo/shared/*": ["../shared/src/*"],
+      "@wirralbears/shared/*": ["../shared/src/*"],
       "@lib/*": ["src/lib/*"],
       "@assets/*": ["src/assets/*"],
       "@apptypes/*": ["src/types/*"]
