@@ -1,8 +1,12 @@
-node_modules
-node_modules
+# Dependencies
+**/node_modules
 
-.env
+# Environment
 .env*.local
 
+# build
 dist
-tsconfig.tsbuildinfo
+
+
+# data
+/apps/backend/data/*.json

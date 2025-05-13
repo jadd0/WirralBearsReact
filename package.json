@@ -1,36 +1,27 @@
 {
-  "name": "wirralbears-monorepo",
+  "name": "wirralbears",
+  "private": true,
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"npm run start --workspace=backend\" \"npm run start --workspace=frontend\""
-  },
-  "devDependencies": {
-    "concurrently": "^7.0.0"
+    "start:dev": "pnpm --stream -r run start:dev",
+    "start": "pnpm --stream -r run start",
+    "dev:frontend": "pnpm --filter frontend run start:dev",
+    "dev:backend": "pnpm --filter backend run start:dev",
+    "build:packages": "pnpm -r --filter \"@wirralbears/constants\" --filter \"@wirralbears/validation\" --filter \"@wirralbears/types\" --filter --workspace-concurrency 1 build",
+    "prebuild": "pnpm i",
+    "clean": "pnpm -r clean",
+    "build": "pnpm run build:packages && pnpm --filter \"backend\" run build && pnpm --filter \"@wirralbears/backend-types\" --workspace-concurrency 1 build"
   },
   "keywords": [],
   "author": "jadd0",
   "license": "ISC",
-  "dependencies": {
-    "@tailwindcss/cli": "^4.1.5",
-    "dotenv": "^16.5.0",
-    "env": "^0.0.2",
-    "tailwindcss": "^4.1.5"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jadd0/WirralBearsReact.git"
-  },
-  "bugs": {
-    "url": "https://github.com/jadd0/WirralBearsReact/issues"
-  },
-  "homepage": "https://github.com/jadd0/WirralBearsReact#readme",
-  "description": "",
-  "workspaces": [
-    "",
-    "shared",
-    "backend",
-    "frontend"
-  ]
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "nodemon": "^3.1.9",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.19.2",
+    "typescript": "~5.7.2"
+  }
 }
