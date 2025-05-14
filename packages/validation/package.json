@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "dependencies": {
-    "@flayva/constants": "workspace:*",
+    "@wirralbears/constants": "workspace:*",
     "zod": "3.24.2",
     "zod-form-data": "^2.0.7"
   },

@@ -6,7 +6,7 @@
     "rootDir": "src",
     "declarationDir": "dist/types",
     "paths": {
-      "@flayva/*": ["../*/src"]
+      "@wirralbears/*": ["../*/src"]
     }
   },
   "include": ["src/**/*"],
