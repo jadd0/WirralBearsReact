@@ -5,7 +5,7 @@ import { CarouselComponent } from '@components/layout/Carousel';
 import { MapboxMap } from '@components/layout/Mapbox';
 import { BallForAllGrid } from '@components/layout/BallForAllGrid';
 import { Footer } from '@components/layout/Footer';
-import { Image } from '@wirralbears/shared/types';
+import { Image } from '@wirralbears/packages/types';
 
 // TODO: use API to get images from server
 const carouselImages: Image[] = [

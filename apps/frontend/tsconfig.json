@@ -12,7 +12,10 @@
     },
     {
       "path": "../../packages/backend-types"
-    }
+    },
+    {
+      "path": "../../packages/validation"
+    },
   ],
   "compilerOptions": {
     "baseUrl": "./",

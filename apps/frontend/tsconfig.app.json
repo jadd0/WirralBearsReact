@@ -9,7 +9,10 @@
     },
     {
       "path": "../../packages/backend-types"
-    }
+    },
+    {
+      "path": "../../packages/validation"
+    },
   ],
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
@@ -32,7 +35,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
 
     "baseUrl": "./",
     "paths": {
@@ -42,10 +44,10 @@
       "@queries/*": ["src/queries/*"],
       "@hooks/*": ["src/hooks/*"],
       "@pages/*": ["src/pages/*"],
-      "@wirralbears/shared/*": ["../shared/src/*"],
       "@lib/*": ["src/lib/*"],
       "@assets/*": ["src/assets/*"],
-      "@apptypes/*": ["src/types/*"]
+      "@apptypes/*": ["src/types/*"],
+      "@wirralbears/*": ["../../packages/*/src"]
     }
   },
   "include": ["src"]

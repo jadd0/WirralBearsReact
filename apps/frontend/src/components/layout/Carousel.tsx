@@ -9,7 +9,7 @@ import {
 	type CarouselApi,
 } from '@/components/ui/carousel';
 import { Skeleton } from '../ui/skeleton';
-import { Image } from '@wirralbears/shared/types';
+import { Image } from '@wirralbears/packages/types';
 import { use } from 'passport';
 
 export function CarouselComponent({ images }: { images: Image[] }) {

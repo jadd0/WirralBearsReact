@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 
+
 dotenv.config({ path: "./.env.local", debug: true, encoding: "utf8" });
 import { z } from "zod";
 

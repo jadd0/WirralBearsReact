@@ -15,7 +15,7 @@
     "build": "pnpm run build:packages && pnpm --filter \"backend\" run build && pnpm --filter \"@wirralbears/backend-types\" --workspace-concurrency 1 build"
   },
   "keywords": [],
-  "author": "flynnhillier",
+  "author": "jadd0",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^22.13.4",

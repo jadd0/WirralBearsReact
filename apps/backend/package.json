@@ -13,6 +13,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@wirralbears/backend-types": "workspace:*",
+    "@wirralbears/constants": "workspace:*",
+    "@wirralbears/types": "workspace:*",
+    "@wirralbears/validation": "workspace:*",
     "connect-pg-simple": "^10.0.0",
     "console": "^0.7.2",
     "cors": "^2.8.5",

@@ -1,5 +1,5 @@
-import { request } from '@/lib/network';
-import { User } from '@wirralbears/shared/types';
+import { request } from '@/lib/network'
+import { User } from "@wirralbears/types";
 
 /**
  * Fetches the user's profile information from the server.
