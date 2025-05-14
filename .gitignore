@@ -6,7 +6,9 @@
 
 # build
 dist
+**/tsconfig.tsbuildinfo
 
 
 # data
 /apps/backend/data/*.json
+
