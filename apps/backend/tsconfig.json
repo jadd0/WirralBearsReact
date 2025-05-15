@@ -5,6 +5,7 @@
 		"module": "ESNext",
 		"moduleResolution": "node",
 		"esModuleInterop": true,
+		"skipLibCheck": true,
 		"outDir": "./dist",
 		"rootDir": "./",
 		"strict": true,
@@ -18,7 +19,7 @@
 			"@middleware/*": ["src/server/middleware/*"],
 			"@auth/*": ["src/auth/*"],
 			"@constants/*": ["src/constants/*"],
-			"@apptypes/*": ["src/types/*"]
+			"@apptypes/*": ["src/types/*"],
 		},
 		"composite": true,
 		"declaration": true,

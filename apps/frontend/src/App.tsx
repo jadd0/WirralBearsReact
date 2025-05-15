@@ -13,9 +13,12 @@ import Home from './pages/Home.page';
 import LoginPage from './pages/Login.page';
 import Logout from './pages/Logout.page';
 import SponsorshipPage from './pages/Sponsorship.page';
-import AdminPage from './pages/Admin.page';
 
-const HIDE_NAV_ROUTES = ["/login", "/logout", '/logout/', "/admin", "/admin/"];
+// Admin
+import AdminPage from './pages/admin/Admin.page';
+import CreateBlogPage from './pages/admin/blog/CreateBlog';
+import { AdminNavbar } from './components/layout/AdminNavbar';
+
 
 function AuthenticatedRouter() {
 	const { data, isPending, error, refetch } = useMe();
@@ -78,18 +81,30 @@ function UnauthenticatedRouter() {
 function App() {
 	const { pathname } = useLocation();
 
-	const shouldShowNav = useMemo(
-		() => !HIDE_NAV_ROUTES.includes(pathname),
-		[pathname]
-	);
+	const shouldShowNav = useMemo(() => {
+    // Check if the path starts with "/admin"
+    if (pathname.startsWith("/admin")) {
+      return false;
+    }
+    
+    // Check other routes that should hide the navbar
+    const otherHiddenRoutes = ["/login", "/logout", '/logout/'];
+    return !otherHiddenRoutes.includes(pathname);
+  }, [pathname]);
+
 
 	return (
 		<div className="font-sans tracking-wide flex flex-col min-h-screen w-full bg-gray-#d3d2d2">
 			{shouldShowNav && <Navbar />}
+			{!shouldShowNav && <AdminNavbar />}
+
 			<main className="flex-1 w-full flex flex-col items-center box-border">
 				<Routes>
 					<Route element={<AuthenticatedRouter />}>
 						<Route path="/admin" element={<AdminPage />} />
+						<Route path="/admin/blog/createPost" element={<CreateBlogPage />} />
+
+
 						<Route path="/logout" element={<Logout />} />
 					</Route>
 					<Route
