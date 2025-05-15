@@ -26,7 +26,6 @@ export const logout: RequestHandler = async (req, res) => {
   });
 };
 
-// Add explicit type annotation here
 export default {
   me,
   logout,
