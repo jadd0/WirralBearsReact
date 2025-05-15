@@ -1,29 +1,39 @@
-// app/page.tsx
-"use client";
-
 import { useState } from 'react';
 import { BlogEditor } from '@/components/blog/createBlog/BlogEditor';
 import { BlogData } from '@wirralbears/types';
+import { toast } from 'sonner';
 
 export default function BlogMakerPage() {
   const [blogData, setBlogData] = useState<BlogData>({ elements: [] });
 
   const handleBlogChange = (data: BlogData) => {
     setBlogData(data);
-    console.log('Blog data updated:', data);
-    // Here you would typically save the data or perform other actions
   };
 
-  // This is where you would implement your image upload hook
+  // Image upload handler
   const handleImageUpload = async (file: File): Promise<string> => {
-    // This is a placeholder - replace with your actual upload logic
-    console.log('Uploading file:', file);
-    
-    // Simulate upload delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Return a placeholder URL - in a real app, this would be the URL from your upload service
-    return URL.createObjectURL(file);
+    try {
+      // Create form data
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      // Send the request to your API endpoint
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
+      }
+      
+      const data = await response.json();
+      return data.url;
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast.error('Failed to upload image');
+      throw error;
+    }
   };
 
   return (

@@ -1,11 +1,11 @@
-// components/blog/ImageElement.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ElementWrapper } from './ElementWrapper';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { ImageIcon, Upload } from 'lucide-react';
 import { ImageElement as ImageElementType } from '@wirralbears/types';
+import { toast } from 'sonner';
 
 interface ImageElementProps {
 	element: ImageElementType;
@@ -22,40 +22,45 @@ export const ImageElement = ({
 }: ImageElementProps) => {
 	const [file, setFile] = useState<File | null>(null);
 	const [isUploading, setIsUploading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+	// Clean up preview URL when component unmounts
+	useEffect(() => {
+		return () => {
+			if (previewUrl) {
+				URL.revokeObjectURL(previewUrl);
+			}
+		};
+	}, [previewUrl]);
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = e.target.files?.[0];
 		if (!selectedFile) return;
 
-		// Clear previous errors
-		setError(null);
-
 		// Validate file type
 		if (!selectedFile.type.startsWith('image/')) {
-			setError('Please select an image file');
+			toast.error('Invalid file type', {
+				description: 'Please select an image file',
+			});
 			return;
 		}
 
 		// Validate file size (4MB max)
 		if (selectedFile.size > 4 * 1024 * 1024) {
-			setError('Image must be less than 4MB');
+			toast.error('File too large', {
+				description: 'Image must be less than 4MB',
+			});
 			return;
 		}
 
 		setFile(selectedFile);
 
 		// Create a preview URL
+		if (previewUrl) {
+			URL.revokeObjectURL(previewUrl);
+		}
 		const objectUrl = URL.createObjectURL(selectedFile);
 		setPreviewUrl(objectUrl);
-
-		// Clean up the previous preview URL if it exists
-		return () => {
-			if (previewUrl) {
-				URL.revokeObjectURL(previewUrl);
-			}
-		};
 	};
 
 	const handleUpload = async () => {
@@ -63,7 +68,6 @@ export const ImageElement = ({
 
 		try {
 			setIsUploading(true);
-			setError(null);
 			const url = await onImageUpload(file);
 			onChange(element.id, { url });
 
@@ -74,9 +78,15 @@ export const ImageElement = ({
 			}
 
 			setFile(null);
+
+			toast.success('Image uploaded', {
+				description: 'Your image has been uploaded successfully',
+			});
 		} catch (err) {
 			console.error('Upload failed:', err);
-			setError('Failed to upload image. Please try again.');
+			toast.error('Upload failed', {
+				description: 'Failed to upload image. Please try again.',
+			});
 		} finally {
 			setIsUploading(false);
 		}
@@ -187,9 +197,6 @@ export const ImageElement = ({
 									</Button>
 								</div>
 							</div>
-						)}
-						{error && (
-							<p className="text-sm text-red-500 text-center">{error}</p>
 						)}
 					</div>
 				)}

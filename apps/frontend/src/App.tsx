@@ -18,6 +18,7 @@ import SponsorshipPage from './pages/Sponsorship.page';
 import AdminPage from './pages/admin/Admin.page';
 import CreateBlogPage from './pages/admin/blog/CreateBlog';
 import { AdminNavbar } from './components/layout/AdminNavbar';
+import PreviewPage from './pages/admin/blog/Preview';
 
 
 function AuthenticatedRouter() {
@@ -103,7 +104,7 @@ function App() {
 					<Route element={<AuthenticatedRouter />}>
 						<Route path="/admin" element={<AdminPage />} />
 						<Route path="/admin/blog/createPost" element={<CreateBlogPage />} />
-
+						<Route path="/blog/preview" element={<PreviewPage />} />
 
 						<Route path="/logout" element={<Logout />} />
 					</Route>

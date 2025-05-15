@@ -2,7 +2,7 @@ import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Card, CardContent } from '@/components/ui/card';
-import { GripVertical } from 'lucide-react';
+import { GripVertical, Trash2 } from 'lucide-react';
 
 interface ElementWrapperProps {
   id: string;
@@ -39,9 +39,20 @@ export const ElementWrapper = ({ id, children, onDelete }: ElementWrapperProps) 
       >
         <GripVertical size={20} />
       </div>
-      <CardContent className="p-4 pl-10">
+      <CardContent className="p-4 pl-10 pr-10">
         {children}
       </CardContent>
+      {onDelete && (
+        <div className="absolute right-2 top-1/2 -translate-y-1/2">
+          <button 
+            onClick={onDelete} 
+            className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+            aria-label="Delete element"
+          >
+            <Trash2 size={20} />
+          </button>
+        </div>
+      )}
     </Card>
   );
 };

@@ -1,4 +1,3 @@
-// components/blog/BlogEditor.tsx
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -17,12 +16,12 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { z } from 'zod';
+import { toast } from 'sonner';
 
 import { ElementType, BlogData, BlogElement } from '@wirralbears/types';
 import { ELEMENT_CONSTRAINTS } from '@wirralbears/constants';
 import { AddElementButton } from './AddElementButton';
-
-// Import the individual element components
+import { PreviewButton } from './PreviewButton';
 import { HeadingElement } from './HeadingElement';
 import { ParagraphElement } from './ParagraphElement';
 import { ImageElement } from './ImageElement';
@@ -125,7 +124,6 @@ export const BlogEditor = ({
 	const [elements, setElements] = useState<BlogElement[]>(
 		initialData?.elements || []
 	);
-	const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -172,37 +170,33 @@ export const BlogEditor = ({
 		const newElements = elements.filter((element) => element.id !== id);
 		setElements(newElements);
 		validateAndNotify(newElements);
+
+		toast.success('Element deleted', {
+			description: 'The element has been removed from your blog',
+		});
 	};
 
 	const validateAndNotify = (elements: BlogElement[]) => {
 		try {
 			const result = blogDataSchema.parse({ elements });
-			setValidationErrors([]);
 			if (onChange) {
 				onChange(result);
 			}
 		} catch (error: any) {
 			if (error.errors) {
-				setValidationErrors(error.errors.map((err: any) => err.message));
+				// Only show one toast with all errors
+				const errorMessages = error.errors
+					.map((err: any) => err.message)
+					.join('\n');
+				toast.error('Validation Error', {
+					description: errorMessages,
+				});
 			}
 		}
 	};
 
 	return (
 		<div className="max-w-4xl mx-auto p-4">
-			{validationErrors.length > 0 && (
-				<div className="bg-red-50 p-4 rounded-md mb-4">
-					<h3 className="text-red-800 font-medium">Validation Errors</h3>
-					<ul className="list-disc pl-5 mt-2">
-						{validationErrors.map((error, index) => (
-							<li key={index} className="text-red-700">
-								{error}
-							</li>
-						))}
-					</ul>
-				</div>
-			)}
-
 			<DndContext
 				sensors={sensors}
 				collisionDetection={closestCenter}
@@ -212,19 +206,30 @@ export const BlogEditor = ({
 					items={elements.map((el) => el.id)}
 					strategy={verticalListSortingStrategy}
 				>
-					{elements.map((element) => (
-						<ElementRenderer
-							key={element.id}
-							element={element}
-							onChange={updateElement}
-							onDelete={deleteElement}
-							onImageUpload={onImageUpload}
-						/>
-					))}
+					{elements.length === 0 ? (
+						<div className="text-center py-10 border-2 border-dashed border-gray-300 rounded-md">
+							<p className="text-gray-500">
+								Your blog is empty. Add elements to get started.
+							</p>
+						</div>
+					) : (
+						elements.map((element) => (
+							<ElementRenderer
+								key={element.id}
+								element={element}
+								onChange={updateElement}
+								onDelete={deleteElement}
+								onImageUpload={onImageUpload}
+							/>
+						))
+					)}
 				</SortableContext>
 			</DndContext>
 
 			<AddElementButton onAdd={addElement} />
+			<div className="flex justify-end mt-4 space-x-4">
+				<PreviewButton blogData={{ elements }} />
+			</div>
 		</div>
 	);
 };

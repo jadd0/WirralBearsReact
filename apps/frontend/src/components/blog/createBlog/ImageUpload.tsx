@@ -1,4 +1,3 @@
-// components/blog/ImageUpload.tsx
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { type DropzoneOptions } from 'react-dropzone';
 import { FileUploader, FileInput } from '@/components/ui/file-upload';
