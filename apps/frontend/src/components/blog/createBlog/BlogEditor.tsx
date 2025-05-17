@@ -30,7 +30,7 @@ import { ImageElement } from './ImageElement';
 const headingSchema = z.object({
 	id: z.string(),
 	type: z.literal('heading'),
-	content: z
+	text: z
 		.string()
 		.max(
 			ELEMENT_CONSTRAINTS.heading.maxLength,
@@ -41,7 +41,7 @@ const headingSchema = z.object({
 const paragraphSchema = z.object({
 	id: z.string(),
 	type: z.literal('paragraph'),
-	content: z
+	text: z
 		.string()
 		.max(
 			ELEMENT_CONSTRAINTS.paragraph.maxLength,
@@ -84,7 +84,7 @@ const ElementRenderer = ({
 			return (
 				<HeadingElement
 					element={element}
-					onChange={(id, content) => onChange(id, { content })}
+					onChange={(id, text) => onChange(id, { text })}
 					onDelete={onDelete}
 				/>
 			);
@@ -92,7 +92,7 @@ const ElementRenderer = ({
 			return (
 				<ParagraphElement
 					element={element}
-					onChange={(id, content) => onChange(id, { content })}
+					onChange={(id, text) => onChange(id, { text })}
 					onDelete={onDelete}
 				/>
 			);
@@ -235,16 +235,17 @@ export const BlogEditor = ({
 };
 
 function createNewElement(type: ElementType): BlogElement {
-	const id = uuidv4();
+  const id = uuidv4();
 
-	switch (type) {
-		case 'heading':
-			return { id, type, content: '' };
-		case 'paragraph':
-			return { id, type, content: '' };
-		case 'image':
-			return { id, type, url: '', alt: '' };
-		default:
-			throw new Error(`Unknown element type: ${type}`);
-	}
+  switch (type) {
+    case 'heading':
+      return { id, type, text: '' };
+    case 'paragraph':
+      return { id, type, text: '' };
+    case 'image':
+      return { id, type, url: '', alt: '' };
+    default:
+      throw new Error(`Unknown element type: ${type}`);
+  }
 }
+

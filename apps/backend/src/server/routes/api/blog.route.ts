@@ -11,7 +11,7 @@ router.get('/', blogControllers.getAllBlogs);
 router.get('/:id', blogControllers.getBlogById);
 
 // POST a new blog
-router.post('/', ensureAuthenticated, blogControllers.createBlog);
+router.post('/saveBlog', ensureAuthenticated, blogControllers.createBlog);
 
 // PUT (update) an existing blog
 router.put('/:id', ensureAuthenticated, blogControllers.updateBlog);

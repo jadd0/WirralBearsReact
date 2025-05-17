@@ -1,28 +1,29 @@
 export type ElementType = 'heading' | 'paragraph' | 'image';
 
 export interface BaseElement {
-  id: string;
-  type: ElementType;
+	id: string;
+	type: ElementType;
+	position?: number;
 }
 
 export interface HeadingElement extends BaseElement {
-  type: 'heading';
-  content: string;
+	type: 'heading';
+	text: string;
 }
 
 export interface ParagraphElement extends BaseElement {
-  type: 'paragraph';
-  content: string;
+	type: 'paragraph';
+	text: string;
 }
 
 export interface ImageElement extends BaseElement {
-  type: 'image';
-  url: string;
-  alt: string;
+	type: 'image';
+	url: string;
+	alt: string;
 }
 
 export type BlogElement = HeadingElement | ParagraphElement | ImageElement;
 
 export interface BlogData {
-  elements: BlogElement[];
+	elements: BlogElement[];
 }

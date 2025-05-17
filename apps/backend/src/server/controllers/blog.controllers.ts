@@ -33,18 +33,23 @@ export const getBlogById: RequestHandler = async (req, res) => {
 };
 
 export const createBlog: RequestHandler = async (req, res) => {
-  const authorId = req.body.authorId || 1;
-  const blogData: BlogData = req.body.blogData;
+  const authorId = req.user?.id;
+  const blogData: BlogData = req.body.elements;
 
-  if (!blogData || !blogData.elements) {
+  console.log(req.body.elements)
+
+  if (!blogData || !authorId) {
     res.status(400).send({ message: 'Invalid blog data' });
     return;
   }
 
   try {
     const newBlog = await blogServices.createBlog(authorId, blogData);
+
     res.status(201).send({ blog: newBlog });
-  } catch (error) {
+  } 
+  
+  catch (error) {
     console.error('Error creating blog:', error);
     res.status(500).send({ message: 'Failed to create blog' });
   }

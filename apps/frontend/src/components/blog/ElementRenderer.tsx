@@ -15,7 +15,7 @@ export const ElementRenderer = ({ element, onChange, onDelete }: ElementRenderer
       return (
         <HeadingElement 
           element={element} 
-          onChange={(id, content) => onChange(id, { content })} 
+          onChange={(id, text) => onChange(id, { text })} 
           onDelete={onDelete} 
         />
       );
@@ -23,7 +23,7 @@ export const ElementRenderer = ({ element, onChange, onDelete }: ElementRenderer
       return (
         <ParagraphElement 
           element={element} 
-          onChange={(id, content) => onChange(id, { content })} 
+          onChange={(id, text) => onChange(id, { text })} 
           onDelete={onDelete} 
         />
       );

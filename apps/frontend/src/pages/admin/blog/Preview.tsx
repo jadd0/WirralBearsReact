@@ -4,12 +4,13 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Save } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { BlogData } from '@wirralbears/types';
-import { useSaveBlog } from '@/hooks/useBlog';
+import { useSaveBlog } from '@/hooks/blog.hooks';
 
 export default function PreviewPage() {
 	const navigate = useNavigate();
 	const [blogData, setBlogData] = useState<BlogData | null>(null);
-	const { mutate: saveBlog, isPending } = useSaveBlog();
+	const saveBlogMutation = useSaveBlog();
+	const { mutate: saveBlog, isPending } = saveBlogMutation();
 
 	useEffect(() => {
 		// Retrieve the blog data from localStorage
@@ -31,7 +32,7 @@ export default function PreviewPage() {
 	const handleSave = () => {
 		if (blogData) {
 			saveBlog(blogData, {
-				onSuccess: () => {
+				onSuccess: ({ id }) => {
 					// Navigate to the blogs list or dashboard after saving
 					navigate('/blogs');
 				},
