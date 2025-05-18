@@ -26,7 +26,12 @@ export default function PreviewPage() {
 	}, []);
 
 	const handleBack = () => {
-		navigate(-1); // Go back to the previous page
+		// When going back to the editor, store the current blog data
+		// in a different localStorage key that the BlogEditor will check
+		if (blogData) {
+			localStorage.setItem('blog-editor-data', JSON.stringify(blogData));
+		}
+		navigate('/admin/blog/createPost'); // Navigate to the editor page
 	};
 
 	const handleSave = () => {
@@ -34,6 +39,8 @@ export default function PreviewPage() {
 			saveBlog(blogData, {
 				onSuccess: ({ id }) => {
 					// Navigate to the blogs list or dashboard after saving
+					localStorage.removeItem('blog-preview-data');
+					localStorage.removeItem('blog-editor-data'); // Also clear editor data
 					navigate('/blogs');
 				},
 			});
@@ -45,7 +52,7 @@ export default function PreviewPage() {
 			<div className="max-w-4xl mx-auto p-8 text-center">
 				<h1 className="text-2xl font-bold mb-4">No Preview Data</h1>
 				<p className="text-gray-500 mb-6">No blog data found to preview.</p>
-				<Button onClick={handleBack}>
+				<Button onClick={() => navigate('/blog/edit')}>
 					<ArrowLeft className="mr-2 h-4 w-4" />
 					Back to Editor
 				</Button>

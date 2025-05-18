@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
 	DndContext,
@@ -195,6 +195,13 @@ export const BlogEditor = ({
 		}
 	};
 
+	useEffect(() => {
+		if (initialData?.elements && initialData.elements.length > 0) {
+			// Force a re-render or update of the editor content
+			setElements(initialData.elements);
+		}
+	}, [initialData]);
+
 	return (
 		<div className="max-w-4xl mx-auto p-4">
 			<DndContext
@@ -235,17 +242,16 @@ export const BlogEditor = ({
 };
 
 function createNewElement(type: ElementType): BlogElement {
-  const id = uuidv4();
+	const id = uuidv4();
 
-  switch (type) {
-    case 'heading':
-      return { id, type, text: '' };
-    case 'paragraph':
-      return { id, type, text: '' };
-    case 'image':
-      return { id, type, url: '', alt: '' };
-    default:
-      throw new Error(`Unknown element type: ${type}`);
-  }
+	switch (type) {
+		case 'heading':
+			return { id, type, text: '' };
+		case 'paragraph':
+			return { id, type, text: '' };
+		case 'image':
+			return { id, type, url: '', alt: '' };
+		default:
+			throw new Error(`Unknown element type: ${type}`);
+	}
 }
-
