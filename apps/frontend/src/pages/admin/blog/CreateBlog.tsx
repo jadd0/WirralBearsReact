@@ -60,7 +60,7 @@ export default function BlogMakerPage() {
 		<div className="container mx-auto py-8">
 			<h1 className="text-3xl font-bold mb-6 text-center">Blog Maker</h1>
 			<BlogEditor
-				key={JSON.stringify(initialData)} // Add this line
+				key={JSON.stringify(initialData)}
 				initialData={initialData}
 				onChange={handleBlogChange}
 				onImageUpload={handleImageUpload}

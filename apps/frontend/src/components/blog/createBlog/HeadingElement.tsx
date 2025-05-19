@@ -1,4 +1,3 @@
-// components/blog/HeadingElement.tsx
 import { useState } from 'react';
 import { ElementWrapper } from './ElementWrapper';
 import { Input } from '@components/ui/input';

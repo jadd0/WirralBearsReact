@@ -1,12 +1,15 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "dist",
-    "rootDir": "src",
-    "declarationDir": "dist/types"
-  },
-  "include": ["src/**/*"],
-  "exclude": ["dist/**/*", "node_modules/**/*", "**/*.test.ts"],
-  "references": []
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"outDir": "dist",
+		"rootDir": "src",
+		"declarationDir": "dist/types",
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"target": "ESNext"
+	},
+	"include": ["src/**/*"],
+	"exclude": ["dist/**/*", "node_modules/**/*", "**/*.test.ts"],
+	"references": []
 }
