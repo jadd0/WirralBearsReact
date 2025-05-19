@@ -28,8 +28,6 @@ import { TitleHeadingElement } from './TitleHeading';
 import { HeadingElement as HeadingElementType } from '@wirralbears/types';
 import { BLOG } from '@wirralbears/validation';
 
-
-
 /**
  * Component to render different types of blog elements based on their type
  */

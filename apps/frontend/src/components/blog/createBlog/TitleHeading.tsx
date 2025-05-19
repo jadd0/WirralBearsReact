@@ -1,56 +1,83 @@
-import { useState } from "react";
-import { BLOG_MAX_TITLE_LENGTH } from "../../../../../../packages/constants/src/blog.constants";
-import { Input } from "@/components/ui/input";
-import { HeadingElement } from "../../../../../../packages/types/src/blog.types";
+import { useState } from 'react';
+import { BLOG_MAX_TITLE_LENGTH } from '../../../../../../packages/constants/src/blog.constants';
+import { Input } from '@/components/ui/input';
+import { HeadingElement } from '../../../../../../packages/types/src/blog.types';
 
 /**
- * TitleHeading component for the mandatory blog title
+ * TitleHeadingElement component for the mandatory blog title
  */
-interface TitleHeadingProps {
-	title: string;
-	onChange: (title: string) => void;
-}
-/**
-* TitleHeadingElement component for the mandatory blog title
-* This will be added as the first element in the blog elements array
-*/
 export const TitleHeadingElement = ({
- element,
- onChange,
+	element,
+	onChange,
 }: {
- element: HeadingElement;
- onChange: (id: string, text: string) => void;
+	element: HeadingElement;
+	onChange: (id: string, text: string) => void;
 }) => {
- const [error, setError] = useState<string | null>(null);
+	const [error, setError] = useState<string | null>(null);
+	const [isFocused, setIsFocused] = useState(false);
 
- // Handle title input changes
- const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-   const value = e.target.value;
-   if (value.length > BLOG_MAX_TITLE_LENGTH) {
-     setError(`Title must be ${BLOG_MAX_TITLE_LENGTH} characters or less`);
-   } else {
-     setError(null);
-     onChange(element.id, value);
-   }
- };
+	const charCount = element.text.length;
+	const maxLength = BLOG_MAX_TITLE_LENGTH;
+	const charPercentage = (charCount / maxLength) * 100;
+	const isNearLimit = charPercentage > 80;
 
- return (
-   <div className="mb-6 border-b pb-4">
-     <h2 className="text-lg font-semibold mb-2">Blog Title (Required)</h2>
-     <div className="space-y-2">
-       <Input
-         className="text-2xl font-bold"
-         value={element.text}
-         onChange={handleChange}
-         placeholder="Enter your blog title"
-         maxLength={BLOG_MAX_TITLE_LENGTH}
-         required
-       />
-       {error && <p className="text-sm text-red-500">{error}</p>}
-       <p className="text-xs text-gray-400">
-         {element.text.length}/{BLOG_MAX_TITLE_LENGTH}
-       </p>
-     </div>
-   </div>
- );
+	// Handle title input changes
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		if (value.length > maxLength) {
+			setError(`Title must be ${maxLength} characters or less`);
+		} else {
+			setError(null);
+			onChange(element.id, value);
+		}
+	};
+
+	return (
+		<div className="mb-8 border-b pb-6">
+			<h2 className="text-lg font-semibold mb-3 text-gray-800 flex items-center">
+				<span className="inline-block w-1.5 h-6 bg-blue-500 rounded-sm mr-2"></span>
+				Blog Title
+				<span className="ml-1 text-xs font-normal text-gray-500">
+					(Required)
+				</span>
+			</h2>
+			<div className="space-y-3">
+				<Input
+					className={`text-2xl font-bold transition-all py-6 ${
+						isFocused ? 'border-blue-400 ring-2 ring-blue-100' : ''
+					}`}
+					value={element.text}
+					onChange={handleChange}
+					onFocus={() => setIsFocused(true)}
+					onBlur={() => setIsFocused(false)}
+					placeholder="Write an engaging title for your blog..."
+					maxLength={maxLength}
+					required
+				/>
+				{error && <p className="text-sm text-red-500 font-medium">{error}</p>}
+				<div className="flex items-center gap-2">
+					<div className="h-1.5 flex-grow bg-gray-100 rounded-full overflow-hidden">
+						<div
+							className={`h-full transition-all ${
+								isNearLimit ? 'bg-amber-400' : 'bg-blue-400'
+							}`}
+							style={{ width: `${charPercentage}%` }}
+						></div>
+					</div>
+					<p
+						className={`text-xs ${
+							isNearLimit ? 'text-amber-600 font-medium' : 'text-gray-400'
+						}`}
+					>
+						{charCount}/{maxLength}
+					</p>
+				</div>
+				{!element.text && (
+					<p className="text-sm text-blue-600 italic">
+						A compelling title will help your blog stand out
+					</p>
+				)}
+			</div>
+		</div>
+	);
 };

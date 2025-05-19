@@ -3,7 +3,7 @@ import { ElementWrapper } from './ElementWrapper';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { ImageIcon, Upload } from 'lucide-react';
+import { ImageIcon, Upload, X } from 'lucide-react';
 import { ImageElement as ImageElementType } from '@wirralbears/types';
 import { toast } from 'sonner';
 
@@ -23,6 +23,7 @@ export const ImageElement = ({
 	const [file, setFile] = useState<File | null>(null);
 	const [isUploading, setIsUploading] = useState(false);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+	const [isDragging, setIsDragging] = useState(false);
 
 	// Clean up preview URL when component unmounts
 	useEffect(() => {
@@ -36,7 +37,10 @@ export const ImageElement = ({
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = e.target.files?.[0];
 		if (!selectedFile) return;
+		processFile(selectedFile);
+	};
 
+	const processFile = (selectedFile: File) => {
 		// Validate file type
 		if (!selectedFile.type.startsWith('image/')) {
 			toast.error('Invalid file type', {
@@ -61,6 +65,25 @@ export const ImageElement = ({
 		}
 		const objectUrl = URL.createObjectURL(selectedFile);
 		setPreviewUrl(objectUrl);
+	};
+
+	const handleDragOver = (e: React.DragEvent) => {
+		e.preventDefault();
+		setIsDragging(true);
+	};
+
+	const handleDragLeave = (e: React.DragEvent) => {
+		e.preventDefault();
+		setIsDragging(false);
+	};
+
+	const handleDrop = (e: React.DragEvent) => {
+		e.preventDefault();
+		setIsDragging(false);
+
+		if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+			processFile(e.dataTransfer.files[0]);
+		}
 	};
 
 	const handleUpload = async () => {
@@ -92,45 +115,70 @@ export const ImageElement = ({
 		}
 	};
 
+	const cancelUpload = () => {
+		if (previewUrl) {
+			URL.revokeObjectURL(previewUrl);
+		}
+		setPreviewUrl(null);
+		setFile(null);
+	};
+
 	return (
 		<ElementWrapper id={element.id} onDelete={() => onDelete(element.id)}>
 			<div className="space-y-4">
 				{element.url ? (
 					<div className="space-y-4">
-						<div className="relative w-full flex justify-center">
+						<div className="relative w-full flex justify-center bg-gray-50 rounded-lg p-2">
 							<img
 								src={element.url}
 								alt={element.alt}
-								className="max-h-[300px] rounded-md object-contain"
+								className="max-h-[300px] rounded-md object-contain shadow-sm"
 							/>
 						</div>
 						<div className="space-y-2">
-							<Label htmlFor={`alt-${element.id}`}>Alt Text</Label>
+							<Label
+								htmlFor={`alt-${element.id}`}
+								className="text-sm font-medium"
+							>
+								Image Description (Alt Text)
+							</Label>
 							<Input
 								id={`alt-${element.id}`}
 								value={element.alt}
 								onChange={(e) => onChange(element.id, { alt: e.target.value })}
-								placeholder="Describe this image"
-								className="mt-2"
+								placeholder="Describe this image for accessibility"
+								className="mt-1"
 							/>
+							<p className="text-xs text-gray-500">
+								Adding a description helps visually impaired readers understand
+								your image
+							</p>
 						</div>
 					</div>
 				) : (
 					<div className="space-y-4">
 						{previewUrl ? (
 							<div className="space-y-4">
-								<div className="relative w-full flex justify-center">
+								<div className="relative w-full flex justify-center bg-gray-50 rounded-lg p-2">
 									<img
 										src={previewUrl}
 										alt="Preview"
 										className="max-h-[300px] rounded-md object-contain"
 									/>
+									<Button
+										variant="ghost"
+										size="icon"
+										className="absolute top-2 right-2 h-8 w-8 rounded-full bg-white/80 hover:bg-white shadow-sm"
+										onClick={cancelUpload}
+									>
+										<X className="h-4 w-4" />
+									</Button>
 								</div>
-								<div className="flex justify-center">
+								<div className="flex justify-center gap-3">
 									<Button
 										onClick={handleUpload}
 										disabled={isUploading}
-										className="w-full"
+										className="w-full bg-blue-600 hover:bg-blue-700"
 									>
 										{isUploading ? (
 											<span className="flex items-center">
@@ -166,14 +214,35 @@ export const ImageElement = ({
 								</div>
 							</div>
 						) : (
-							<div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-md">
-								<div className="flex flex-col items-center justify-center space-y-2">
-									<ImageIcon className="h-10 w-10 text-gray-400" />
+							<div
+								className={`flex flex-col items-center justify-center p-8 border-2 ${
+									isDragging
+										? 'border-blue-400 bg-blue-50'
+										: 'border-dashed border-gray-300'
+								} rounded-lg transition-all hover:border-blue-300 hover:bg-gray-50`}
+								onDragOver={handleDragOver}
+								onDragLeave={handleDragLeave}
+								onDrop={handleDrop}
+							>
+								<div className="flex flex-col items-center justify-center space-y-3">
+									<div
+										className={`p-3 rounded-full ${
+											isDragging ? 'bg-blue-100' : 'bg-gray-100'
+										} transition-colors`}
+									>
+										<ImageIcon
+											className={`h-8 w-8 ${
+												isDragging ? 'text-blue-500' : 'text-gray-500'
+											}`}
+										/>
+									</div>
 									<div className="flex flex-col items-center justify-center text-center">
-										<p className="text-sm text-gray-500">
-											Drag and drop an image, or click to select
+										<p className="text-sm font-medium text-gray-700">
+											{isDragging
+												? 'Drop your image here'
+												: 'Drag and drop an image here'}
 										</p>
-										<p className="text-xs text-gray-400">
+										<p className="text-xs text-gray-500 mt-1">
 											PNG, JPG, GIF up to 4MB
 										</p>
 									</div>
@@ -184,17 +253,19 @@ export const ImageElement = ({
 										onChange={handleFileChange}
 										className="hidden"
 									/>
-									<Button
-										variant="outline"
-										onClick={() =>
-											document
-												.getElementById(`file-upload-${element.id}`)
-												?.click()
-										}
-										className="mt-2"
-									>
-										Select Image
-									</Button>
+									<div className="pt-2">
+										<Button
+											variant="outline"
+											onClick={() =>
+												document
+													.getElementById(`file-upload-${element.id}`)
+													?.click()
+											}
+											className="mt-2"
+										>
+											Browse Files
+										</Button>
+									</div>
 								</div>
 							</div>
 						)}
