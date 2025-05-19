@@ -72,11 +72,6 @@ export const TitleHeadingElement = ({
 						{charCount}/{maxLength}
 					</p>
 				</div>
-				{!element.text && (
-					<p className="text-sm text-blue-600 italic">
-						A compelling title will help your blog stand out
-					</p>
-				)}
 			</div>
 		</div>
 	);
