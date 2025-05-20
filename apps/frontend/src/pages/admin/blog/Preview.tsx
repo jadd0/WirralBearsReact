@@ -3,7 +3,7 @@ import { BlogPreview } from '@/components/blog/preview/BlogPreview';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Save } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { BlogData } from '@wirralbears/types';
+import { BlogData, BlogElement } from '@wirralbears/types';
 import { useSaveBlog } from '@/hooks/blog.hooks';
 
 export default function PreviewPage() {
@@ -18,6 +18,10 @@ export default function PreviewPage() {
 		if (storedData) {
 			try {
 				const parsedData = JSON.parse(storedData);
+
+				// Reconstruct File objects from stored metadata if needed
+				// Note: This won't work for actual File objects as they can't be serialized
+				// You'll need to rely on the file objects stored in memory
 				setBlogData(parsedData);
 			} catch (error) {
 				console.error('Failed to parse blog data:', error);
@@ -29,9 +33,21 @@ export default function PreviewPage() {
 		// When going back to the editor, store the current blog data
 		// in a different localStorage key that the BlogEditor will check
 		if (blogData) {
-			localStorage.setItem('blog-editor-data', JSON.stringify(blogData));
+			// Store a clean version without File objects
+			const cleanBlogData = {
+				...blogData,
+				elements: blogData.elements.map((element) => {
+					if (element.type === 'image' && 'file' in element) {
+						// Don't include the file object in localStorage
+						const { file, ...rest } = element as any;
+						return rest;
+					}
+					return element;
+				}),
+			};
+			localStorage.setItem('blog-editor-data', JSON.stringify(cleanBlogData));
 		}
-		navigate('/admin/blog/createPost'); // Navigate to the editor page
+		navigate('/admin/blog/createPost');
 	};
 
 	const handleSave = () => {
@@ -40,7 +56,7 @@ export default function PreviewPage() {
 				onSuccess: ({ id }) => {
 					// Navigate to the blogs list or dashboard after saving
 					localStorage.removeItem('blog-preview-data');
-					localStorage.removeItem('blog-editor-data'); // Also clear editor data
+					localStorage.removeItem('blog-editor-data');
 					navigate('/blogs');
 				},
 			});

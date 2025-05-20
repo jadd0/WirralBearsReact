@@ -24,16 +24,68 @@ export const blogServices = {
 		return blog;
 	},
 
-	async createBlog(authorId: string, blogData: BlogData): Promise<Blog> {
+	async uploadSingleImage(authorId: string, file: Express.Multer.File) {
+		try {
+			// Convert the Multer file to a Blob
+			const fileBuffer = file.buffer;
+			const fileName = file.originalname;
+			const fileType = file.mimetype;
+
+			// Create a Blob from the buffer
+			const blobData = new Blob([fileBuffer], { type: fileType });
+
+			// Create a File object from the Blob
+			const fileObject = new File([blobData], fileName, { type: fileType });
+
+			console.log('Processing file:', {
+				name: fileObject.name,
+				type: fileObject.type,
+				size: fileObject.size,
+			});
+
+			// Upload the image
+			const uploadResult = await uploadPostImages([fileObject]);
+
+			if (uploadResult.failures > 0 || uploadResult.successes.length === 0) {
+				console.error('Upload failed:', uploadResult);
+				throw new Error('Failed to upload image');
+			}
+
+			// Get the uploaded image data
+			const uploadedImage = uploadResult.successes[0];
+
+			// Store the image record in the database
+			const [image] = await db
+				.insert(images)
+				.values({
+					key: uploadedImage.key,
+					authorId: authorId,
+				})
+				.returning();
+
+			return {
+				imageId: image.id,
+				url: uploadedImage.url,
+				key: uploadedImage.key,
+			};
+		} catch (error) {
+			console.error('Complete upload error:', error);
+			throw error;
+		}
+	},
+
+	
+	async createBlog(
+		authorId: string,
+		blogData: BlogData,
+		files?: Express.Multer.File[]
+	): Promise<Blog> {
 		const headings: HeadingElement[] = [];
 		const paragraphs: ParagraphElement[] = [];
-		const imageElements: ImageElement[] = [];
-		const imageFiles: File[] = [];
-
-		console.log({blogData})
+		const imageElements: (ImageElement & { fileIndex?: number })[] = [];
 
 		// Sort elements by position and categorize them
-		blogData.forEach((element) => {
+		blogData.elements.forEach((element) => {
 			switch (element.type) {
 				case 'heading':
 					headings.push(element as HeadingElement);
@@ -42,22 +94,26 @@ export const blogServices = {
 					paragraphs.push(element as ParagraphElement);
 					break;
 				case 'image':
-					const imageElement = element as ImageElement;
+					// Include fileIndex if it exists
+					const imageElement = element as ImageElement & { fileIndex?: number };
 					imageElements.push(imageElement);
-
-					// If there's an actual File object in the data, add it to files to upload
-					if ('file' in imageElement && imageElement.file instanceof File) {
-						imageFiles.push(imageElement.file);
-					}
 					break;
 			}
 		});
 
-		// Process and upload images first if there are any
-		let imageReferences: { imageId: string; position: number }[] = [];
+		// Process and upload images if there are any
+		let imageReferences: { imageId: string; position: number; url: string }[] =
+			[];
 
-		if (imageFiles.length > 0) {
-			const uploadResult = await uploadPostImages(imageFiles);
+		if (files && files.length > 0) {
+			// Convert Multer files to standard File objects
+			const fileObjects = files.map((file) => {
+				return new File([file.buffer], file.originalname, {
+					type: file.mimetype,
+				});
+			});
+
+			const uploadResult = await uploadPostImages(fileObjects);
 
 			// Store image records and create references
 			if (uploadResult.successes.length > 0) {
@@ -65,21 +121,29 @@ export const blogServices = {
 				const imageInserts = await db.transaction(async (tx) => {
 					const insertedImages = [];
 
-					for (const [
-						index,
-						uploadedImage,
-					] of uploadResult.successes.entries()) {
+					for (const uploadedImage of uploadResult.successes) {
 						const [image] = await tx
 							.insert(images)
 							.values({
 								key: uploadedImage.key,
 								authorId: authorId,
+								url: uploadedImage.url,
 							})
 							.returning();
 
+						// Find the corresponding image element by matching file name with original name
+						const matchingElement = imageElements.find(
+							(el) =>
+								el.fileIndex !== undefined &&
+								files[el.fileIndex]?.originalname === uploadedImage.name
+						);
+
+						const position = matchingElement?.position || 0;
+
 						insertedImages.push({
 							imageId: image.id,
-							position: imageElements[index].position,
+							position: position,
+							url: uploadedImage.url,
 						});
 					}
 
@@ -146,3 +210,5 @@ function extractTitle(blogData: BlogData): string {
 	}
 	return 'Untitled Blog';
 }
+
+export default blogServices;

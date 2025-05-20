@@ -21,33 +21,58 @@ type InferredUploadFileResult = Awaited<
  * @returns
  */
 export const uploadPostImages = async (images: File[]) => {
-	// TODO: add better error fallbacks and logging
+	try {
+		console.log('Starting upload process for', images.length, 'images');
 
-	const processedImageFiles = images.map((image) => {
-		const imageFileExtension = image.name.split('.').at(-1);
-		const imageFileName = `${nanoid(
-			POST_IMAGE_CLOUD_ID_LENGTH
-		)}.${imageFileExtension}`;
+		const processedImageFiles = images.map((image) => {
+			console.log('Processing image:', image.name, image.type, image.size);
+			const imageFileExtension = image.name.split('.').at(-1);
+			const imageFileName = `${nanoid(
+				POST_IMAGE_CLOUD_ID_LENGTH
+			)}.${imageFileExtension}`;
+			return new File([image], imageFileName, { type: image.type });
+		});
 
-		return new File([image], imageFileName, { type: image.type });
-	});
+		console.log('Sending to uploadthing:', processedImageFiles.length, 'files');
 
-	const uploadResults = await uploadthing.uploadFiles(processedImageFiles);
+		// This is where the error is likely happening
+		const uploadResults = await uploadthing
+			.uploadFiles(processedImageFiles)
+			.catch((error) => {
+				console.error('UploadThing error:', error);
+				throw new Error(
+					`UploadThing error: ${error.message || JSON.stringify(error)}`
+				);
+			});
 
-	const isSuccessfulUpload = ({ data, error }: UploadFileResult) =>
-		data && !error;
+		console.log('Upload results:', uploadResults);
 
-	const successfulUploads = uploadResults
-		.filter(isSuccessfulUpload)
-		.map(({ data }) => data as UploadedFileData);
+		const successfulUploads = uploadResults
+			.filter((result) => result.data && !result.error)
+			.map(({ data }) => data);
 
-	// TODO: handle unsuccessful uploads
-	const unsuccessfulUploads = uploadResults
-		.filter((result) => !isSuccessfulUpload(result))
-		.map(({ error }) => error);
+		const unsuccessfulUploads = uploadResults
+			.filter((result) => !result.data || result.error)
+			.map(({ error }) => error);
 
-	return {
-		successes: successfulUploads,
-		failures: unsuccessfulUploads.length,
-	};
+		console.log('Upload summary:', {
+			successes: successfulUploads.length,
+			failures: unsuccessfulUploads.length,
+			errors: unsuccessfulUploads,
+		});
+
+		if (unsuccessfulUploads.length > 0) {
+			throw new Error(
+				`Upload failed: ${JSON.stringify(unsuccessfulUploads[0])}`
+			);
+		}
+
+		return {
+			successes: successfulUploads,
+			failures: unsuccessfulUploads.length,
+		};
+	} catch (error) {
+		console.error('Error in uploadPostImages:', error);
+		throw error;
+	}
 };

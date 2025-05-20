@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
 	DndContext,
@@ -16,14 +16,16 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { toast } from 'sonner';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
 
 import { ElementType, BlogData, BlogElement } from '@wirralbears/types';
 import { AddElementButton } from './AddElementButton';
 import { PreviewButton } from './PreviewButton';
 import { HeadingElement } from './HeadingElement';
 import { ParagraphElement } from './ParagraphElement';
-import { ImageElement } from './ImageElement';
-
+import { ImageUploadElement } from './ImageElement';
 import { TitleHeadingElement } from './TitleHeading';
 import { HeadingElement as HeadingElementType } from '@wirralbears/types';
 import { BLOG } from '@wirralbears/validation';
@@ -63,8 +65,11 @@ const ElementRenderer = ({
 			);
 		case 'image':
 			return (
-				<ImageElement
-					element={element}
+				<ImageUploadElement
+					element={{
+						...element,
+						position: element.position ?? 0,
+					}}
 					onChange={onChange}
 					onDelete={onDelete}
 					onImageUpload={onImageUpload}
@@ -89,6 +94,14 @@ export const BlogEditor = ({
 	onChange,
 	onImageUpload,
 }: BlogEditorProps) => {
+	const navigate = useNavigate();
+	const form = useForm<BlogData>({
+		resolver: zodResolver(BLOG.blogDataSchema),
+		defaultValues: initialData || {
+			elements: [createNewElement('heading', 0)],
+		},
+	});
+
 	// Initialize with a title heading element if not provided
 	const [elements, setElements] = useState<BlogElement[]>(() => {
 		if (initialData?.elements && initialData.elements.length > 0) {
@@ -234,6 +247,9 @@ export const BlogEditor = ({
 			const blogData: BlogData = { elements: blogElements };
 			const result = BLOG.blogDataSchema.parse(blogData);
 
+			// Update form values
+			form.setValue('elements', blogElements);
+
 			// Notify parent component of valid changes
 			if (onChange) {
 				onChange(result);
@@ -250,6 +266,11 @@ export const BlogEditor = ({
 			}
 		}
 	};
+
+	// Update form when elements change
+	useEffect(() => {
+		form.setValue('elements', elements);
+	}, [elements, form]);
 
 	// Update editor when initialData changes
 	useEffect(() => {
@@ -274,6 +295,20 @@ export const BlogEditor = ({
 		}
 	}, [initialData]);
 
+	// Handle preview
+	const handlePreview = useCallback(() => {
+		// Store the current blog data in localStorage for the preview page
+		localStorage.setItem('blog-preview-data', JSON.stringify({ elements }));
+		navigate('/admin/blog/preview');
+	}, [elements, navigate]);
+
+	// Submit handler
+	const onSubmit: SubmitHandler<BlogData> = (data) => {
+		if (onChange) {
+			onChange(data);
+		}
+	};
+
 	// Get the title element (first heading with position 0)
 	const titleElement = elements.find(
 		(el) => el.type === 'heading' && el.position === 0
@@ -284,46 +319,83 @@ export const BlogEditor = ({
 
 	return (
 		<div className="max-w-4xl mx-auto p-4">
-			{/* Mandatory title heading component */}
-			{titleElement && (
-				<TitleHeadingElement element={titleElement} onChange={updateTitle} />
-			)}
-
-			{/* Drag and drop context for blog elements */}
-			<DndContext
-				sensors={sensors}
-				collisionDetection={closestCenter}
-				onDragEnd={handleDragEnd}
-			>
-				<SortableContext
-					items={contentElements.map((el) => el.id)}
-					strategy={verticalListSortingStrategy}
-				>
-					{contentElements.length === 0 ? (
-						<div className="text-center py-10 border-2 border-dashed border-gray-300 rounded-md">
-							<p className="text-gray-500">
-								Your blog is empty. Add elements to get started.
-							</p>
-						</div>
-					) : (
-						contentElements.map((element) => (
-							<ElementRenderer
-								key={element.id}
-								element={element}
-								onChange={updateElement}
-								onDelete={deleteElement}
-								onImageUpload={onImageUpload}
+			<form onSubmit={form.handleSubmit(onSubmit)}>
+				{/* Mandatory title heading component */}
+				{titleElement && (
+					<Controller
+						control={form.control}
+						name={`elements.${elements.findIndex(
+							(el) => el.id === titleElement.id
+						)}.text`}
+						render={({ field }) => (
+							<TitleHeadingElement
+								element={titleElement}
+								onChange={(id, text) => {
+									field.onChange(text);
+									updateTitle(id, text);
+								}}
 							/>
-						))
-					)}
-				</SortableContext>
-			</DndContext>
+						)}
+					/>
+				)}
 
-			{/* Controls for adding elements and previewing */}
-			<AddElementButton onAdd={addElement} />
-			<div className="flex justify-end mt-4 space-x-4">
-				<PreviewButton blogData={{ elements }} />
-			</div>
+				{/* Drag and drop context for blog elements */}
+				<DndContext
+					sensors={sensors}
+					collisionDetection={closestCenter}
+					onDragEnd={handleDragEnd}
+				>
+					<SortableContext
+						items={contentElements.map((el) => el.id)}
+						strategy={verticalListSortingStrategy}
+					>
+						{contentElements.length === 0 ? (
+							<div className="text-center py-10 border-2 border-dashed border-gray-300 rounded-md">
+								<p className="text-gray-500">
+									Your blog is empty. Add elements to get started.
+								</p>
+							</div>
+						) : (
+							contentElements.map((element) => (
+								<Controller
+									key={element.id}
+									control={form.control}
+									name={`elements.${elements.findIndex(
+										(el) => el.id === element.id
+									)}`}
+									render={({ field }) => (
+										<ElementRenderer
+											element={element}
+											onChange={(id, updates) => {
+												updateElement(id, updates);
+												// Update the specific field in the form
+												const elementIndex = elements.findIndex(
+													(el) => el.id === id
+												);
+												if (elementIndex !== -1) {
+													const updatedElement = {
+														...elements[elementIndex],
+														...updates,
+													};
+													field.onChange(updatedElement);
+												}
+											}}
+											onDelete={deleteElement}
+											onImageUpload={onImageUpload}
+										/>
+									)}
+								/>
+							))
+						)}
+					</SortableContext>
+				</DndContext>
+
+				{/* Controls for adding elements and previewing */}
+				<AddElementButton onAdd={addElement} />
+				<div className="flex justify-end mt-4 space-x-4">
+					<PreviewButton onClick={handlePreview} />
+				</div>
+			</form>
 		</div>
 	);
 };

@@ -38,6 +38,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.8",
+    "react-form-hook": "^0.0.1",
     "react-hook-form": "^7.56.3",
     "react-loading-indicators": "^1.0.1",
     "react-map-gl": "^8.0.4",

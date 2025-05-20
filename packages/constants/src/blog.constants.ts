@@ -28,3 +28,8 @@ export const BLOG_ID_LENGTH = 7;
 export const BLOG_MAX_TITLE_LENGTH = 50;
 export const BLOG_MAX_PARAGRAPH_LENGTH = 500;
 export const BLOG_MAX_HEADING_LENGTH = 50;
+
+// ## IMAGES
+export const BLOG_IMAGE_MIN_COUNT = 1;
+export const BLOG_IMAGE_MAX_COUNT = 10;
+export const BLOG_IMAGE_MAX_FILE_SIZE = 1024 * 1024 * 5;

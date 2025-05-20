@@ -2,10 +2,13 @@ import { useLayoutEffect, useState } from 'react';
 import { BlogEditor } from '@/components/blog/createBlog/BlogEditor';
 import { BlogData } from '@wirralbears/types';
 import { toast } from 'sonner';
+import { api } from '@/api/api';
+import { useNavigate } from 'react-router-dom';
 
 export default function BlogMakerPage() {
 	const [blogData, setBlogData] = useState<BlogData>({ elements: [] });
 	const [initialData, setInitialData] = useState<BlogData>({ elements: [] });
+	const navigate = useNavigate();
 
 	// Load data from localStorage on component mount
 	useLayoutEffect(() => {
@@ -16,7 +19,7 @@ export default function BlogMakerPage() {
 				const parsedData = JSON.parse(storedData);
 				console.log({ parsedData });
 				setInitialData(parsedData);
-				setBlogData(parsedData); 
+				setBlogData(parsedData);
 			} catch (error) {
 				console.error('Failed to parse blog editor data:', error);
 				toast.error('Failed to load saved blog data');
@@ -33,27 +36,21 @@ export default function BlogMakerPage() {
 	// Image upload handler
 	const handleImageUpload = async (file: File): Promise<string> => {
 		try {
-			// Create form data
-			const formData = new FormData();
-			formData.append('file', file);
-
-			// Send the request to your API endpoint
-			const response = await fetch('/api/upload', {
-				method: 'POST',
-				body: formData,
-			});
-
-			if (!response.ok) {
-				throw new Error('Failed to upload image');
-			}
-
-			const data = await response.json();
-			return data.url;
+			// Use the blog API service to upload the image
+			const result = await api.blog.uploadImage(file);
+			return result;
 		} catch (error) {
 			console.error('Upload error:', error);
-			toast.error('Failed to upload image');
+			toast.error('Failed to upload image', {
+				description: 'Please try again or use a different image.',
+			});
 			throw error;
 		}
+	};
+
+	// Handle preview button click (if needed)
+	const handlePreview = () => {
+		navigate('/admin/blog/preview');
 	};
 
 	return (

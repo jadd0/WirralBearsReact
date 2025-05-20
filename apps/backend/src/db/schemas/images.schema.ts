@@ -18,7 +18,7 @@ import {
 import { ELEMENT_CONSTRAINTS } from '@wirralbears/constants';
 import { blogs } from './blog.schema';
 
-// Includes owner id to see who uplaoded what
+// First table for storing image metadata
 export const images = pgTable('images', {
 	id: varchar('id')
 		.primaryKey()
@@ -27,14 +27,20 @@ export const images = pgTable('images', {
 	authorId: varchar('author_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade' }),
+	url: varchar('url'), // Add this field to store the image URL
 });
 
-export const blogImages = pgTable('images', {
+// Second table for the relationship between blogs and images
+export const blogImages = pgTable('blog_images', {
+	// Changed table name to 'blog_images'
 	id: varchar('id')
 		.primaryKey()
 		.$defaultFn(() => nanoid(BLOG_ID_LENGTH)),
 	blogId: varchar('blogId')
 		.notNull()
 		.references(() => blogs.id, { onDelete: 'cascade' }),
+	imageId: varchar('imageId') // Add this field to reference the images table
+		.notNull()
+		.references(() => images.id, { onDelete: 'cascade' }),
 	position: integer('position').notNull(),
 });

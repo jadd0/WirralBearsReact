@@ -20,6 +20,7 @@ export interface ImageElement extends BaseElement {
 	type: 'image';
 	url: string;
 	alt: string;
+	file?: File | null; // Add this property to store the file
 }
 
 export type BlogElement = HeadingElement | ParagraphElement | ImageElement;

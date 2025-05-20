@@ -1,4 +1,4 @@
-import { request } from "@/lib/network";
+import { request } from '@/lib/network';
 import { BlogData } from '@wirralbears/types';
 
 /**
@@ -7,13 +7,59 @@ import { BlogData } from '@wirralbears/types';
  * @returns The ID of the saved blog
  */
 export async function saveBlogToServer(blogData: BlogData) {
-  const { data } = await request({
-    url: '/api/blog/saveBlog',
-    method: 'POST',
-    data: blogData,
-  });
+	// Create a FormData object to handle both text data and files
+	const formData = new FormData();
 
-  return data as { id: string };
+	// Track files that need to be uploaded
+	const filesToUpload: { index: number; file: File }[] = [];
+
+	// Process elements to identify files and prepare them for upload
+	const processedElements = blogData.elements.map((element, index) => {
+		// For image elements that have a file property
+		if (
+			element.type === 'image' &&
+			'file' in element &&
+			element.file instanceof File
+		) {
+			// Add to our tracking array
+			filesToUpload.push({
+				index,
+				file: element.file,
+			});
+
+			// Return a clean version of the element without the file property
+			// but with a reference to its position in the array
+			const { file, ...cleanElement } = element as any;
+			return {
+				...cleanElement,
+				fileIndex: index, // Reference to identify which file belongs to this element
+			};
+		}
+
+		// For other elements or images without files, return as is
+		return element;
+	});
+
+	// Add each file to the FormData with a unique key
+	filesToUpload.forEach(({ index, file }) => {
+		formData.append(`file_${index}`, file);
+	});
+
+	// Add the processed elements JSON to the FormData
+	formData.append('elements', JSON.stringify(processedElements));
+
+	// Send the request with FormData
+	const { data } = await request({
+		url: '/api/blog/saveBlog',
+		method: 'POST',
+		data: formData,
+		headers: {
+			// Don't set Content-Type manually when using FormData
+			// The browser will set it with the correct boundary
+		},
+	});
+
+	return data as { id: string };
 }
 
 /**
@@ -22,10 +68,28 @@ export async function saveBlogToServer(blogData: BlogData) {
  * @returns The blog data
  */
 export async function fetchBlog(id: string) {
-  const { data } = await request({
-    url: `/api/blogs/${id}`,
-    method: 'GET',
-  });
+	const { data } = await request({
+		url: `/api/blogs/${id}`,
+		method: 'GET',
+	});
 
-  return data as BlogData;
+	return data as BlogData;
+}
+
+/**
+ * Uploads a single image file and returns the URL
+ * @param file - The image file to upload
+ * @returns The URL of the uploaded image
+ */
+export async function uploadImage(file: File): Promise<string> {
+	const formData = new FormData();
+	formData.append('image', file);
+
+	const { data } = await request({
+		url: '/api/blog/uploadImage',
+		method: 'POST',
+		data: formData,
+	});
+
+	return data.url;
 }
