@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BLOG_MAX_TITLE_LENGTH } from '../../../../../../packages/constants/src/blog.constants';
+import { BLOG_MAX_TITLE_LENGTH } from '@wirralbears/constants';
 import { Input } from '@/components/ui/input';
 import { HeadingElement } from '../../../../../../packages/types/src/blog.types';
 
