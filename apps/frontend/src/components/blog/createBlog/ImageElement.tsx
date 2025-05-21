@@ -51,6 +51,7 @@ export const ImageUploadElement = ({
 					url,
 					alt: files[0].name,
 					file: files[0], // Store the file reference for later use
+					position: element.position, // Preserve the position
 				});
 
 				setIsUploading(false);

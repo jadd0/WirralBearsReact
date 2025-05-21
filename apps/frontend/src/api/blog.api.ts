@@ -33,6 +33,7 @@ export async function saveBlogToServer(blogData: BlogData) {
 			return {
 				...cleanElement,
 				fileIndex: index, // Reference to identify which file belongs to this element
+				position: element.position, // Ensure position is included
 			};
 		}
 
@@ -53,10 +54,6 @@ export async function saveBlogToServer(blogData: BlogData) {
 		url: '/api/blog/saveBlog',
 		method: 'POST',
 		data: formData,
-		headers: {
-			// Don't set Content-Type manually when using FormData
-			// The browser will set it with the correct boundary
-		},
 	});
 
 	return data as { id: string };

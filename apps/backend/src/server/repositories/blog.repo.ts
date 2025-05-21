@@ -53,7 +53,7 @@ export const blogRepository = {
 						blog.headings.map((heading) => ({
 							text: heading.text,
 							blogId: mainBlog.id,
-							position: heading.position ?? 0, // Provide default value
+							position: heading.position ?? 0,
 						}))
 					);
 				}
@@ -64,18 +64,18 @@ export const blogRepository = {
 						blog.paragraphs.map((paragraph) => ({
 							text: paragraph.text,
 							blogId: mainBlog.id,
-							position: paragraph.position ?? 0, // Provide default value
+							position: paragraph.position ?? 0,
 						}))
 					);
 				}
-				
+
 				// Insert blog images if they exist
 				if (blog.images && blog.images.length > 0) {
 					await tx.insert(blogImages).values(
 						blog.images.map((image) => ({
 							blogId: mainBlog.id,
 							imageId: image.imageId,
-							position: image.position ?? 0, // Provide default value
+							position: image.position ?? 0,
 						}))
 					);
 				}
@@ -88,7 +88,6 @@ export const blogRepository = {
 			}
 		});
 	},
-
 	async updateBlog(
 		id: string,
 		blog: Partial<NewBlog>

@@ -1,5 +1,5 @@
 import { blogRepository } from '../repositories/blog.repo';
-import { Blog } from '@/db/schemas/blog.schema';
+import { Blog, blogHeadings, blogParagraphs, blogs } from '@/db/schemas/blog.schema';
 import {
 	BlogData,
 	HeadingElement,
@@ -8,7 +8,7 @@ import {
 } from '@wirralbears/types';
 import { uploadPostImages } from './images.services';
 import { db } from '@/db';
-import { images } from '@/db/schemas/images.schema';
+import { blogImages, images } from '@/db/schemas/images.schema';
 
 export const blogServices = {
 	async getAllBlogs(): Promise<Blog[]> {
@@ -74,7 +74,6 @@ export const blogServices = {
 		}
 	},
 
-	
 	async createBlog(
 		authorId: string,
 		blogData: BlogData,
@@ -102,8 +101,7 @@ export const blogServices = {
 		});
 
 		// Process and upload images if there are any
-		let imageReferences: { imageId: string; position: number; url: string }[] =
-			[];
+		let imageReferences: { imageId: string; position: number }[] = [];
 
 		if (files && files.length > 0) {
 			// Convert Multer files to standard File objects
@@ -121,29 +119,26 @@ export const blogServices = {
 				const imageInserts = await db.transaction(async (tx) => {
 					const insertedImages = [];
 
-					for (const uploadedImage of uploadResult.successes) {
+					for (let i = 0; i < uploadResult.successes.length; i++) {
+						const uploadedImage = uploadResult.successes[i];
+
+						// Insert into images table
 						const [image] = await tx
 							.insert(images)
 							.values({
 								key: uploadedImage.key,
 								authorId: authorId,
-								url: uploadedImage.url,
+								url: uploadedImage.url, // Make sure this column exists
 							})
 							.returning();
 
-						// Find the corresponding image element by matching file name with original name
-						const matchingElement = imageElements.find(
-							(el) =>
-								el.fileIndex !== undefined &&
-								files[el.fileIndex]?.originalname === uploadedImage.name
-						);
-
-						const position = matchingElement?.position || 0;
+						// Find the corresponding image element by matching index
+						const matchingElement = imageElements[i];
+						const position = matchingElement?.position || i;
 
 						insertedImages.push({
 							imageId: image.id,
 							position: position,
-							url: uploadedImage.url,
 						});
 					}
 
@@ -152,46 +147,58 @@ export const blogServices = {
 
 				imageReferences = imageInserts;
 			}
-
-			if (uploadResult.failures > 0) {
-				console.warn(`Failed to upload ${uploadResult.failures} images`);
-			}
 		}
 
 		// Extract title from the first heading or use default
 		const title = headings.length > 0 ? headings[0].text : 'Untitled Blog';
 
-		const result = await blogRepository.createBlog(title, authorId, {
-			headings,
-			paragraphs,
-			images: imageReferences,
+		// Create the blog and its relationships
+		return await db.transaction(async (tx) => {
+			// Insert the main blog
+			const [blog] = await tx
+				.insert(blogs)
+				.values({
+					title,
+					authorId,
+				})
+				.returning();
+
+			// Insert headings
+			if (headings.length > 0) {
+				await tx.insert(blogHeadings).values(
+					headings.map((heading) => ({
+						text: heading.text,
+						blogId: blog.id,
+						position: heading.position ?? 0,
+					}))
+				);
+			}
+
+			// Insert paragraphs
+			if (paragraphs.length > 0) {
+				await tx.insert(blogParagraphs).values(
+					paragraphs.map((paragraph) => ({
+						text: paragraph.text,
+						blogId: blog.id,
+						position: paragraph.position ?? 0,
+					}))
+				);
+			}
+
+			// Insert blog image relationships
+			if (imageReferences.length > 0) {
+				await tx.insert(blogImages).values(
+					imageReferences.map((imgRef) => ({
+						blogId: blog.id,
+						imageId: imgRef.imageId, // This should reference the images table
+						position: imgRef.position,
+					}))
+				);
+			}
+
+			return blog;
 		});
-
-		if (!result) {
-			throw new Error('Failed to create blog');
-		}
-
-		return result as Blog;
 	},
-
-	async updateBlog(id: string, blogData: BlogData): Promise<Blog> {
-		const blog = await blogRepository.getBlogById(id);
-
-		if (!blog) {
-			throw new Error('Blog not found');
-		}
-
-		const updatedBlog = await blogRepository.updateBlog(id, {
-			title: extractTitle(blogData),
-		});
-
-		if (!updatedBlog) {
-			throw new Error('Failed to update blog');
-		}
-
-		return updatedBlog;
-	},
-
 	async deleteBlog(id: string): Promise<boolean> {
 		const deleted = await blogRepository.deleteBlog(id);
 		if (!deleted) {

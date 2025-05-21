@@ -31,16 +31,17 @@ export const images = pgTable('images', {
 });
 
 // Second table for the relationship between blogs and images
-export const blogImages = pgTable('blog_images', {
-	// Changed table name to 'blog_images'
-	id: varchar('id')
-		.primaryKey()
-		.$defaultFn(() => nanoid(BLOG_ID_LENGTH)),
-	blogId: varchar('blogId')
-		.notNull()
-		.references(() => blogs.id, { onDelete: 'cascade' }),
-	imageId: varchar('imageId') // Add this field to reference the images table
-		.notNull()
-		.references(() => images.id, { onDelete: 'cascade' }),
-	position: integer('position').notNull(),
+// Fix the blogImages table name
+export const blogImages = pgTable('blog_images', { // Changed from 'images'
+  id: varchar('id')
+    .primaryKey()
+    .$defaultFn(() => nanoid(BLOG_ID_LENGTH)),
+  blogId: varchar('blogId')
+    .notNull()
+    .references(() => blogs.id, { onDelete: 'cascade' }),
+  imageId: varchar('imageId')
+    .notNull()
+    .references(() => images.id, { onDelete: 'cascade' }),
+  position: integer('position').notNull(),
 });
+
