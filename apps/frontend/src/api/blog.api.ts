@@ -1,5 +1,6 @@
 import { request } from '@/lib/network';
 import { BlogData } from '@wirralbears/types';
+import { BlogPreview } from '@wirralbears/backend-types';
 
 /**
  * Saves a blog to the server
@@ -91,6 +92,11 @@ export async function uploadImage(file: File): Promise<string> {
 	return data.url;
 }
 
-export async function getAllBlogPreviews(): Promise<BlogData> {
-
+export async function getAllBlogPreviews(): Promise<BlogPreview[]> {
+	const { data } = await request({
+		url: `/api/blogs/getAllBlogPreviews`,
+		method: 'GET',
+	});
+	console.log(data)
+	return data as BlogPreview[];
 }

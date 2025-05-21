@@ -59,7 +59,6 @@ export const useBlog = (id: string) =>
 		},
 	});
 
-	
 export const getAllBlogPreviews = () => {
-
-}
+	api.blog.getAllBlogPreviews, ['blogs', 'getAll'];
+};
