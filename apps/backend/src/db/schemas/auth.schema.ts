@@ -2,9 +2,7 @@ import { OAUTH_PROVIDERS, USER_ID_LENGTH } from '@/constants/auth.constants';
 import { relations } from 'drizzle-orm';
 import {
 	pgTable,
-	serial,
 	text,
-	integer,
 	timestamp,
 	uniqueIndex,
 	primaryKey,

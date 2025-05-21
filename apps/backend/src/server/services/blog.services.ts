@@ -41,7 +41,7 @@ export const blogServices = {
 			const fileObject = new File([blobData], fileName, { type: fileType });
 
 			// Upload the image
-			const uploadResult = await uploadPostImages([fileObject], [fileId]);
+			const uploadResult = await uploadPostImages([fileObject]);
 
 			if (uploadResult.failures > 0 || uploadResult.successes.length === 0) {
 				console.error('Upload failed:', uploadResult);
@@ -50,6 +50,10 @@ export const blogServices = {
 
 			// Get the uploaded image data
 			const uploadedImage = uploadResult.successes[0];
+
+			if (!uploadedImage) {
+				throw new Error('Upload succeeded but no image data was returned');
+			}
 
 			// Store the image record in the database using the repository with the same ID
 			const image = await imageRepository.createImage({
@@ -99,6 +103,11 @@ export const blogServices = {
 			if (uploadResult.successes.length > 0) {
 				for (let i = 0; i < uploadResult.successes.length; i++) {
 					const uploadedImage = uploadResult.successes[i];
+
+					if (!uploadedImage) {
+						throw new Error('Upload succeeded but no image data was returned');
+					}
+
 					const matchingElement = imageElements.find(
 						(el) => el.fileIndex === i
 					);

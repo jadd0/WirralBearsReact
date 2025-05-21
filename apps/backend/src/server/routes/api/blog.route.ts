@@ -29,12 +29,12 @@ router.post(
 );
 
 // PUT (update) an existing blog
-router.put(
-	'/:id',
-	ensureAuthenticated,
-	upload.any(),
-	blogControllers.updateBlog
-);
+// router.put(
+// 	'/:id',
+// 	ensureAuthenticated,
+// 	upload.any(),
+// 	blogControllers.updateBlog
+// );
 
 // DELETE a blog
 router.delete('/:id', ensureAuthenticated, blogControllers.deleteBlog);

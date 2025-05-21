@@ -34,8 +34,6 @@ export const googleStrategy = new GoogleStrategy(
           return done(null, {
             id: foundUser.id,
             username: foundUser.username,
-            bio: foundUser.bio,
-            profile_picture_url: foundUser.profile_picture_url ?? undefined,
           });
         }
         // If for some reason the user is not found, pass an error.
@@ -50,7 +48,6 @@ export const googleStrategy = new GoogleStrategy(
           .insert(users)
           .values({
             username: profile.displayName,
-            profile_picture_url: profile.photos?.[0].value,
           })
           .returning();
 
@@ -69,8 +66,6 @@ export const googleStrategy = new GoogleStrategy(
         return done(null, {
           id: newUser.id,
           username: newUser.username,
-          bio: newUser.bio,
-          profile_picture_url: newUser.profile_picture_url ?? undefined,
         });
       });
     } catch (error) {

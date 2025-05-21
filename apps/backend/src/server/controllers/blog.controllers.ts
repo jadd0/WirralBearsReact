@@ -68,15 +68,16 @@ export const uploadImage: RequestHandler = async (req, res) => {
 	const authorId = req.user?.id;
 
 	if (!authorId) {
-		return res.status(401).send({ message: 'User not authenticated' });
+		res.status(401).send({ message: 'User not authenticated' });
+		return;
 	}
 
 	try {
 		// Check if there's a file in the request
 		if (!req.file) {
-			return res.status(400).send({ message: 'No image file provided' });
+			res.status(400).send({ message: 'No image file provided' });
+			return;
 		}
-
 
 		// Upload the image
 		const result = await blogServices.uploadSingleImage(authorId, req.file);
@@ -94,32 +95,32 @@ export const uploadImage: RequestHandler = async (req, res) => {
 	}
 };
 
-export const updateBlog: RequestHandler = async (req, res) => {
-	const { id } = req.params;
-	const authorId = req.user?.id;
+// export const updateBlog: RequestHandler = async (req, res) => {
+// 	const { id } = req.params;
+// 	const authorId = req.user?.id;
 
-	if (!authorId) {
-		res.status(401).send({ message: 'User not authenticated' });
-		return;
-	}
+// 	if (!authorId) {
+// 		res.status(401).send({ message: 'User not authenticated' });
+// 		return;
+// 	}
 
-	const blogData: BlogData = req.body;
+// 	const blogData: BlogData = req.body;
 
-	if (!blogData || !blogData.elements) {
-		res.status(400).send({ message: 'Invalid blog data' });
-		return;
-	}
+// 	if (!blogData || !blogData.elements) {
+// 		res.status(400).send({ message: 'Invalid blog data' });
+// 		return;
+// 	}
 
-	try {
-		const updatedBlog = await blogServices.updateBlog(id, blogData);
+// 	try {
+// 		const updatedBlog = await blogServices.updateBlog(id, blogData);
 
-		if (updatedBlog) res.status(200).send({ blog: updatedBlog });
-		else res.status(404).send({ message: 'Blog not found' });
-	} catch (error) {
-		console.error('Error updating blog:', error);
-		res.status(500).send({ message: 'Failed to update blog' });
-	}
-};
+// 		if (updatedBlog) res.status(200).send({ blog: updatedBlog });
+// 		else res.status(404).send({ message: 'Blog not found' });
+// 	} catch (error) {
+// 		console.error('Error updating blog:', error);
+// 		res.status(500).send({ message: 'Failed to update blog' });
+// 	}
+// };
 
 export const deleteBlog: RequestHandler = async (req, res) => {
 	const { id } = req.params;
@@ -145,7 +146,7 @@ export default {
 	getAllBlogs,
 	getBlogById,
 	createBlog,
-	updateBlog,
+	// updateBlog,
 	deleteBlog,
 	uploadImage,
 } as {};
