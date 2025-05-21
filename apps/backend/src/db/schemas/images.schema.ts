@@ -31,8 +31,7 @@ export const images = pgTable('images', {
 });
 
 // Second table for the relationship between blogs and images
-// Fix the blogImages table name
-export const blogImages = pgTable('blog_images', { // Changed from 'images'
+export const blogImages = pgTable('blog_images', { 
   id: varchar('id')
     .primaryKey()
     .$defaultFn(() => nanoid(BLOG_ID_LENGTH)),

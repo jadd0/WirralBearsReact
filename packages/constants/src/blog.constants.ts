@@ -19,6 +19,7 @@ export const IMAGE_UPLOAD_CONFIG = {
   accept: {
     'image/*': [],
   },
+  multiple: false,
 };
 
 export const POST_IMAGE_CLOUD_ID_LENGTH = 13;

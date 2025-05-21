@@ -23,6 +23,7 @@ export const blogServices = {
 		return blog;
 	},
 
+	// TODO: finish image upload on next pull request
 	async uploadSingleImage(authorId: string, file: Express.Multer.File) {
 		try {
 			// Convert the Multer file to a Blob
@@ -39,15 +40,7 @@ export const blogServices = {
 			// Create a File object from the Blob
 			const fileObject = new File([blobData], fileName, { type: fileType });
 
-			console.log('Processing file:', {
-				name: fileObject.name,
-				type: fileObject.type,
-				size: fileObject.size,
-				id: fileId,
-			});
-
-			// Upload the image - you'll need to modify uploadPostImages to accept an ID
-			// or modify how you handle the upload to ensure the file name is used as the key
+			// Upload the image
 			const uploadResult = await uploadPostImages([fileObject], [fileId]);
 
 			if (uploadResult.failures > 0 || uploadResult.successes.length === 0) {

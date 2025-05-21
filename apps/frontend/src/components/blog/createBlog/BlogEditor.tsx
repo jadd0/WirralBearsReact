@@ -17,68 +17,15 @@ import {
 } from '@dnd-kit/sortable';
 import { toast } from 'sonner';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Save } from 'lucide-react';
 
 import { ElementType, BlogData, BlogElement } from '@wirralbears/types';
 import { AddElementButton } from './AddElementButton';
-import { HeadingElement } from './HeadingElement';
-import { ParagraphElement } from './ParagraphElement';
-import { ImageUploadElement } from './ImageElement';
 import { TitleHeadingElement } from './TitleHeading';
 import { HeadingElement as HeadingElementType } from '@wirralbears/types';
 import { BLOG } from '@wirralbears/validation';
-
-/**
- * Component to render different types of blog elements based on their type
- */
-interface ElementRendererProps {
-	element: BlogElement;
-	onChange: (id: string, updates: any) => void;
-	onDelete: (id: string) => void;
-	onImageUpload: (file: File) => Promise<string>;
-}
-
-const ElementRenderer = ({
-	element,
-	onChange,
-	onDelete,
-	onImageUpload,
-}: ElementRendererProps) => {
-	switch (element.type) {
-		case 'heading':
-			return (
-				<HeadingElement
-					element={element}
-					onChange={(id, text) => onChange(id, { text })}
-					onDelete={onDelete}
-				/>
-			);
-		case 'paragraph':
-			return (
-				<ParagraphElement
-					element={element}
-					onChange={(id, text) => onChange(id, { text })}
-					onDelete={onDelete}
-				/>
-			);
-		case 'image':
-			return (
-				<ImageUploadElement
-					element={{
-						...element,
-						position: element.position ?? 0,
-					}}
-					onChange={onChange}
-					onDelete={onDelete}
-					onImageUpload={onImageUpload}
-				/>
-			);
-		default:
-			return null;
-	}
-};
+import { ElementRenderer } from '../ElementRenderer';
 
 /**
  * Interface for the main BlogEditor component props
@@ -97,7 +44,6 @@ export const BlogEditor = ({
 	onSave,
 }: BlogEditorProps) => {
 	const form = useForm<BlogData>({
-		resolver: zodResolver(BLOG.blogDataSchema),
 		defaultValues: initialData || {
 			elements: [createNewElement('heading', 0)],
 		},
@@ -196,8 +142,8 @@ export const BlogEditor = ({
 		const newElements = elements.map((element) =>
 			element.id === id ? { ...element, ...updates } : element
 		);
-		setElements(newElements);
-		validateAndNotify(newElements);
+		setElements(newElements as BlogElement[]);
+		validateAndNotify(newElements as BlogElement[]);
 	};
 
 	/**
@@ -253,7 +199,19 @@ export const BlogEditor = ({
 
 			// Notify parent component of valid changes
 			if (onChange) {
-				onChange(result);
+				// Ensure all image elements have a string url value
+				const safeResult = {
+					elements: result.elements.map((element) => {
+						if (element.type === 'image') {
+							return {
+								...element,
+								url: element.url ?? '', // Convert undefined to empty string
+							};
+						}
+						return element;
+					}),
+				};
+				onChange(safeResult);
 			}
 		} catch (error: any) {
 			if (error.errors) {
@@ -313,7 +271,7 @@ export const BlogEditor = ({
 		const title = elements.find(
 			(el) => el.type === 'heading' && el.position === 0
 		);
-		if (!title || title.text.trim().length === 0) {
+		if (!title) {
 			toast.error('Cannot save blog', {
 				description:
 					'Blog title cannot be empty. Please add a title to your blog.',
@@ -340,9 +298,7 @@ export const BlogEditor = ({
 		// Validate images
 		const invalidImages = elements.filter(
 			(el) =>
-				el.type === 'image' &&
-				!(el.url || el.localPreviewUrl) &&
-				!(el.alt && el.alt.trim().length > 0)
+				el.type === 'image' && !el.url && !(el.alt && el.alt.trim().length > 0)
 		);
 
 		if (invalidImages.length > 0) {

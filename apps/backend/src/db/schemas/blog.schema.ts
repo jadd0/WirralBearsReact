@@ -1,12 +1,4 @@
-import {
-	integer,
-	json,
-	pgTable,
-	serial,
-	text,
-	timestamp,
-	varchar,
-} from 'drizzle-orm/pg-core';
+import { integer, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { users } from './auth.schema';
 import { nanoid } from 'nanoid';
 import {
@@ -15,7 +7,6 @@ import {
 	BLOG_MAX_PARAGRAPH_LENGTH,
 	BLOG_MAX_TITLE_LENGTH,
 } from '@wirralbears/constants';
-import { ELEMENT_CONSTRAINTS } from '@wirralbears/constants';
 
 export const blogs = pgTable('blogs', {
 	id: varchar('id')

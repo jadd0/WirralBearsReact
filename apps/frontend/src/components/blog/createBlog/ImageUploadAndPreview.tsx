@@ -1,15 +1,8 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { FileUploader, FileInput } from '@/components/ui/file-upload';
 import { ImagePlus, Trash2 } from 'lucide-react';
+import { IMAGE_UPLOAD_CONFIG } from '@wirralbears/constants';
 
-const DROPZONE_CONFIG = {
-	maxFiles: 1, // Changed to 1 since we're only handling one image per element
-	maxSize: 5 * 1024 * 1024, // 5MB
-	multiple: false, // Changed to false for single image uploads
-	accept: {
-		'image/*': [],
-	},
-};
 
 export function ImageUploadAndPreview({
 	images,
@@ -24,14 +17,6 @@ export function ImageUploadAndPreview({
 	isUploading?: boolean;
 	onHover?: (hovering: boolean) => void;
 }) {
-	const DROPZONE_CONFIG = {
-		maxFiles: 1,
-		maxSize: 5 * 1024 * 1024, // 5MB
-		multiple: false,
-		accept: {
-			'image/*': [],
-		},
-	};
 
 	// Generate preview URLs for the images
 	const imagePreviewUrls = React.useMemo(() => {
@@ -61,9 +46,8 @@ export function ImageUploadAndPreview({
 				<FileUploader
 					value={images}
 					onValueChange={(files) => files && setImages(files)}
-					dropzoneOptions={DROPZONE_CONFIG}
+					dropzoneOptions={IMAGE_UPLOAD_CONFIG}
 					className="w-full p-0.5"
-					disabled={isUploading}
 				>
 					<FileInput
 						className="w-full overflow-hidden flex flex-col items-center justify-center border-dashed border-2 border-gray-300 hover:border-blue-400 p-8 rounded-lg transition-all duration-200 bg-gray-50 hover:bg-blue-50"

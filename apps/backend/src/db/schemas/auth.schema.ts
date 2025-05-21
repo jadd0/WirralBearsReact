@@ -21,8 +21,6 @@ export const users = pgTable('users', {
 		.primaryKey()
 		.$defaultFn(() => nanoid(USER_ID_LENGTH)),
 	username: text('username').notNull(),
-	profile_picture_url: text('profile_picture_url'),
-	bio: text('bio').notNull().default('Here for the wirralbears!'),
 	createdAt: timestamp('created_at', { mode: 'string' }).defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'string' }).defaultNow(),
 });

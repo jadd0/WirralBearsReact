@@ -48,13 +48,13 @@ export default function BlogMakerPage() {
 
 		try {
 			await saveBlog(data, {
-				onSuccess: ({ id }) => {
+				onSuccess: ({ id }: { id: any }) => {
 					// Clear localStorage and navigate after successful save
 					localStorage.removeItem('blog-editor-data');
 					toast.success('Blog saved successfully!');
 					navigate('/blogs');
 				},
-				onError: (error) => {
+				onError: (error: any) => {
 					toast.error('Failed to save blog', {
 						description: error.message,
 					});

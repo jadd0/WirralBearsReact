@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { ElementWrapper } from './ElementWrapper';
-import { FileUploader, FileInput } from '@/components/ui/file-upload';
-import { ImagePlus, Trash2, Upload, AlertCircle, Info } from 'lucide-react';
+import { Upload, AlertCircle, Info } from 'lucide-react';
 import { ImageUploadAndPreview } from './ImageUploadAndPreview';
 
 interface ImageUploadElementProps {
 	element: {
 		id: string;
 		type: 'image';
-		url: string;
+		url?: string | undefined;
 		alt: string;
-		position?: number;
-		file?: File;
-		localPreviewUrl?: string;
+		position?: number | undefined;
+		file?: File | null | undefined;
+		localPreviewUrl?: string | undefined;
 	};
+	onImageUpload: (file: File) => Promise<string>;
 	onChange: (id: string, updates: any) => void;
 	onDelete: (id: string) => void;
-	onImageUpload: (file: File) => Promise<string>;
 }
 
 export const ImageUploadElement = ({
@@ -40,7 +39,7 @@ export const ImageUploadElement = ({
 	);
 	const isValidAlt = !!(element.alt && element.alt.trim().length > 0);
 	const isValid = isValidImage && isValidAlt;
-	
+
 	useEffect(() => {
 		// Only validate after user interaction or explicit validation request
 		if (!userInteracted && !isValidated) {

@@ -1,15 +1,16 @@
 import { BlogElement } from '@wirralbears/types';
 import { HeadingElement } from './createBlog/HeadingElement';
 import { ParagraphElement } from './createBlog/ParagraphElement';
-import { ImageElement } from './createBlog/ImageElement';
+import { ImageUploadElement } from './createBlog/ImageElement';
 
 interface ElementRendererProps {
   element: BlogElement;
   onChange: (id: string, updates: any) => void;
   onDelete: (id: string) => void;
+  onImageUpload: (file: File) => Promise<string>;
 }
 
-export const ElementRenderer = ({ element, onChange, onDelete }: ElementRendererProps) => {
+export const ElementRenderer = ({ element, onChange, onDelete, onImageUpload }: ElementRendererProps) => {
   switch (element.type) {
     case 'heading':
       return (
@@ -29,10 +30,11 @@ export const ElementRenderer = ({ element, onChange, onDelete }: ElementRenderer
       );
     case 'image':
       return (
-        <ImageElement 
+        <ImageUploadElement 
           element={element} 
           onChange={onChange} 
           onDelete={onDelete} 
+          onImageUpload={onImageUpload}
         />
       );
     default:

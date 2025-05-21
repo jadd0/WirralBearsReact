@@ -11,6 +11,7 @@ const headingSchema = z.object({
 			ELEMENT_CONSTRAINTS.heading.maxLength,
 			`Heading must be ${ELEMENT_CONSTRAINTS.heading.maxLength} characters or less`
 		),
+	position: z.number(),
 });
 
 const paragraphSchema = z.object({
@@ -23,6 +24,7 @@ const paragraphSchema = z.object({
 			ELEMENT_CONSTRAINTS.paragraph.maxLength,
 			`Paragraph must be ${ELEMENT_CONSTRAINTS.paragraph.maxLength} characters or less`
 		),
+	position: z.number(),
 });
 
 export const imageSchema = z.object({
@@ -32,6 +34,7 @@ export const imageSchema = z.object({
 	url: z.string().optional(),
 	file: z.any().optional(),
 	localPreviewUrl: z.string().optional(),
+	position: z.number(),
 });
 
 export const blogElementSchema = z.discriminatedUnion('type', [
