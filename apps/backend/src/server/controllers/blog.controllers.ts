@@ -77,12 +77,6 @@ export const uploadImage: RequestHandler = async (req, res) => {
 			return res.status(400).send({ message: 'No image file provided' });
 		}
 
-		// Log file details for debugging
-		console.log('Received file:', {
-			originalname: req.file.originalname,
-			mimetype: req.file.mimetype,
-			size: req.file.size,
-		});
 
 		// Upload the image
 		const result = await blogServices.uploadSingleImage(authorId, req.file);

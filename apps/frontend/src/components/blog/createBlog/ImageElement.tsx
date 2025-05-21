@@ -9,6 +9,8 @@ interface ImageUploadElementProps {
 		url: string;
 		alt: string;
 		position?: number;
+		file?: File;
+		localPreviewUrl?: string;
 	};
 	onChange: (id: string, updates: any) => void;
 	onDelete: (id: string) => void;
@@ -28,42 +30,41 @@ export const ImageUploadElement = ({
 
 	// Initialize with existing image if URL is provided
 	useEffect(() => {
-		if (element.url && images.length === 0) {
-			// We don't need to set the File object here as we already have the URL
-			// Just showing the existing image in the preview will be handled by the component
+		if (element.file && images.length === 0) {
+			setImages([element.file]);
 		}
-	}, [element.url, images.length]);
+	}, [element.file, images.length]);
 
 	// Handler to update images
 	const handleImagesChange = async (files: File[]) => {
 		setImages(files);
 		setUploadError(null);
 
-		// If there's at least one file, use the first one to update the element
+		// If there's at least one file, store it without uploading
 		if (files.length > 0) {
-			try {
-				setIsUploading(true);
-				// Upload the image and get the URL
-				const url = await onImageUpload(files[0]);
+			const file = files[0];
+			const localPreviewUrl = URL.createObjectURL(file);
 
-				// Update the element with the URL and file reference
-				onChange(element.id, {
-					url,
-					alt: files[0].name,
-					file: files[0], // Store the file reference for later use
-					position: element.position, // Preserve the position
-				});
-
-				setIsUploading(false);
-			} catch (error) {
-				console.error('Image upload failed:', error);
-				setUploadError('Failed to upload image. Please try again.');
-				setIsUploading(false);
-			}
+			// Update the element with the file reference and local preview URL
+			onChange(element.id, {
+				file,
+				localPreviewUrl,
+				alt: file.name,
+				position: element.position, // Preserve the position
+			});
 		} else {
-			onChange(element.id, { url: '', alt: '' });
+			// If no files, clear the element
+			onChange(element.id, {
+				url: '',
+				alt: '',
+				file: undefined,
+				localPreviewUrl: undefined,
+			});
 		}
 	};
+
+	// Determine which URL to use for preview
+	const previewUrl = element.localPreviewUrl || element.url;
 
 	return (
 		<ElementWrapper id={element.id} onDelete={() => onDelete(element.id)}>
@@ -77,7 +78,7 @@ export const ImageUploadElement = ({
 						<ImageUploadAndPreview
 							images={images}
 							setImages={handleImagesChange}
-							existingImageUrl={element.url || undefined}
+							existingImageUrl={previewUrl || undefined}
 							isUploading={isUploading}
 						/>
 					</div>
@@ -88,14 +89,14 @@ export const ImageUploadElement = ({
 						<p className="text-xs text-gray-400">
 							{images.length} image{images.length !== 1 ? 's' : ''}
 						</p>
-						{element.url && (
-							<p className="text-xs text-green-500">
-								Image uploaded successfully
+						{element.file && (
+							<p className="text-xs text-blue-500">
+								Image selected (will be uploaded when saved)
 							</p>
 						)}
 					</div>
 				</div>
-				{element.url && (
+				{(element.url || element.file) && (
 					<div className="form-item mt-2">
 						<label className="form-label">Alt Text</label>
 						<div className="form-description">

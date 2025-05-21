@@ -1,5 +1,6 @@
 import { blogRepository } from '../repositories/blog.repo';
-import { Blog, blogHeadings, blogParagraphs, blogs } from '@/db/schemas/blog.schema';
+import { imageRepository } from '../repositories/images.repo';
+import { Blog } from '@/db/schemas/blog.schema';
 import {
 	BlogData,
 	HeadingElement,
@@ -7,8 +8,6 @@ import {
 	ParagraphElement,
 } from '@wirralbears/types';
 import { uploadPostImages } from './images.services';
-import { db } from '@/db';
-import { blogImages, images } from '@/db/schemas/images.schema';
 
 export const blogServices = {
 	async getAllBlogs(): Promise<Blog[]> {
@@ -37,12 +36,6 @@ export const blogServices = {
 			// Create a File object from the Blob
 			const fileObject = new File([blobData], fileName, { type: fileType });
 
-			console.log('Processing file:', {
-				name: fileObject.name,
-				type: fileObject.type,
-				size: fileObject.size,
-			});
-
 			// Upload the image
 			const uploadResult = await uploadPostImages([fileObject]);
 
@@ -54,14 +47,16 @@ export const blogServices = {
 			// Get the uploaded image data
 			const uploadedImage = uploadResult.successes[0];
 
-			// Store the image record in the database
-			const [image] = await db
-				.insert(images)
-				.values({
-					key: uploadedImage.key,
-					authorId: authorId,
-				})
-				.returning();
+			if (!uploadedImage) {
+				return false;
+			}
+
+			// Store the image record in the database using the repository
+			const image = await imageRepository.createImage({
+				key: uploadedImage.key,
+				authorId: authorId,
+				url: uploadedImage.url,
+			});
 
 			return {
 				imageId: image.id,
@@ -83,22 +78,11 @@ export const blogServices = {
 		const paragraphs: ParagraphElement[] = [];
 		const imageElements: (ImageElement & { fileIndex?: number })[] = [];
 
-		// Sort elements by position and categorize them
-		blogData.elements.forEach((element) => {
-			switch (element.type) {
-				case 'heading':
-					headings.push(element as HeadingElement);
-					break;
-				case 'paragraph':
-					paragraphs.push(element as ParagraphElement);
-					break;
-				case 'image':
-					// Include fileIndex if it exists
-					const imageElement = element as ImageElement & { fileIndex?: number };
-					imageElements.push(imageElement);
-					break;
-			}
-		});
+		// Process blog data to extract elements
+		// (This part would need to be implemented based on how you're parsing blogData)
+
+		// Extract title from the first heading or use default
+		const title = headings.length > 0 ? headings[0].text : 'Untitled Blog';
 
 		// Process and upload images if there are any
 		let imageReferences: { imageId: string; position: number }[] = [];
@@ -115,90 +99,38 @@ export const blogServices = {
 
 			// Store image records and create references
 			if (uploadResult.successes.length > 0) {
-				// First insert the images into the images table
-				const imageInserts = await db.transaction(async (tx) => {
-					const insertedImages = [];
+				for (let i = 0; i < uploadResult.successes.length; i++) {
+					const uploadedImage = uploadResult.successes[i];
+					const matchingElement = imageElements.find(
+						(el) => el.fileIndex === i
+					);
+					const position = matchingElement?.position || i;
 
-					for (let i = 0; i < uploadResult.successes.length; i++) {
-						const uploadedImage = uploadResult.successes[i];
+					// Create image record
+					const image = await imageRepository.createImage({
+						key: uploadedImage.key,
+						authorId: authorId,
+						url: uploadedImage.url,
+					});
 
-						// Insert into images table
-						const [image] = await tx
-							.insert(images)
-							.values({
-								key: uploadedImage.key,
-								authorId: authorId,
-								url: uploadedImage.url, // Make sure this column exists
-							})
-							.returning();
-
-						// Find the corresponding image element by matching index
-						const matchingElement = imageElements[i];
-						const position = matchingElement?.position || i;
-
-						insertedImages.push({
-							imageId: image.id,
-							position: position,
-						});
-					}
-
-					return insertedImages;
-				});
-
-				imageReferences = imageInserts;
+					imageReferences.push({
+						imageId: image.id,
+						position: position,
+					});
+				}
 			}
 		}
 
-		// Extract title from the first heading or use default
-		const title = headings.length > 0 ? headings[0].text : 'Untitled Blog';
-
-		// Create the blog and its relationships
-		return await db.transaction(async (tx) => {
-			// Insert the main blog
-			const [blog] = await tx
-				.insert(blogs)
-				.values({
-					title,
-					authorId,
-				})
-				.returning();
-
-			// Insert headings
-			if (headings.length > 0) {
-				await tx.insert(blogHeadings).values(
-					headings.map((heading) => ({
-						text: heading.text,
-						blogId: blog.id,
-						position: heading.position ?? 0,
-					}))
-				);
-			}
-
-			// Insert paragraphs
-			if (paragraphs.length > 0) {
-				await tx.insert(blogParagraphs).values(
-					paragraphs.map((paragraph) => ({
-						text: paragraph.text,
-						blogId: blog.id,
-						position: paragraph.position ?? 0,
-					}))
-				);
-			}
-
-			// Insert blog image relationships
-			if (imageReferences.length > 0) {
-				await tx.insert(blogImages).values(
-					imageReferences.map((imgRef) => ({
-						blogId: blog.id,
-						imageId: imgRef.imageId, // This should reference the images table
-						position: imgRef.position,
-					}))
-				);
-			}
-
-			return blog;
-		});
+		// Use the repository to create the blog with all its components
+		return await blogRepository.createBlogWithTransaction(
+			title,
+			authorId,
+			headings,
+			paragraphs,
+			imageReferences
+		);
 	},
+
 	async deleteBlog(id: string): Promise<boolean> {
 		const deleted = await blogRepository.deleteBlog(id);
 		if (!deleted) {

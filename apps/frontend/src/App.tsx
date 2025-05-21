@@ -18,8 +18,6 @@ import SponsorshipPage from './pages/Sponsorship.page';
 import AdminPage from './pages/admin/Admin.page';
 import CreateBlogPage from './pages/admin/blog/CreateBlog';
 import { AdminNavbar } from './components/layout/AdminNavbar';
-import PreviewPage from './pages/admin/blog/Preview';
-
 
 function AuthenticatedRouter() {
 	const { data, isPending, error, refetch } = useMe();
@@ -83,16 +81,15 @@ function App() {
 	const { pathname } = useLocation();
 
 	const shouldShowNav = useMemo(() => {
-    // Check if the path starts with "/admin"
-    if (pathname.startsWith("/admin")) {
-      return false;
-    }
-    
-    // Check other routes that should hide the navbar
-    const otherHiddenRoutes = ["/login", "/logout", '/logout/'];
-    return !otherHiddenRoutes.includes(pathname);
-  }, [pathname]);
+		// Check if the path starts with "/admin"
+		if (pathname.startsWith('/admin')) {
+			return false;
+		}
 
+		// Check other routes that should hide the navbar
+		const otherHiddenRoutes = ['/login', '/logout', '/logout/'];
+		return !otherHiddenRoutes.includes(pathname);
+	}, [pathname]);
 
 	return (
 		<div className="font-sans tracking-wide flex flex-col min-h-screen w-full bg-gray-#d3d2d2">
@@ -104,7 +101,6 @@ function App() {
 					<Route element={<AuthenticatedRouter />}>
 						<Route path="/admin" element={<AdminPage />} />
 						<Route path="/admin/blog/createPost" element={<CreateBlogPage />} />
-						<Route path="/blog/preview" element={<PreviewPage />} />
 
 						<Route path="/logout" element={<Logout />} />
 					</Route>

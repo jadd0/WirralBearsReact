@@ -2,7 +2,6 @@ import { useMe } from '@/hooks/auth.hooks';
 
 export default function AdminPage() {
 	const { data, isPending } = useMe();
-	console.log(data.user)
 
 	return (
 		<>

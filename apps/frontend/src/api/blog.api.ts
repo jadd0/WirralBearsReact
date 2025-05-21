@@ -29,7 +29,7 @@ export async function saveBlogToServer(blogData: BlogData) {
 
 			// Return a clean version of the element without the file property
 			// but with a reference to its position in the array
-			const { file, ...cleanElement } = element as any;
+			const { file, localPreviewUrl, ...cleanElement } = element as any;
 			return {
 				...cleanElement,
 				fileIndex: index, // Reference to identify which file belongs to this element

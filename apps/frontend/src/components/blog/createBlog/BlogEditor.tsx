@@ -18,11 +18,11 @@ import {
 import { toast } from 'sonner';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Save } from 'lucide-react';
 
 import { ElementType, BlogData, BlogElement } from '@wirralbears/types';
 import { AddElementButton } from './AddElementButton';
-import { PreviewButton } from './PreviewButton';
 import { HeadingElement } from './HeadingElement';
 import { ParagraphElement } from './ParagraphElement';
 import { ImageUploadElement } from './ImageElement';
@@ -87,14 +87,15 @@ interface BlogEditorProps {
 	initialData?: BlogData;
 	onChange?: (data: BlogData) => void;
 	onImageUpload: (file: File) => Promise<string>;
+	onSave?: (data: BlogData) => void;
 }
 
 export const BlogEditor = ({
 	initialData,
 	onChange,
 	onImageUpload,
+	onSave,
 }: BlogEditorProps) => {
-	const navigate = useNavigate();
 	const form = useForm<BlogData>({
 		resolver: zodResolver(BLOG.blogDataSchema),
 		defaultValues: initialData || {
@@ -295,12 +296,12 @@ export const BlogEditor = ({
 		}
 	}, [initialData]);
 
-	// Handle preview
-	const handlePreview = useCallback(() => {
-		// Store the current blog data in localStorage for the preview page
-		localStorage.setItem('blog-preview-data', JSON.stringify({ elements }));
-		navigate('/admin/blog/preview');
-	}, [elements, navigate]);
+	// Handle save
+	const handleSave = useCallback(() => {
+		if (onSave) {
+			onSave({ elements });
+		}
+	}, [elements, onSave]);
 
 	// Submit handler
 	const onSubmit: SubmitHandler<BlogData> = (data) => {
@@ -390,10 +391,13 @@ export const BlogEditor = ({
 					</SortableContext>
 				</DndContext>
 
-				{/* Controls for adding elements and previewing */}
+				{/* Controls for adding elements and saving */}
 				<AddElementButton onAdd={addElement} />
 				<div className="flex justify-end mt-4 space-x-4">
-					<PreviewButton onClick={handlePreview} />
+					<Button onClick={handleSave} type="button">
+						<Save className="mr-2 h-4 w-4" />
+						Save Blog
+					</Button>
 				</div>
 			</form>
 		</div>

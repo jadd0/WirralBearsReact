@@ -9,6 +9,7 @@ import {
 } from '@/db/schemas/blog.schema';
 import { blogImages, images } from '@/db/schemas/images.schema';
 import {
+	BlogData,
 	BlogElement,
 	HeadingElement,
 	ImageElement,
@@ -25,69 +26,60 @@ export const blogRepository = {
 		return result[0];
 	},
 
-	async createBlog(
+	async createBlogWithTransaction(
 		title: string,
 		authorId: string,
-		blog: {
-			headings: HeadingElement[];
-			paragraphs: ParagraphElement[];
-			images: { imageId: string; position: number }[];
-		}
-	): Promise<Blog | boolean> {
+		headings: HeadingElement[],
+		paragraphs: ParagraphElement[],
+		imageReferences: { imageId: string; position: number }[]
+	): Promise<Blog> {
 		return await db.transaction(async (tx) => {
-			try {
-				// Insert main blog and get the ID
-				const [mainBlog] = await tx
-					.insert(blogs)
-					.values({
-						title,
-						authorId,
-					})
-					.returning();
+			// Insert main blog
+			const [blog] = await tx
+				.insert(blogs)
+				.values({
+					title,
+					authorId,
+				})
+				.returning();
 
-				if (!mainBlog) return false;
-
-				// Insert blog headings if they exist
-				if (blog.headings && blog.headings.length > 0) {
-					await tx.insert(blogHeadings).values(
-						blog.headings.map((heading) => ({
-							text: heading.text,
-							blogId: mainBlog.id,
-							position: heading.position ?? 0,
-						}))
-					);
-				}
-
-				// Insert blog paragraphs if they exist
-				if (blog.paragraphs && blog.paragraphs.length > 0) {
-					await tx.insert(blogParagraphs).values(
-						blog.paragraphs.map((paragraph) => ({
-							text: paragraph.text,
-							blogId: mainBlog.id,
-							position: paragraph.position ?? 0,
-						}))
-					);
-				}
-
-				// Insert blog images if they exist
-				if (blog.images && blog.images.length > 0) {
-					await tx.insert(blogImages).values(
-						blog.images.map((image) => ({
-							blogId: mainBlog.id,
-							imageId: image.imageId,
-							position: image.position ?? 0,
-						}))
-					);
-				}
-
-				// Return the created blog with its ID
-				return mainBlog;
-			} catch (error) {
-				console.error('Error creating blog:', error);
-				return false;
+			// Insert headings
+			if (headings.length > 0) {
+				await tx.insert(blogHeadings).values(
+					headings.map((heading) => ({
+						text: heading.text,
+						blogId: blog.id,
+						position: heading.position ?? 0,
+					}))
+				);
 			}
+
+			// Insert paragraphs
+			if (paragraphs.length > 0) {
+				await tx.insert(blogParagraphs).values(
+					paragraphs.map((paragraph) => ({
+						text: paragraph.text,
+						blogId: blog.id,
+						position: paragraph.position ?? 0,
+					}))
+				);
+			}
+
+			// Insert blog-image relationships
+			if (imageReferences.length > 0) {
+				await tx.insert(blogImages).values(
+					imageReferences.map((ref) => ({
+						blogId: blog.id,
+						imageId: ref.imageId,
+						position: ref.position,
+					}))
+				);
+			}
+
+			return blog;
 		});
 	},
+
 	async updateBlog(
 		id: string,
 		blog: Partial<NewBlog>

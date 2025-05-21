@@ -6,7 +6,6 @@ import { serverOriginUrl } from "@/lib/network";
 export default function LoginPage() {
   const { isLoading, error } = useMe();
 
-  console.log("hdfkkdjf")
   
   if (isLoading)
     return (

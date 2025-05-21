@@ -4,11 +4,15 @@ import { BlogData } from '@wirralbears/types';
 import { toast } from 'sonner';
 import { api } from '@/api/api';
 import { useNavigate } from 'react-router-dom';
+import { useSaveBlog } from '@/hooks/blog.hooks';
 
 export default function BlogMakerPage() {
 	const [blogData, setBlogData] = useState<BlogData>({ elements: [] });
 	const [initialData, setInitialData] = useState<BlogData>({ elements: [] });
+	const [isSubmitting, setIsSubmitting] = useState(false);
 	const navigate = useNavigate();
+	const saveBlogMutation = useSaveBlog();
+	const { mutate: saveBlog, isPending } = saveBlogMutation();
 
 	// Load data from localStorage on component mount
 	useLayoutEffect(() => {
@@ -29,28 +33,40 @@ export default function BlogMakerPage() {
 
 	const handleBlogChange = (data: BlogData) => {
 		setBlogData(data);
-		// Save to localStorage for preview
-		localStorage.setItem('blog-preview-data', JSON.stringify(data));
+		// Save to localStorage for persistence
+		localStorage.setItem('blog-editor-data', JSON.stringify(data));
 	};
 
-	// Image upload handler
+	// Image upload handler - now just returns a placeholder URL for preview
 	const handleImageUpload = async (file: File): Promise<string> => {
-		try {
-			// Use the blog API service to upload the image
-			const result = await api.blog.uploadImage(file);
-			return result;
-		} catch (error) {
-			console.error('Upload error:', error);
-			toast.error('Failed to upload image', {
-				description: 'Please try again or use a different image.',
-			});
-			throw error;
-		}
+		// Instead of uploading, just create a local object URL for preview
+		return URL.createObjectURL(file);
 	};
 
-	// Handle preview button click (if needed)
-	const handlePreview = () => {
-		navigate('/admin/blog/preview');
+	// Handle save button click
+	const handleSave = async (data: BlogData) => {
+		setIsSubmitting(true);
+
+		try {
+			await saveBlog(data, {
+				onSuccess: ({ id }) => {
+					// Clear localStorage and navigate after successful save
+					localStorage.removeItem('blog-editor-data');
+					toast.success('Blog saved successfully!');
+					navigate('/blogs');
+				},
+				onError: (error) => {
+					toast.error('Failed to save blog', {
+						description: error.message,
+					});
+				},
+			});
+		} catch (error) {
+			console.error('Error saving blog:', error);
+			toast.error('An unexpected error occurred');
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	return (
@@ -61,6 +77,7 @@ export default function BlogMakerPage() {
 				initialData={initialData}
 				onChange={handleBlogChange}
 				onImageUpload={handleImageUpload}
+				onSave={handleSave}
 			/>
 		</div>
 	);

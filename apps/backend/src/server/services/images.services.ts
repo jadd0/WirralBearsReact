@@ -22,10 +22,8 @@ type InferredUploadFileResult = Awaited<
  */
 export const uploadPostImages = async (images: File[]) => {
 	try {
-		console.log('Starting upload process for', images.length, 'images');
 
 		const processedImageFiles = images.map((image) => {
-			console.log('Processing image:', image.name, image.type, image.size);
 			const imageFileExtension = image.name.split('.').at(-1);
 			const imageFileName = `${nanoid(
 				POST_IMAGE_CLOUD_ID_LENGTH
@@ -33,7 +31,6 @@ export const uploadPostImages = async (images: File[]) => {
 			return new File([image], imageFileName, { type: image.type });
 		});
 
-		console.log('Sending to uploadthing:', processedImageFiles.length, 'files');
 
 		// This is where the error is likely happening
 		const uploadResults = await uploadthing
@@ -45,7 +42,6 @@ export const uploadPostImages = async (images: File[]) => {
 				);
 			});
 
-		console.log('Upload results:', uploadResults);
 
 		const successfulUploads = uploadResults
 			.filter((result) => result.data && !result.error)
@@ -55,11 +51,7 @@ export const uploadPostImages = async (images: File[]) => {
 			.filter((result) => !result.data || result.error)
 			.map(({ error }) => error);
 
-		console.log('Upload summary:', {
-			successes: successfulUploads.length,
-			failures: unsuccessfulUploads.length,
-			errors: unsuccessfulUploads,
-		});
+
 
 		if (unsuccessfulUploads.length > 0) {
 			throw new Error(
