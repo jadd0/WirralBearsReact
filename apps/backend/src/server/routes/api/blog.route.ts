@@ -28,6 +28,12 @@ router.post(
 	blogControllers.uploadImage
 );
 
+router.get(
+	'/getAllBlogPreviews',
+	ensureAuthenticated,
+	blogControllers.getAllBlogPreviews
+)
+
 // PUT (update) an existing blog
 // router.put(
 // 	'/:id',

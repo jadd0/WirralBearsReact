@@ -1,6 +1,7 @@
 import { blogServices } from '../services/blog.services';
 import { BlogData } from '@wirralbears/types';
 import { RequestHandler, Request, Response } from 'express';
+import { blogRepository } from '../repositories/blog.repo';
 
 export const getAllBlogs: RequestHandler = async (req, res) => {
 	try {
@@ -95,6 +96,12 @@ export const uploadImage: RequestHandler = async (req, res) => {
 	}
 };
 
+export const getAllBlogPreviews: RequestHandler = async (req, res) => {
+	const result = await blogRepository.findAll();
+
+	res.status(200).send({ blogs: result });
+};
+
 // export const updateBlog: RequestHandler = async (req, res) => {
 // 	const { id } = req.params;
 // 	const authorId = req.user?.id;
@@ -149,4 +156,5 @@ export default {
 	// updateBlog,
 	deleteBlog,
 	uploadImage,
+	getAllBlogPreviews,
 } as {};
