@@ -8,8 +8,8 @@
     { "path": "./apps/frontend" },
     { "path": "./apps/backend" },
     { "path": "./packages/constants" },
-    { "path": "./packages/types" },
-    { "path": "./packages/backend-types" },
     { "path": "./packages/validation" },
+    { "path": "./packages/types" },
+    { "path": "./packages/backend-types" }
   ]
 }

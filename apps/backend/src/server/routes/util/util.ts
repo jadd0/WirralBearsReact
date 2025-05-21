@@ -13,7 +13,7 @@ export const createRouter = (
       router?: Router;
     }
   >
-) => {
+): Router => { 
   const router = Router({ mergeParams: true });
 
   Object.entries(routes).forEach(([path, { handlers, router: subRouter }]) => {

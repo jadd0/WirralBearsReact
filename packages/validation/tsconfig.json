@@ -5,6 +5,9 @@
     "outDir": "dist",
     "rootDir": "src",
     "declarationDir": "dist/types",
+    "module": "ESNext",           
+    "moduleResolution": "Node",  
+    "target": "ESNext",           
     "paths": {
       "@wirralbears/*": ["../*/src"]
     }

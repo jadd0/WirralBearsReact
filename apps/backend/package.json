@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@uploadthing/react": "^7.3.1",
     "@wirralbears/backend-types": "workspace:*",
     "@wirralbears/constants": "workspace:*",
     "@wirralbears/types": "workspace:*",
@@ -24,13 +25,16 @@
     "drizzle-orm": "^0.43.1",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+    "multer": "^2.0.0",
     "nanoid": "^5.1.5",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "pg": "^8.15.6",
     "postgres": "^3.4.5",
+    "sharp": "^0.34.1",
     "tsx": "^4.19.4",
+    "uploadthing": "^7.7.2",
     "zod": "^3.24.3"
   },
   "devDependencies": {
@@ -38,6 +42,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/express-session": "^1.18.1",
+    "@types/multer": "^1.4.12",
     "@types/passport": "^1.0.17",
     "@types/passport-google-oauth20": "^2.0.16",
     "@types/pg": "^8.11.14",

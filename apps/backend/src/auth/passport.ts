@@ -25,8 +25,6 @@ passport.deserializeUser(async (id: string, done) => {
     }
 
     done(null, {
-      bio: user.bio ?? undefined,
-      profile_picture_url: user.profile_picture_url ?? undefined,
       id: user.id,
       username: user.username,
     });

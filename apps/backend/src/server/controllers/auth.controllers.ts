@@ -29,4 +29,7 @@ export const logout: RequestHandler = async (req, res) => {
 export default {
   me,
   logout,
+} as {
+  me: RequestHandler;
+  logout: RequestHandler;
 };

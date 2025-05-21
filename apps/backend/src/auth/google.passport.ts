@@ -22,7 +22,6 @@ export const googleStrategy = new GoogleStrategy(
             eq(account_connections.providerAccountId, profile.id)
           )
         );
-        console.log({existingAccounts})
 
       if (existingAccounts.length > 0) {
         // An account exists; fetch the corresponding user record.
@@ -35,8 +34,6 @@ export const googleStrategy = new GoogleStrategy(
           return done(null, {
             id: foundUser.id,
             username: foundUser.username,
-            bio: foundUser.bio,
-            profile_picture_url: foundUser.profile_picture_url ?? undefined,
           });
         }
         // If for some reason the user is not found, pass an error.
@@ -44,7 +41,6 @@ export const googleStrategy = new GoogleStrategy(
         return done(new Error("User not found for the authenticated account"));
       }
 
-      console.log("second")
 
       // Account not found; create a new user.
       await db.transaction(async (tx) => {
@@ -52,13 +48,11 @@ export const googleStrategy = new GoogleStrategy(
           .insert(users)
           .values({
             username: profile.displayName,
-            profile_picture_url: profile.photos?.[0].value,
           })
           .returning();
 
         const newUser = insertedUsers[0];
 
-        console.log(newUser)
 
         await tx.insert(account_connections).values({
           userId: newUser.id,
@@ -72,8 +66,6 @@ export const googleStrategy = new GoogleStrategy(
         return done(null, {
           id: newUser.id,
           username: newUser.username,
-          bio: newUser.bio,
-          profile_picture_url: newUser.profile_picture_url ?? undefined,
         });
       });
     } catch (error) {

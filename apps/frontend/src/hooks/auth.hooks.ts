@@ -4,7 +4,6 @@ import { queryClient } from "@/lib/query";
 import { queries } from "@/queries";
 import { useQuery } from "@tanstack/react-query";
 
-console.log(createConfigurableMutation)
 
 /**
  * Fetches the current user
