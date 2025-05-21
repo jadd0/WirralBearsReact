@@ -26,7 +26,6 @@ const paragraphSchema = z.object({
 export const imageSchema = z.object({
 	id: z.string(),
 	type: z.literal('image'),
-	url: z.string().url('Please provide a valid image URL'),
 	alt: z.string(),
 });
 

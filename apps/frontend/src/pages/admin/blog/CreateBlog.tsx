@@ -37,9 +37,8 @@ export default function BlogMakerPage() {
 		localStorage.setItem('blog-editor-data', JSON.stringify(data));
 	};
 
-	// Image upload handler - now just returns a placeholder URL for preview
+	// Image upload handler
 	const handleImageUpload = async (file: File): Promise<string> => {
-		// Instead of uploading, just create a local object URL for preview
 		return URL.createObjectURL(file);
 	};
 

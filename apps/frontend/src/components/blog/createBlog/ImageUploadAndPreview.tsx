@@ -16,12 +16,23 @@ export function ImageUploadAndPreview({
 	setImages,
 	existingImageUrl,
 	isUploading = false,
+	onHover,
 }: {
 	images: File[];
 	setImages: (files: File[]) => void;
 	existingImageUrl?: string;
 	isUploading?: boolean;
+	onHover?: (hovering: boolean) => void;
 }) {
+	const DROPZONE_CONFIG = {
+		maxFiles: 1,
+		maxSize: 5 * 1024 * 1024, // 5MB
+		multiple: false,
+		accept: {
+			'image/*': [],
+		},
+	};
+
 	// Generate preview URLs for the images
 	const imagePreviewUrls = React.useMemo(() => {
 		return images.map((image) => URL.createObjectURL(image));
@@ -35,7 +46,7 @@ export function ImageUploadAndPreview({
 	}, [imagePreviewUrls]);
 
 	// Handler to delete an image
-	const handleDeleteImage = useCallback(() => {
+	const handleDeleteImage = React.useCallback(() => {
 		setImages([]);
 	}, [setImages]);
 
@@ -54,21 +65,31 @@ export function ImageUploadAndPreview({
 					className="w-full p-0.5"
 					disabled={isUploading}
 				>
-					<FileInput className="w-full overflow-hidden flex flex-col items-center justify-center border-dashed border-2 p-6 rounded-md">
-						<div className="w-full rounded-xl flex flex-col gap-2 items-center justify-center">
+					<FileInput
+						className="w-full overflow-hidden flex flex-col items-center justify-center border-dashed border-2 border-gray-300 hover:border-blue-400 p-8 rounded-lg transition-all duration-200 bg-gray-50 hover:bg-blue-50"
+						onMouseEnter={() => onHover && onHover(true)}
+						onMouseLeave={() => onHover && onHover(false)}
+					>
+						<div className="w-full rounded-xl flex flex-col gap-3 items-center justify-center">
 							{isUploading ? (
 								<>
-									<div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-500"></div>
-									<p className="mb-1 text-sm text-gray-500">Uploading...</p>
+									<div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-blue-500"></div>
+									<p className="mb-1 text-sm font-medium text-gray-600">
+										Uploading...
+									</p>
 								</>
 							) : (
 								<>
-									<ImagePlus className="text-gray-500 w-10 h-10" />
-									<p className="mb-1 text-sm text-gray-500">
-										<span className="font-semibold">Click to upload</span> or
-										drag and drop
+									<div className="p-4 bg-blue-100 rounded-full">
+										<ImagePlus className="text-blue-500 w-8 h-8" />
+									</div>
+									<p className="mb-1 text-sm text-gray-700">
+										<span className="font-semibold text-blue-600">
+											Click to upload
+										</span>{' '}
+										or drag and drop
 									</p>
-									<p className="text-xs text-gray-400">
+									<p className="text-xs text-gray-500">
 										PNG, JPG or GIF (max. 5MB)
 									</p>
 								</>
@@ -78,43 +99,46 @@ export function ImageUploadAndPreview({
 				</FileUploader>
 			)}
 
-			{hasLocalPreview && (
-				<div className="relative aspect-video w-full">
+			{(hasLocalPreview || hasExistingImage) && (
+				<div
+					className="relative aspect-video w-full rounded-lg overflow-hidden shadow-md group"
+					onMouseEnter={() => onHover && onHover(true)}
+					onMouseLeave={() => onHover && onHover(false)}
+				>
 					<img
-						src={imagePreviewUrls[0]}
+						src={hasLocalPreview ? imagePreviewUrls[0] : existingImageUrl}
 						alt="Preview"
-						className="w-full h-full object-cover rounded-md"
+						className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
 					/>
-					<button
-						type="button"
-						onClick={handleDeleteImage}
-						className="absolute top-2 right-2 bg-background/80 rounded-full p-1 hover:stroke-destructive"
-						disabled={isUploading}
-					>
-						<Trash2 className="w-5 h-5" />
-					</button>
+
+					{/* Overlay with actions */}
+					<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+						<div className="flex justify-between items-center">
+							<p className="text-white text-sm truncate max-w-[80%]">
+								{hasLocalPreview ? images[0].name : 'Uploaded image'}
+							</p>
+							<button
+								type="button"
+								onClick={
+									hasLocalPreview ? handleDeleteImage : () => setImages([])
+								}
+								className="bg-white/20 backdrop-blur-sm hover:bg-red-500 text-white rounded-full p-2 transition-colors duration-200"
+								disabled={isUploading}
+							>
+								<Trash2 className="w-5 h-5" />
+							</button>
+						</div>
+					</div>
+
+					{/* Loading overlay */}
 					{isUploading && (
-						<div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-md">
-							<div className="animate-spin rounded-full h-10 w-10 border-b-2 border-white"></div>
+						<div className="absolute inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center rounded-md">
+							<div className="flex flex-col items-center gap-2">
+								<div className="animate-spin rounded-full h-12 w-12 border-4 border-white/30 border-t-white"></div>
+								<p className="text-white font-medium">Uploading image...</p>
+							</div>
 						</div>
 					)}
-				</div>
-			)}
-
-			{hasExistingImage && (
-				<div className="relative aspect-video w-full">
-					<img
-						src={existingImageUrl}
-						alt="Uploaded image"
-						className="w-full h-full object-cover rounded-md"
-					/>
-					<button
-						type="button"
-						onClick={() => setImages([])}
-						className="absolute top-2 right-2 bg-background/80 rounded-full p-1 hover:stroke-destructive"
-					>
-						<Trash2 className="w-5 h-5" />
-					</button>
 				</div>
 			)}
 		</div>

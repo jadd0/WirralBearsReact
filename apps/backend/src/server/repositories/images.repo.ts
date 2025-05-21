@@ -7,6 +7,7 @@ export const imageRepository = {
 	 * Creates a new image record in the database
 	 */
 	async createImage(imageData: {
+		id?: string;
 		key: string;
 		authorId: string;
 		url?: string;
@@ -75,6 +76,7 @@ export const imageRepository = {
 	async createImageWithTransaction(
 		tx: any,
 		imageData: {
+			id?: string;
 			key: string;
 			authorId: string;
 			url?: string;

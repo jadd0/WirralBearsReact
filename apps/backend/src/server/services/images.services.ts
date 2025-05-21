@@ -32,7 +32,6 @@ export const uploadPostImages = async (images: File[]) => {
 		});
 
 
-		// This is where the error is likely happening
 		const uploadResults = await uploadthing
 			.uploadFiles(processedImageFiles)
 			.catch((error) => {

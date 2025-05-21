@@ -30,14 +30,25 @@ export const blogServices = {
 			const fileName = file.originalname;
 			const fileType = file.mimetype;
 
+			// Generate a clean filename to use as ID (remove extension and special chars)
+			const fileId = fileName.split('.')[0].replace(/[^a-zA-Z0-9]/g, '_');
+
 			// Create a Blob from the buffer
 			const blobData = new Blob([fileBuffer], { type: fileType });
 
 			// Create a File object from the Blob
 			const fileObject = new File([blobData], fileName, { type: fileType });
 
-			// Upload the image
-			const uploadResult = await uploadPostImages([fileObject]);
+			console.log('Processing file:', {
+				name: fileObject.name,
+				type: fileObject.type,
+				size: fileObject.size,
+				id: fileId,
+			});
+
+			// Upload the image - you'll need to modify uploadPostImages to accept an ID
+			// or modify how you handle the upload to ensure the file name is used as the key
+			const uploadResult = await uploadPostImages([fileObject], [fileId]);
 
 			if (uploadResult.failures > 0 || uploadResult.successes.length === 0) {
 				console.error('Upload failed:', uploadResult);
@@ -47,12 +58,9 @@ export const blogServices = {
 			// Get the uploaded image data
 			const uploadedImage = uploadResult.successes[0];
 
-			if (!uploadedImage) {
-				return false;
-			}
-
-			// Store the image record in the database using the repository
+			// Store the image record in the database using the repository with the same ID
 			const image = await imageRepository.createImage({
+				id: fileId,
 				key: uploadedImage.key,
 				authorId: authorId,
 				url: uploadedImage.url,
@@ -77,9 +85,6 @@ export const blogServices = {
 		const headings: HeadingElement[] = [];
 		const paragraphs: ParagraphElement[] = [];
 		const imageElements: (ImageElement & { fileIndex?: number })[] = [];
-
-		// Process blog data to extract elements
-		// (This part would need to be implemented based on how you're parsing blogData)
 
 		// Extract title from the first heading or use default
 		const title = headings.length > 0 ? headings[0].text : 'Untitled Blog';
