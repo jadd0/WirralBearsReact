@@ -58,3 +58,8 @@ export const useBlog = (id: string) =>
 			});
 		},
 	});
+
+	
+export const getAllBlogPreviews = () => {
+
+}

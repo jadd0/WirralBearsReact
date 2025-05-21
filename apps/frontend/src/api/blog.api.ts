@@ -90,3 +90,7 @@ export async function uploadImage(file: File): Promise<string> {
 
 	return data.url;
 }
+
+export async function getAllBlogPreviews(): Promise<BlogData> {
+
+}

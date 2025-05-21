@@ -13,10 +13,11 @@ import Home from './pages/Home.page';
 import LoginPage from './pages/Login.page';
 import Logout from './pages/Logout.page';
 import SponsorshipPage from './pages/Sponsorship.page';
+import ViewBlogsPage from './pages/admin/blog/ViewBlogs.page';
 
 // Admin
 import AdminPage from './pages/admin/Admin.page';
-import CreateBlogPage from './pages/admin/blog/CreateBlog';
+import CreateBlogPage from './pages/admin/blog/CreateBlog.page';
 import { AdminNavbar } from './components/layout/AdminNavbar';
 
 function AuthenticatedRouter() {
@@ -101,7 +102,7 @@ function App() {
 					<Route element={<AuthenticatedRouter />}>
 						<Route path="/admin" element={<AdminPage />} />
 						<Route path="/admin/blog/createPost" element={<CreateBlogPage />} />
-
+						<Route path="/admin/blogs" element={<ViewBlogsPage />} />
 						<Route path="/logout" element={<Logout />} />
 					</Route>
 					<Route
