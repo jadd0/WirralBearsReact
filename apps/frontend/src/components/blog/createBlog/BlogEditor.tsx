@@ -261,6 +261,8 @@ export const BlogEditor = ({
 				const errorMessages = error.errors
 					.map((err: any) => err.message)
 					.join('\n');
+
+				if (errorMessages == 'Please provide a valid image URL') return;
 				toast.error('Validation Error', {
 					description: errorMessages,
 				});
@@ -298,6 +300,59 @@ export const BlogEditor = ({
 
 	// Handle save
 	const handleSave = useCallback(() => {
+		// Validate non-empty content before saving
+		const emptyHeadings = elements.filter(
+			(el) => el.type === 'heading' && el.text.trim().length === 0
+		);
+
+		const emptyParagraphs = elements.filter(
+			(el) => el.type === 'paragraph' && el.text.trim().length === 0
+		);
+
+		// Validate title specifically
+		const title = elements.find(
+			(el) => el.type === 'heading' && el.position === 0
+		);
+		if (!title || title.text.trim().length === 0) {
+			toast.error('Cannot save blog', {
+				description:
+					'Blog title cannot be empty. Please add a title to your blog.',
+			});
+			return;
+		}
+
+		if (emptyHeadings.length > 0) {
+			toast.error('Cannot save blog', {
+				description:
+					'One or more headings are empty. Please add content to all headings or remove them.',
+			});
+			return;
+		}
+
+		if (emptyParagraphs.length > 0) {
+			toast.error('Cannot save blog', {
+				description:
+					'One or more paragraphs are empty. Please add content to all paragraphs or remove them.',
+			});
+			return;
+		}
+
+		// Validate images
+		const invalidImages = elements.filter(
+			(el) =>
+				el.type === 'image' &&
+				!(el.url || el.localPreviewUrl) &&
+				!(el.alt && el.alt.trim().length > 0)
+		);
+
+		if (invalidImages.length > 0) {
+			toast.error('Cannot save blog', {
+				description:
+					'One or more images are invalid. Please ensure all images have content and alt text.',
+			});
+			return;
+		}
+
 		if (onSave) {
 			onSave({ elements });
 		}

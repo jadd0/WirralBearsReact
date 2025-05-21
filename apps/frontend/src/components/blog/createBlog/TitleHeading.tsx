@@ -3,9 +3,6 @@ import { BLOG_MAX_TITLE_LENGTH } from '../../../../../../packages/constants/src/
 import { Input } from '@/components/ui/input';
 import { HeadingElement } from '../../../../../../packages/types/src/blog.types';
 
-/**
- * TitleHeadingElement component for the mandatory blog title
- */
 export const TitleHeadingElement = ({
 	element,
 	onChange,
@@ -20,15 +17,26 @@ export const TitleHeadingElement = ({
 	const maxLength = BLOG_MAX_TITLE_LENGTH;
 	const charPercentage = (charCount / maxLength) * 100;
 	const isNearLimit = charPercentage > 80;
+	const isEmpty = charCount === 0;
 
 	// Handle title input changes
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		if (value.length > maxLength) {
 			setError(`Title must be ${maxLength} characters or less`);
+		} else if (value.trim().length === 0) {
+			setError('Title cannot be empty');
 		} else {
 			setError(null);
-			onChange(element.id, value);
+		}
+		onChange(element.id, value);
+	};
+
+	// Handle blur to validate empty title
+	const handleBlur = () => {
+		setIsFocused(false);
+		if (element.text.trim().length === 0) {
+			setError('Title cannot be empty');
 		}
 	};
 
@@ -45,11 +53,11 @@ export const TitleHeadingElement = ({
 				<Input
 					className={`text-2xl font-bold transition-all py-6 ${
 						isFocused ? 'border-blue-400 ring-2 ring-blue-100' : ''
-					}`}
+					} ${isEmpty ? 'border-red-300' : ''}`}
 					value={element.text}
 					onChange={handleChange}
 					onFocus={() => setIsFocused(true)}
-					onBlur={() => setIsFocused(false)}
+					onBlur={handleBlur}
 					placeholder="Write an engaging title for your blog..."
 					maxLength={maxLength}
 					required
@@ -59,14 +67,22 @@ export const TitleHeadingElement = ({
 					<div className="h-1.5 flex-grow bg-gray-100 rounded-full overflow-hidden">
 						<div
 							className={`h-full transition-all ${
-								isNearLimit ? 'bg-amber-400' : 'bg-blue-400'
+								isEmpty
+									? 'bg-red-400'
+									: isNearLimit
+									? 'bg-amber-400'
+									: 'bg-blue-400'
 							}`}
-							style={{ width: `${charPercentage}%` }}
+							style={{ width: `${isEmpty ? 100 : charPercentage}%` }}
 						></div>
 					</div>
 					<p
 						className={`text-xs ${
-							isNearLimit ? 'text-amber-600 font-medium' : 'text-gray-400'
+							isEmpty
+								? 'text-red-600 font-medium'
+								: isNearLimit
+								? 'text-amber-600 font-medium'
+								: 'text-gray-400'
 						}`}
 					>
 						{charCount}/{maxLength}

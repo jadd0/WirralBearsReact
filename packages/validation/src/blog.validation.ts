@@ -6,6 +6,7 @@ const headingSchema = z.object({
 	type: z.literal('heading'),
 	text: z
 		.string()
+		.min(1, 'Heading cannot be empty')
 		.max(
 			ELEMENT_CONSTRAINTS.heading.maxLength,
 			`Heading must be ${ELEMENT_CONSTRAINTS.heading.maxLength} characters or less`
@@ -17,6 +18,7 @@ const paragraphSchema = z.object({
 	type: z.literal('paragraph'),
 	text: z
 		.string()
+		.min(1, 'Paragraph cannot be empty')
 		.max(
 			ELEMENT_CONSTRAINTS.paragraph.maxLength,
 			`Paragraph must be ${ELEMENT_CONSTRAINTS.paragraph.maxLength} characters or less`
@@ -26,7 +28,10 @@ const paragraphSchema = z.object({
 export const imageSchema = z.object({
 	id: z.string(),
 	type: z.literal('image'),
-	alt: z.string(),
+	alt: z.string().min(1, 'Image alt text cannot be empty'),
+	url: z.string().optional(),
+	file: z.any().optional(),
+	localPreviewUrl: z.string().optional(),
 });
 
 export const blogElementSchema = z.discriminatedUnion('type', [
@@ -36,5 +41,19 @@ export const blogElementSchema = z.discriminatedUnion('type', [
 ]);
 
 export const blogDataSchema = z.object({
-	elements: z.array(blogElementSchema),
+	elements: z
+		.array(blogElementSchema)
+		.min(1, 'Blog must contain at least one element')
+		.refine(
+			(elements) =>
+				elements.some(
+					(el) =>
+						el.type === 'heading' &&
+						el.position === 0 &&
+						el.text.trim().length > 0
+				),
+			{
+				message: 'Blog must have a non-empty title',
+			}
+		),
 });
