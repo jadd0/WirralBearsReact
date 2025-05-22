@@ -11,6 +11,7 @@ import { uploadPostImages } from './images.services';
 
 export const blogServices = {
 	async getAllBlogs(): Promise<Blog[]> {
+		console.log('hello');
 		return blogRepository.findAll();
 	},
 
@@ -82,6 +83,23 @@ export const blogServices = {
 		const headings: HeadingElement[] = [];
 		const paragraphs: ParagraphElement[] = [];
 		const imageElements: (ImageElement & { fileIndex?: number })[] = [];
+
+		// Sort elements by position and categorize them
+		blogData.elements.forEach((element) => {
+			switch (element.type) {
+				case 'heading':
+					headings.push(element as HeadingElement);
+					break;
+				case 'paragraph':
+					paragraphs.push(element as ParagraphElement);
+					break;
+				case 'image':
+					// Include fileIndex if it exists
+					const imageElement = element as ImageElement & { fileIndex?: number };
+					imageElements.push(imageElement);
+					break;
+			}
+		});
 
 		// Extract title from the first heading or use default
 		const title = headings.length > 0 ? headings[0].text : 'Untitled Blog';
