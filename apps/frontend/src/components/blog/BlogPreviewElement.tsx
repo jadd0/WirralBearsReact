@@ -3,7 +3,7 @@ import { Calendar, User } from 'lucide-react';
 
 export default function BlogPreviewElement({ blog }: { blog: BlogPreview }) {
 	return (
-		<article className="group bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300 overflow-hidden">
+		<article className="cursor-pointer group bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300 overflow-hidden">
 			<div className="flex flex-row">
 				{/* Blog image */}
 				<div className="relative w-40 h-32 flex-shrink-0">
