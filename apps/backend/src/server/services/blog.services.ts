@@ -107,7 +107,6 @@ export const blogServices = {
 		let imageReferences: { imageId: string; position: number }[] = [];
 
 		if (files && files.length > 0) {
-			// Convert Multer files to standard File objects
 			const fileObjects = files.map((file) => {
 				return new File([file.buffer], file.originalname, {
 					type: file.mimetype,
@@ -116,7 +115,6 @@ export const blogServices = {
 
 			const uploadResult = await uploadPostImages(fileObjects);
 
-			// Store image records and create references
 			if (uploadResult.successes.length > 0) {
 				for (let i = 0; i < uploadResult.successes.length; i++) {
 					const uploadedImage = uploadResult.successes[i];
@@ -125,16 +123,23 @@ export const blogServices = {
 						throw new Error('Upload succeeded but no image data was returned');
 					}
 
+					// Find the matching element by fileIndex
 					const matchingElement = imageElements.find(
 						(el) => el.fileIndex === i
 					);
-					const position = matchingElement?.position || i;
 
-					// Create image record
+					console.log(`Looking for fileIndex: ${i}, found:`, matchingElement);
+
+					const position = matchingElement?.position || i;
+					const alt = matchingElement?.alt || `Image ${i + 1}`; // Provide fallback
+
+					console.log('alt:', alt);
+
 					const image = await imageRepository.createImage({
 						key: uploadedImage.key,
 						authorId: authorId,
 						url: uploadedImage.url,
+						alt,
 					});
 
 					imageReferences.push({
