@@ -14,7 +14,7 @@ export const blogServices = {
 		return blogRepository.findAll();
 	},
 
-	async getBlogById(id: string): Promise<Blog> {
+	async getBlogById(id: string) {
 		const blog = await blogRepository.getBlogById(id);
 
 		if (!blog) {

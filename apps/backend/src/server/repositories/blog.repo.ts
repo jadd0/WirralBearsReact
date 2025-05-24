@@ -58,9 +58,70 @@ export const blogRepository = {
 			.orderBy(blogs.createdAt);
 	},
 
-	async getBlogById(id: string): Promise<Blog | undefined> {
-		const result = await db.select().from(blogs).where(eq(blogs.id, id));
-		return result[0];
+	async getBlogById(blogId: string) {
+		// Get the main blog and author
+		const blogResult = await db
+			.select({
+				blog: {
+					id: blogs.id,
+					title: blogs.title,
+					authorId: blogs.authorId,
+					createdAt: blogs.createdAt,
+					updatedAt: blogs.updatedAt,
+				},
+				author: {
+					id: users.id,
+					username: users.username,
+				},
+			})
+			.from(blogs)
+			.leftJoin(users, eq(blogs.authorId, users.id))
+			.where(eq(blogs.id, blogId));
+
+		if (blogResult.length === 0) {
+			return null;
+		}
+
+		const { blog, author } = blogResult[0];
+
+		// Get headings, paragraphs, and images separately
+		const [headings, paragraphs, blogImagesWithDetails] = await Promise.all([
+			// Get headings
+			db
+				.select()
+				.from(blogHeadings)
+				.where(eq(blogHeadings.blogId, blogId))
+				.orderBy(blogHeadings.position),
+
+			// Get paragraphs
+			db
+				.select()
+				.from(blogParagraphs)
+				.where(eq(blogParagraphs.blogId, blogId))
+				.orderBy(blogParagraphs.position),
+
+			// Get images with their blog relationship
+			db
+				.select({
+					id: images.id,
+					key: images.key,
+					url: images.url,
+					alt: images.alt,
+					position: blogImages.position,
+				})
+				.from(blogImages)
+				.leftJoin(images, eq(blogImages.imageId, images.id))
+				.where(eq(blogImages.blogId, blogId))
+				.orderBy(blogImages.position),
+		]);
+
+		return {
+			...blog,
+			author,
+			headings: headings || [],
+			paragraphs: paragraphs || [],
+			images: blogImagesWithDetails || [],
+		};
 	},
 
 	async createBlogWithTransaction(
