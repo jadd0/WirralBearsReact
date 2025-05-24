@@ -23,6 +23,7 @@
       "@/*": ["src/*"],
     },
     "moduleResolution": "node",
+    "noErrorTruncation": true
   
   }
 }
