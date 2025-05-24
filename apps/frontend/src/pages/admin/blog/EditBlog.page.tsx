@@ -5,7 +5,7 @@ import { BlogEditor } from '@/components/blog/createBlog/BlogEditor';
 import { BlogData, BlogElement, ElementType } from '@wirralbears/types';
 import { FullBlog } from '@wirralbears/backend-types';
 import { toast } from 'sonner';
-import { useGetBlog, useSaveBlog } from '@/hooks/blog.hooks';
+import { useGetBlog, useEditBlog } from '@/hooks/blog.hooks';
 
 export default function BlogEditPage() {
 	const location = useLocation();
@@ -17,8 +17,9 @@ export default function BlogEditPage() {
 
 	// Get blog data from API if not passed through state
 	const { data: fetchedBlog, isLoading } = useGetBlog(id ?? '');
-	const saveBlogMutation = useSaveBlog();
-	const { mutate: saveBlog, isPending } = saveBlogMutation();
+
+	const editBlogMutation = useEditBlog();
+	const { mutate: editBlog, isPending } = editBlogMutation();
 
 	console.log(fetchedBlog);
 
@@ -61,8 +62,8 @@ export default function BlogEditPage() {
 		setIsSubmitting(true);
 
 		try {
-			await saveBlog(
-				{ ...data, id },
+			await editBlog(
+				{ blogData: data, id: id! },
 				{
 					onSuccess: () => {
 						localStorage.removeItem(`blog-editor-data-${id}`);

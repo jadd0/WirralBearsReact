@@ -11,6 +11,7 @@ export const imageRepository = {
 		key: string;
 		authorId: string;
 		url?: string;
+		alt?: string;
 	}) {
 		const [image] = await db.insert(images).values(imageData).returning();
 

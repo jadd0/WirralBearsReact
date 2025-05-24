@@ -58,6 +58,68 @@ export const blogRepository = {
 			.orderBy(blogs.createdAt);
 	},
 
+	async updateBlogWithTransaction(
+		blogId: string,
+		title: string,
+		headings: HeadingElement[],
+		paragraphs: ParagraphElement[],
+		imageReferences: { imageId: string; position: number }[]
+	): Promise<Blog> {
+		return await db.transaction(async (tx) => {
+			// Update main blog
+			const [blog] = await tx
+				.update(blogs)
+				.set({
+					title,
+					updatedAt: new Date(),
+				})
+				.where(eq(blogs.id, blogId))
+				.returning();
+
+			// Delete existing headings, paragraphs, and image relations
+			await Promise.all([
+				tx.delete(blogHeadings).where(eq(blogHeadings.blogId, blogId)),
+				tx.delete(blogParagraphs).where(eq(blogParagraphs.blogId, blogId)),
+				tx.delete(blogImages).where(eq(blogImages.blogId, blogId)),
+			]);
+
+			// Insert new headings
+			if (headings.length > 0) {
+				await tx.insert(blogHeadings).values(
+					headings.map((heading) => ({
+						text: heading.text,
+						blogId: blog.id,
+						position: heading.position ?? 0,
+					}))
+				);
+			}
+
+			// Insert new paragraphs
+			if (paragraphs.length > 0) {
+				await tx.insert(blogParagraphs).values(
+					paragraphs.map((paragraph) => ({
+						text: paragraph.text,
+						blogId: blog.id,
+						position: paragraph.position ?? 0,
+					}))
+				);
+			}
+
+			// Insert new blog-image relationships
+			if (imageReferences.length > 0) {
+				await tx.insert(blogImages).values(
+					imageReferences.map((ref) => ({
+						blogId: blog.id,
+						imageId: ref.imageId,
+						position: ref.position,
+					}))
+				);
+			}
+
+			return blog;
+		});
+	},
+
 	async getBlogById(blogId: string) {
 		// Get the main blog and author
 		const blogResult = await db

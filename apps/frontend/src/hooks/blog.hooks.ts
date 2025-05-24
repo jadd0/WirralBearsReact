@@ -13,6 +13,37 @@ import { BlogPreview } from '@wirralbears/backend-types';
 import { UseQueryResult } from '@tanstack/react-query';
 
 /**
+ * Updates an existing blog
+ * @returns The result of the update operation
+ */
+export const useEditBlog = (): ((
+	configuredOptions?: CreateMutationOptions<
+		(data: { blogData: BlogData; id: string }) => Promise<{ id: string }>,
+		unknown
+	>
+) => CreateMutationResult<
+	(data: { blogData: BlogData; id: string }) => Promise<{ id: string }>,
+	unknown
+>) => {
+	return createConfigurableMutation(
+		api.blog.editBlogOnServer,
+		['blogs', 'edit'],
+		{
+			onSuccess: (data) => {
+				toast.success('Blog updated successfully', {
+					description: `Your blog has been updated with ID: ${data.id}`,
+				});
+			},
+			onError: (error: Error) => {
+				toast.error('Failed to update blog', {
+					description: error.message,
+				});
+			},
+		}
+	);
+};
+
+/**
  * Saves a blog to the server
  * @returns The result of the save operation
  */
