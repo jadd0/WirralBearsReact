@@ -73,7 +73,7 @@ export async function saveBlogToServer(blogData: BlogData) {
  */
 export async function fetchBlog(id: string) {
 	const { data } = await request({
-		url: `/api/blogs/${id}`,
+		url: `/api/blog/getBlog/${id}`,
 		method: 'GET',
 	});
 
