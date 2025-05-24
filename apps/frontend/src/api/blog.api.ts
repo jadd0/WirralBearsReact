@@ -1,6 +1,6 @@
 import { request } from '@/lib/network';
 import { BlogData } from '@wirralbears/types';
-import { BlogPreview } from '@wirralbears/backend-types';
+import { BlogPreview, FullBlog } from '@wirralbears/backend-types';
 
 
 const x : BlogData = {}
@@ -77,7 +77,7 @@ export async function fetchBlog(id: string) {
 		method: 'GET',
 	});
 
-	return data as BlogData;
+	return data.blog as FullBlog;
 }
 
 /**

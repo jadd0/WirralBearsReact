@@ -1,8 +1,10 @@
 import { useParams } from 'react-router-dom';
+import BlogDisplay from '@/components/blog/BlogDisplay';
 
 export default function BlogView() {
   const { slug } = useParams();
-  console.log(slug)
 
-  return <></>
+  return <>
+  <BlogDisplay id={slug ?? ''} />
+  </>
 }
