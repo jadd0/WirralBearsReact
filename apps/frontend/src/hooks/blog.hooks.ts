@@ -9,6 +9,39 @@ import {
 	CreateMutationOptions,
 	CreateMutationResult,
 } from '@tanstack/react-query';
+import { BlogPreview } from '@wirralbears/backend-types';
+import { UseQueryResult } from '@tanstack/react-query';
+
+/**
+ * Updates an existing blog
+ * @returns The result of the update operation
+ */
+export const useEditBlog = (): ((
+	configuredOptions?: CreateMutationOptions<
+		(data: { blogData: BlogData; id: string }) => Promise<{ id: string }>,
+		unknown
+	>
+) => CreateMutationResult<
+	(data: { blogData: BlogData; id: string }) => Promise<{ id: string }>,
+	unknown
+>) => {
+	return createConfigurableMutation(
+		api.blog.editBlogOnServer,
+		['blogs', 'edit'],
+		{
+			onSuccess: (data) => {
+				toast.success('Blog updated successfully', {
+					description: `Your blog has been updated with ID: ${data.id}`,
+				});
+			},
+			onError: (error: Error) => {
+				toast.error('Failed to update blog', {
+					description: error.message,
+				});
+			},
+		}
+	);
+};
 
 /**
  * Saves a blog to the server
@@ -46,7 +79,7 @@ export const useSaveBlog = (): ((
  * @param id - The ID of the blog to fetch
  * @returns The blog with the given ID
  */
-export const useBlog = (id: string) =>
+export const useGetBlog = (id: string) =>
 	useQuery({
 		...queries.blog.getBlogById(id),
 		enabled: !!id,
@@ -58,3 +91,27 @@ export const useBlog = (id: string) =>
 			});
 		},
 	});
+
+// Define your type
+type Post = {
+	id: string;
+	title: string;
+	createdAt: Date;
+	updatedAt: Date;
+	authorId: string;
+};
+
+// Make sure your query function returns the correct type
+const fetchPosts = async (): Promise<BlogPreview[]> => {
+	// Your fetch logic here
+	const response = await api.blog.getAllBlogPreviews();
+	return response;
+};
+
+// Then use it in your hook
+export const useGetAllBlogPreviews = () => {
+	return useQuery<BlogPreview[]>({
+		queryKey: ['posts'],
+		queryFn: fetchPosts,
+	});
+};

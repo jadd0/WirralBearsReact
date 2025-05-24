@@ -27,7 +27,8 @@ export const images = pgTable('images', {
 	authorId: varchar('author_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade' }),
-	url: varchar('url'), // Add this field to store the image URL
+	url: varchar('url'),
+	alt: varchar('alt')
 });
 
 // Second table for the relationship between blogs and images

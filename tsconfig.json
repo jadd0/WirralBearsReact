@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": "."
+    "baseUrl": ".",
+    "noErrorTruncation": true
   },
   "extends": "./tsconfig.base.json",
   "files": [],

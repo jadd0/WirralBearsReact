@@ -1,6 +1,53 @@
 import { blogServices } from '../services/blog.services';
 import { BlogData } from '@wirralbears/types';
 import { RequestHandler, Request, Response } from 'express';
+import { blogRepository } from '../repositories/blog.repo';
+
+export const updateBlog: RequestHandler = async (req, res) => {
+	const { id } = req.params;
+	const authorId = req.user?.id;
+
+	if (!authorId) {
+		res.status(401).send({ message: 'User not authenticated' });
+		return;
+	}
+
+	try {
+		// Parse the elements from the request body
+		let elements = [];
+		if (req.body.elements) {
+			elements = JSON.parse(req.body.elements);
+		}
+
+		// Get the uploaded files
+		const files = req.files as Express.Multer.File[];
+
+		// Create the blog data object
+		const blogData = { elements };
+
+		console.log('Updating blog with elements:', blogData.elements);
+
+		// Pass the blog data and files to the service
+		const updatedBlog = await blogServices.updateBlog(id, authorId, blogData, files);
+
+		if (updatedBlog) {
+			res.status(200).send({
+				blog: updatedBlog,
+				id: updatedBlog.id,
+				message: 'Blog updated successfully',
+			});
+		} else {
+			res.status(404).send({ message: 'Blog not found' });
+		}
+	} catch (error) {
+		console.error('Error updating blog:', error);
+		res.status(500).send({
+			message: 'Failed to update blog',
+			error: error instanceof Error ? error.message : 'Unknown error',
+		});
+	}
+};
+
 
 export const getAllBlogs: RequestHandler = async (req, res) => {
 	try {
@@ -46,6 +93,8 @@ export const createBlog: RequestHandler = async (req, res) => {
 
 		// Create the blog data object
 		const blogData = { elements };
+
+		console.log(blogData.elements)
 
 		// Pass the blog data and files to the service
 		const newBlog = await blogServices.createBlog(authorId, blogData, files);
@@ -93,6 +142,12 @@ export const uploadImage: RequestHandler = async (req, res) => {
 			error: error instanceof Error ? error.message : 'Unknown error',
 		});
 	}
+};
+
+export const getAllBlogPreviews: RequestHandler = async (req, res) => {
+	const result = await blogServices.getAllBlogs();
+
+	res.status(200).send({ blogs: result });
 };
 
 // export const updateBlog: RequestHandler = async (req, res) => {
@@ -146,7 +201,8 @@ export default {
 	getAllBlogs,
 	getBlogById,
 	createBlog,
-	// updateBlog,
+	updateBlog,
 	deleteBlog,
 	uploadImage,
+	getAllBlogPreviews,
 } as {};

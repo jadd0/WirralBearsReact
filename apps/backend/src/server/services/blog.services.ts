@@ -10,11 +10,117 @@ import {
 import { uploadPostImages } from './images.services';
 
 export const blogServices = {
-	async getAllBlogs(): Promise<Blog[]> {
+	async getAllBlogs() {
 		return blogRepository.findAll();
 	},
+	async updateBlog(
+		blogId: string,
+		authorId: string,
+		blogData: BlogData,
+		files?: Express.Multer.File[]
+	): Promise<Blog | null> {
+		// First, verify the blog exists and the user owns it
+		const existingBlog = await blogRepository.getBlogById(blogId);
+		if (!existingBlog || existingBlog.authorId !== authorId) {
+			return null;
+		}
 
-	async getBlogById(id: string): Promise<Blog> {
+		const headings: HeadingElement[] = [];
+		const paragraphs: ParagraphElement[] = [];
+		const imageElements: (ImageElement & { fileIndex?: number })[] = [];
+
+		// Sort elements by position and categorize them
+		blogData.elements.forEach((element) => {
+			switch (element.type) {
+				case 'heading':
+					headings.push(element as HeadingElement);
+					break;
+				case 'paragraph':
+					paragraphs.push(element as ParagraphElement);
+					break;
+				case 'image':
+					// Include fileIndex if it exists
+					const imageElement = element as ImageElement & { fileIndex?: number };
+					imageElements.push(imageElement);
+					break;
+			}
+		});
+
+		// Extract title from the first heading or keep existing title
+		const title = headings.length > 0 ? headings[0].text : existingBlog.title;
+
+		// Process and upload new images if there are any
+		let imageReferences: { imageId: string; position: number }[] = [];
+
+		// Handle existing images (those with URLs but no files)
+		for (const imageElement of imageElements) {
+			if (imageElement.url && !('fileIndex' in imageElement)) {
+				// This is an existing image, find its ID from the database
+				const existingImage = existingBlog.images?.find(
+					(img) => img.url === imageElement.url
+				);
+
+				if (existingImage) {
+					imageReferences.push({
+						imageId: existingImage.id || '',
+						position: imageElement.position ?? 0,
+					});
+				}
+			}
+		}
+
+		// Handle new image uploads
+		if (files && files.length > 0) {
+			const fileObjects = files.map((file) => {
+				return new File([file.buffer], file.originalname, {
+					type: file.mimetype,
+				});
+			});
+
+			const uploadResult = await uploadPostImages(fileObjects);
+
+			if (uploadResult.successes.length > 0) {
+				for (let i = 0; i < uploadResult.successes.length; i++) {
+					const uploadedImage = uploadResult.successes[i];
+
+					if (!uploadedImage) {
+						throw new Error('Upload succeeded but no image data was returned');
+					}
+
+					// Find the matching element by fileIndex
+					const matchingElement = imageElements.find(
+						(el) => el.fileIndex === i
+					);
+
+					const position = matchingElement?.position || i;
+					const alt = matchingElement?.alt || `Image ${i + 1}`;
+
+					const image = await imageRepository.createImage({
+						key: uploadedImage.key,
+						authorId: authorId,
+						url: uploadedImage.url,
+						alt,
+					});
+
+					imageReferences.push({
+						imageId: image.id,
+						position: position,
+					});
+				}
+			}
+		}
+
+		// Use the repository to update the blog with all its components
+		return await blogRepository.updateBlogWithTransaction(
+			blogId,
+			title,
+			headings,
+			paragraphs,
+			imageReferences
+		);
+	},
+
+	async getBlogById(id: string) {
 		const blog = await blogRepository.getBlogById(id);
 
 		if (!blog) {
@@ -83,6 +189,23 @@ export const blogServices = {
 		const paragraphs: ParagraphElement[] = [];
 		const imageElements: (ImageElement & { fileIndex?: number })[] = [];
 
+		// Sort elements by position and categorize them
+		blogData.elements.forEach((element) => {
+			switch (element.type) {
+				case 'heading':
+					headings.push(element as HeadingElement);
+					break;
+				case 'paragraph':
+					paragraphs.push(element as ParagraphElement);
+					break;
+				case 'image':
+					// Include fileIndex if it exists
+					const imageElement = element as ImageElement & { fileIndex?: number };
+					imageElements.push(imageElement);
+					break;
+			}
+		});
+
 		// Extract title from the first heading or use default
 		const title = headings.length > 0 ? headings[0].text : 'Untitled Blog';
 
@@ -90,7 +213,6 @@ export const blogServices = {
 		let imageReferences: { imageId: string; position: number }[] = [];
 
 		if (files && files.length > 0) {
-			// Convert Multer files to standard File objects
 			const fileObjects = files.map((file) => {
 				return new File([file.buffer], file.originalname, {
 					type: file.mimetype,
@@ -99,7 +221,6 @@ export const blogServices = {
 
 			const uploadResult = await uploadPostImages(fileObjects);
 
-			// Store image records and create references
 			if (uploadResult.successes.length > 0) {
 				for (let i = 0; i < uploadResult.successes.length; i++) {
 					const uploadedImage = uploadResult.successes[i];
@@ -108,16 +229,23 @@ export const blogServices = {
 						throw new Error('Upload succeeded but no image data was returned');
 					}
 
+					// Find the matching element by fileIndex
 					const matchingElement = imageElements.find(
 						(el) => el.fileIndex === i
 					);
-					const position = matchingElement?.position || i;
 
-					// Create image record
+					console.log(`Looking for fileIndex: ${i}, found:`, matchingElement);
+
+					const position = matchingElement?.position || i;
+					const alt = matchingElement?.alt || `Image ${i + 1}`; // Provide fallback
+
+					console.log('alt:', alt);
+
 					const image = await imageRepository.createImage({
 						key: uploadedImage.key,
 						authorId: authorId,
 						url: uploadedImage.url,
+						alt,
 					});
 
 					imageReferences.push({
