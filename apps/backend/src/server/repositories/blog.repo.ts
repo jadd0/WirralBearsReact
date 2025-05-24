@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, sql, and } from 'drizzle-orm';
 import { db } from '@/db';
 import {
 	Blog,
@@ -15,10 +15,47 @@ import {
 	ImageElement,
 	ParagraphElement,
 } from '@wirralbears/types';
+import { BlogPreview } from '@/types/blog.types';
+import { users } from '@/db/schema';
 
 export const blogRepository = {
-	async findAll(): Promise<Blog[]> {
-		return db.select().from(blogs).orderBy(blogs.createdAt);
+	async findAll() {
+		const lowestPositionImages = db
+			.select({
+				blogId: blogImages.blogId,
+				minPosition: sql`MIN(${blogImages.position})`.as('minPosition'),
+			})
+			.from(blogImages)
+			.groupBy(blogImages.blogId)
+			.as('lowestPositionImages');
+
+		return db
+			.select({
+				id: blogs.id,
+				title: blogs.title,
+				username: users.username,
+				createdAt: blogs.createdAt,
+				updatedAt: blogs.updatedAt,
+				image: {
+					id: images.id,
+					key: images.key,
+					url: images.url,
+					authorId: images.authorId,
+					alt: images.alt,
+				},
+			})
+			.from(blogs)
+			.leftJoin(lowestPositionImages, eq(blogs.id, lowestPositionImages.blogId))
+			.leftJoin(
+				blogImages,
+				and(
+					eq(blogs.id, blogImages.blogId),
+					eq(blogImages.position, lowestPositionImages.minPosition)
+				)
+			)
+			.leftJoin(images, eq(blogImages.imageId, images.id))
+			.leftJoin(users, eq(blogs.authorId, users.id))
+			.orderBy(blogs.createdAt);
 	},
 
 	async getBlogById(id: string): Promise<Blog | undefined> {

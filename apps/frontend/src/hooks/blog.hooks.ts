@@ -9,6 +9,8 @@ import {
 	CreateMutationOptions,
 	CreateMutationResult,
 } from '@tanstack/react-query';
+import { BlogPreview } from '@wirralbears/backend-types';
+import { UseQueryResult } from '@tanstack/react-query';
 
 /**
  * Saves a blog to the server
@@ -59,6 +61,26 @@ export const useBlog = (id: string) =>
 		},
 	});
 
-export const getAllBlogPreviews = () => {
-	api.blog.getAllBlogPreviews, ['blogs', 'getAll'];
+// Define your type
+type Post = {
+	id: string;
+	title: string;
+	createdAt: Date;
+	updatedAt: Date;
+	authorId: string;
+};
+
+// Make sure your query function returns the correct type
+const fetchPosts = async (): Promise<BlogPreview[]> => {
+	// Your fetch logic here
+	const response = await api.blog.getAllBlogPreviews();
+	return response;
+};
+
+// Then use it in your hook
+export const useGetAllBlogPreviews = () => {
+	return useQuery<BlogPreview[]>({
+		queryKey: ['posts'],
+		queryFn: fetchPosts,
+	});
 };

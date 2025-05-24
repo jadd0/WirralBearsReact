@@ -10,8 +10,7 @@ import {
 import { uploadPostImages } from './images.services';
 
 export const blogServices = {
-	async getAllBlogs(): Promise<Blog[]> {
-		console.log('hello');
+	async getAllBlogs() {
 		return blogRepository.findAll();
 	},
 

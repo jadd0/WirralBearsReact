@@ -6,11 +6,8 @@ import multer from 'multer';
 const router: Router = Router();
 const upload = multer();
 
-// GET all blogs
-router.get('/', blogControllers.getAllBlogs);
-
 // GET a single blog by ID
-router.get('/:id', blogControllers.getBlogById);
+router.get('/getBlog/:id', blogControllers.getBlogById);
 
 // POST a new blog
 router.post(
@@ -32,7 +29,7 @@ router.get(
 	'/getAllBlogPreviews',
 	ensureAuthenticated,
 	blogControllers.getAllBlogPreviews
-)
+);
 
 // PUT (update) an existing blog
 // router.put(

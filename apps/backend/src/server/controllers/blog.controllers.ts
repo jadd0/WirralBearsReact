@@ -97,7 +97,7 @@ export const uploadImage: RequestHandler = async (req, res) => {
 };
 
 export const getAllBlogPreviews: RequestHandler = async (req, res) => {
-	const result = await blogRepository.findAll();
+	const result = await blogServices.getAllBlogs();
 
 	res.status(200).send({ blogs: result });
 };

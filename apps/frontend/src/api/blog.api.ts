@@ -2,10 +2,16 @@ import { request } from '@/lib/network';
 import { BlogData } from '@wirralbears/types';
 import { BlogPreview } from '@wirralbears/backend-types';
 
+
+const x : BlogData = {}
+
+
+
+ 
 /**
  * Saves a blog to the server
- * @param blogData - The blog data to save
  * @returns The ID of the saved blog
+ * @param blogData - The blog data to save
  */
 export async function saveBlogToServer(blogData: BlogData) {
 	// Create a FormData object to handle both text data and files
@@ -93,10 +99,11 @@ export async function uploadImage(file: File): Promise<string> {
 }
 
 export async function getAllBlogPreviews(): Promise<BlogPreview[]> {
+	console.log("jhdsjkshfkjhs")
 	const { data } = await request({
-		url: `/api/blogs/getAllBlogPreviews`,
+		url: `/api/blog/getAllBlogPreviews`,
 		method: 'GET',
 	});
-	console.log(data)
-	return data as BlogPreview[];
+
+	return data.blogs as BlogPreview[];
 }
