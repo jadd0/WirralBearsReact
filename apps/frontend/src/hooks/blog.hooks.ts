@@ -48,7 +48,7 @@ export const useSaveBlog = (): ((
  * @param id - The ID of the blog to fetch
  * @returns The blog with the given ID
  */
-export const useBlog = (id: string) =>
+export const useGetBlog = (id: string) =>
 	useQuery({
 		...queries.blog.getBlogById(id),
 		enabled: !!id,
