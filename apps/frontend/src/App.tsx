@@ -21,6 +21,7 @@ import CreateBlogPage from './pages/admin/blog/CreateBlog.page';
 import { AdminNavbar } from './components/layout/AdminNavbar';
 import BlogView from './pages/blog/BlogView';
 import BlogEditPage from './pages/admin/blog/EditBlog.page';
+import AllImagesViewPage from './pages/image/AllImagesView';
 
 function AuthenticatedRouter() {
 	const { data, isPending, error, refetch } = useMe();
@@ -121,6 +122,9 @@ function App() {
 					{/* Blog routes */}
 					<Route path="/blog/blogs" element={<ViewBlogsPage />} />
 					<Route path="/blog/blog/:slug" element={<BlogView />} />
+
+					{/* Image routes */}
+					<Route path="/image/viewall" element={<AllImagesViewPage />} />
 				</Routes>
 				<Toaster position="top-right" closeButton={false} />
 			</main>
