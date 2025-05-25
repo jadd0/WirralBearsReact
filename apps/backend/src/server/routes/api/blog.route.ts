@@ -35,19 +35,11 @@ router.post(
 
 router.get(
 	'/getAllBlogPreviews',
-	ensureAuthenticated,
 	blogControllers.getAllBlogPreviews
 );
 
-// PUT (update) an existing blog
-// router.put(
-// 	'/:id',
-// 	ensureAuthenticated,
-// 	upload.any(),
-// 	blogControllers.updateBlog
-// );
 
 // DELETE a blog
-router.delete('/:id', ensureAuthenticated, blogControllers.deleteBlog);
+router.delete('/deleteBlog/:id', ensureAuthenticated, blogControllers.deleteBlog);
 
 export default router;

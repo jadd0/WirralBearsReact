@@ -5,7 +5,10 @@ import { FullBlog } from '@wirralbears/backend-types';
 import BlogHeader from './BlogHeader';
 import BlogContent from './BlogContent';
 import BlogSkeleton from './BlogSkeleton';
+import BlogDelete from './BlogDelete';
+
 import { useMe } from '@/hooks/auth.hooks';
+import { BlogData, BlogElement } from '@wirralbears/types';
 
 export default function BlogDisplay({ id }: { id: string }) {
 	const { data, isLoading, error } = useGetBlog(id);
@@ -41,13 +44,14 @@ export default function BlogDisplay({ id }: { id: string }) {
 				style={{ marginLeft: 0, marginRight: 'auto' }}
 			>
 				{auth?.authenticated && blogData && (
-					<div className="mb-4">
+					<div className="mb-4 flex gap-5">
 						<button
 							onClick={handleEditClick}
 							className="text-blue-500 hover:underline cursor-pointer"
 						>
 							Edit Blog Post
 						</button>
+						<BlogDelete id={blogData.id} />
 					</div>
 				)}
 				<div className="flex flex-col gap-4 w-full">
@@ -77,27 +81,27 @@ export default function BlogDisplay({ id }: { id: string }) {
 
 function convertFullBlogToBlogData(fullBlog: FullBlog): BlogData {
 	console.log('Converting FullBlog:', fullBlog);
-	
+
 	if (!fullBlog) {
 		return { elements: [] };
 	}
 
 	const elements: BlogElement[] = [];
-	
+
 	// Add title as first element (position 0)
 	if (fullBlog.title) {
 		elements.push({
 			id: 'title',
 			type: 'heading',
 			text: fullBlog.title,
-			position: 0
+			position: 0,
 		});
 	}
-	
+
 	console.log('FullBlog headings:', fullBlog.headings);
 	console.log('FullBlog paragraphs:', fullBlog.paragraphs);
 	console.log('FullBlog images:', fullBlog.images);
-	
+
 	// Collect all elements with their positions
 	const allElements: Array<{
 		id: string;
@@ -105,7 +109,7 @@ function convertFullBlogToBlogData(fullBlog: FullBlog): BlogData {
 		position: number;
 		data: any;
 	}> = [];
-	
+
 	// Add headings (skip title if it exists in headings)
 	if (fullBlog.headings && fullBlog.headings.length > 0) {
 		fullBlog.headings.forEach((heading) => {
@@ -113,16 +117,16 @@ function convertFullBlogToBlogData(fullBlog: FullBlog): BlogData {
 			if (heading.text === fullBlog.title) {
 				return;
 			}
-			
+
 			allElements.push({
 				id: heading.id,
 				type: 'heading',
 				position: heading.position,
-				data: heading
+				data: heading,
 			});
 		});
 	}
-	
+
 	// Add paragraphs
 	if (fullBlog.paragraphs && fullBlog.paragraphs.length > 0) {
 		fullBlog.paragraphs.forEach((paragraph) => {
@@ -130,11 +134,11 @@ function convertFullBlogToBlogData(fullBlog: FullBlog): BlogData {
 				id: paragraph.id,
 				type: 'paragraph',
 				position: paragraph.position,
-				data: paragraph
+				data: paragraph,
 			});
 		});
 	}
-	
+
 	// Add images
 	if (fullBlog.images && fullBlog.images.length > 0) {
 		fullBlog.images.forEach((image) => {
@@ -142,27 +146,27 @@ function convertFullBlogToBlogData(fullBlog: FullBlog): BlogData {
 				id: image.id || `image-${image.position}`,
 				type: 'image',
 				position: image.position,
-				data: image
+				data: image,
 			});
 		});
 	}
-	
+
 	console.log('All collected elements before sorting:', allElements);
-	
+
 	// Sort by position to maintain correct order
 	allElements.sort((a, b) => a.position - b.position);
-	
+
 	// Convert to BlogElement format
 	allElements.forEach((element, index) => {
 		const adjustedPosition = index + 1; // Start content at position 1
-		
+
 		switch (element.type) {
 			case 'heading':
 				elements.push({
 					id: element.id,
 					type: 'heading',
 					text: element.data.text,
-					position: adjustedPosition
+					position: adjustedPosition,
 				});
 				break;
 			case 'paragraph':
@@ -170,7 +174,7 @@ function convertFullBlogToBlogData(fullBlog: FullBlog): BlogData {
 					id: element.id,
 					type: 'paragraph',
 					text: element.data.text,
-					position: adjustedPosition
+					position: adjustedPosition,
 				});
 				break;
 			case 'image':
@@ -179,13 +183,12 @@ function convertFullBlogToBlogData(fullBlog: FullBlog): BlogData {
 					type: 'image',
 					url: element.data.url || '',
 					alt: element.data.alt || '',
-					position: adjustedPosition
+					position: adjustedPosition,
 				});
 				break;
 		}
 	});
-	
+
 	console.log('Final converted elements:', elements);
 	return { elements };
 }
-
