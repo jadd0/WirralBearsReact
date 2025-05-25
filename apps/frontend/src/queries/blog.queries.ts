@@ -10,4 +10,8 @@ export const blog = createQueryKeys('blog', {
 		queryFn: async () => await api.blog.getAllBlogPreviews(),
 		queryKey: ['blog', 'getAllBlogPreviews'],
 	}),
+	deleteBlog: (id: string) => ({
+		queryFn: async () => await api.blog.deleteBlog(id),
+		queryKey: ['blog', 'delete', id]
+	})
 });

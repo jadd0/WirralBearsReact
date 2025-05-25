@@ -160,11 +160,19 @@ export async function uploadImage(file: File): Promise<string> {
 }
 
 export async function getAllBlogPreviews(): Promise<BlogPreview[]> {
-	console.log('jhdsjkshfkjhs');
 	const { data } = await request({
 		url: `/api/blog/getAllBlogPreviews`,
 		method: 'GET',
 	});
 
 	return data.blogs as BlogPreview[];
+}
+
+export async function deleteBlog(id: string) {
+	const { data } = await request({
+		url: `/api/blog/deleteBlog/${id}`,
+		method: 'DELETE'
+	})
+
+	return data;
 }

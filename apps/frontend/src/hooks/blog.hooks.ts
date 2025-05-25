@@ -4,13 +4,12 @@ import { queries } from '@/queries';
 import { useQuery } from '@tanstack/react-query';
 import { BlogData } from '@wirralbears/types';
 import { toast } from 'sonner';
-import { UseMutationResult } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
 	CreateMutationOptions,
 	CreateMutationResult,
 } from '@tanstack/react-query';
 import { BlogPreview } from '@wirralbears/backend-types';
-import { UseQueryResult } from '@tanstack/react-query';
 
 /**
  * Updates an existing blog
@@ -92,23 +91,42 @@ export const useGetBlog = (id: string) =>
 		},
 	});
 
-// Define your type
-type Post = {
-	id: string;
-	title: string;
-	createdAt: Date;
-	updatedAt: Date;
-	authorId: string;
+/**
+ * Hook for deleting a blog by its ID
+ * @returns Mutation object with mutate function and states
+ */
+export const useDeleteBlog = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (id: string) => {
+			// Call the API function directly instead of queryFn()
+			return await api.blog.deleteBlog(id);
+		},
+		onSuccess: (data, id) => {
+			toast.success('Blog deleted successfully');
+
+			queryClient.invalidateQueries({
+				queryKey: queries.blog.getAllBlogPreviews().queryKey,
+			});
+
+			queryClient.removeQueries({
+				queryKey: queries.blog.getBlogById(id).queryKey,
+			});
+		},
+		onError: (error: Error) => {
+			toast.error('Failed to delete blog', {
+				description: error.message,
+			});
+		},
+	});
 };
 
-// Make sure your query function returns the correct type
 const fetchPosts = async (): Promise<BlogPreview[]> => {
-	// Your fetch logic here
 	const response = await api.blog.getAllBlogPreviews();
 	return response;
 };
 
-// Then use it in your hook
 export const useGetAllBlogPreviews = () => {
 	return useQuery<BlogPreview[]>({
 		queryKey: ['posts'],
