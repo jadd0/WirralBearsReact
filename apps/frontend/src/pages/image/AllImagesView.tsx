@@ -1,5 +1,6 @@
 import { useGetAllImages } from "@/hooks/image.hooks"
 import { useEffect, useState } from "react"
+import ImageDisplay from "./Image";
 
 export default function AllImagesViewPage() {
   const [images, setImages] = useState([]);
@@ -7,6 +8,10 @@ export default function AllImagesViewPage() {
   const { data, isLoading } = useGetAllImages();
 
   console.log(data)
+
+  function imageClickHandler() {
+
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -17,10 +22,7 @@ export default function AllImagesViewPage() {
         <div className="grid grid-cols-3 gap-4">
           {data?.pages.map((page) =>
             page.images.map((image) => (
-              <div key={image.id} className="border p-2 rounded">
-                <img src={image.url} alt={image.title} className="w-full h-auto" />
-                <p className="mt-2">{image.title}</p>
-              </div>
+              <ImageDisplay image={image} onClick={() => {console.log(image.id)}} /> 
             ))
           )}
         </div>
