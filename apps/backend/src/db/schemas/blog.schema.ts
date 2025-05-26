@@ -29,6 +29,7 @@ export const blogHeadings = pgTable('blogHeadings', {
 		.notNull()
 		.references(() => blogs.id, { onDelete: 'cascade' }),
 	position: integer('position').notNull(),
+	createdAt: timestamp('created_at', { mode: 'string' }).defaultNow(),
 });
 
 export const blogParagraphs = pgTable('blogParagraphs', {
@@ -40,6 +41,7 @@ export const blogParagraphs = pgTable('blogParagraphs', {
 		.notNull()
 		.references(() => blogs.id, { onDelete: 'cascade' }),
 	position: integer('position').notNull(),
+	createdAt: timestamp('created_at', { mode: 'string' }).defaultNow(),
 });
 
 export type Blog = typeof blogs.$inferSelect;
