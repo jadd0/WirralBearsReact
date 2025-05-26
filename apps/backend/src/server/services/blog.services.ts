@@ -7,7 +7,7 @@ import {
 	ImageElement,
 	ParagraphElement,
 } from '@wirralbears/types';
-import { uploadPostImages } from './images.services';
+import { uploadPostImages } from './image.services';
 
 export const blogServices = {
 	async getAllBlogs() {

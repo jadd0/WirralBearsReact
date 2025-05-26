@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { db } from '@/db';
 import { images, blogImages } from '@/db/schemas/images.schema';
+import { IMAGE_LIMIT } from '@wirralbears/constants';
 
 export const imageRepository = {
 	/**
@@ -100,5 +101,20 @@ export const imageRepository = {
 		}
 	) {
 		await tx.insert(blogImages).values(relationData).returning();
+	},
+	async getAllImages(cursor: number) {
+		const result = db
+			.select({
+				id: images.id,
+				url: images.url,
+				alt: images.alt,
+				createdAt: images.createdAt
+			})
+			.from(images)
+			.limit(IMAGE_LIMIT + 1)
+			.offset(cursor)
+			.orderBy(images.createdAt)
+
+		return result;
 	},
 };

@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import multer from 'multer';
+import * as imageControllers from '@/server/controllers/image.controllers';
+
+const router: Router = Router();
+
+// GET a single blog by ID
+router.get('/getAllImages/:cursor', imageControllers.getAllImages);
+
+// TODO: refactor all image stuff from blog routes into here
+export default router;

@@ -1,9 +1,13 @@
 import { imageCompression } from '@/lib/compression';
 import { uploadthing } from '@/lib/uploadthing';
-import { POST_IMAGE_CLOUD_ID_LENGTH } from '@wirralbears/constants';
+import {
+	IMAGE_LIMIT,
+	POST_IMAGE_CLOUD_ID_LENGTH,
+} from '@wirralbears/constants';
 import { nanoid } from 'nanoid';
 import sharp from 'sharp';
 import { UploadedFileData, UploadFileResult } from 'uploadthing/types';
+import { imageRepository } from '../repositories/images.repo';
 
 /**
  * The inferred result of a file upload using Uploadthing.
@@ -22,7 +26,6 @@ type InferredUploadFileResult = Awaited<
  */
 export const uploadPostImages = async (images: File[]) => {
 	try {
-
 		const processedImageFiles = images.map((image) => {
 			const imageFileExtension = image.name.split('.').at(-1);
 			const imageFileName = `${nanoid(
@@ -30,7 +33,6 @@ export const uploadPostImages = async (images: File[]) => {
 			)}.${imageFileExtension}`;
 			return new File([image], imageFileName, { type: image.type });
 		});
-
 
 		const uploadResults = await uploadthing
 			.uploadFiles(processedImageFiles)
@@ -41,7 +43,6 @@ export const uploadPostImages = async (images: File[]) => {
 				);
 			});
 
-
 		const successfulUploads = uploadResults
 			.filter((result) => result.data && !result.error)
 			.map(({ data }) => data);
@@ -49,8 +50,6 @@ export const uploadPostImages = async (images: File[]) => {
 		const unsuccessfulUploads = uploadResults
 			.filter((result) => !result.data || result.error)
 			.map(({ error }) => error);
-
-
 
 		if (unsuccessfulUploads.length > 0) {
 			throw new Error(
@@ -67,3 +66,18 @@ export const uploadPostImages = async (images: File[]) => {
 		throw error;
 	}
 };
+
+export const getAllImages = async (cursor: number) => {
+	const result = await imageRepository.getAllImages(cursor);
+
+	return {
+		images: result,
+		nextCursor: result.length < IMAGE_LIMIT ? null : cursor + IMAGE_LIMIT,
+	};
+};
+
+export const imagesServices = {
+	uploadPostImages,
+	getAllImages,
+	
+}
