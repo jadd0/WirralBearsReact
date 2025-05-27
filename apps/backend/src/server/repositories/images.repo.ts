@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm';
 import { db } from '@/db';
 import { images, blogImages } from '@/db/schemas/images.schema';
 import { IMAGE_LIMIT } from '@wirralbears/constants';
+import { Image } from '@/types/image.types';
 
 export const imageRepository = {
 	/**
@@ -102,7 +103,7 @@ export const imageRepository = {
 	) {
 		await tx.insert(blogImages).values(relationData).returning();
 	},
-	async getAllImages(cursor: number) {
+	async getAllImages(cursor: number): Image {
 		const result = db
 			.select({
 				id: images.id,

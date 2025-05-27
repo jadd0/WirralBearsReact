@@ -9,9 +9,6 @@ export default function AllImagesViewPage() {
 
   console.log(data)
 
-  function imageClickHandler() {
-
-  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -22,7 +19,7 @@ export default function AllImagesViewPage() {
         <div className="grid grid-cols-3 gap-4">
           {data?.pages.map((page) =>
             page.images.map((image) => (
-              <ImageDisplay image={image} onClick={() => {console.log(image.id)}} /> 
+              <ImageDisplay image={image} /> 
             ))
           )}
         </div>
