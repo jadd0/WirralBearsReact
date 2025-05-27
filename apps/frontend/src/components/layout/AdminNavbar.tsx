@@ -7,6 +7,7 @@ const navLinks = [
   { to: '/admin', label: 'Dashboard', key: 'dashboard' },
 	{ to: '/admin/blog/createPost', label: 'Create Post', key: 'createPost' },
   { to: '/admin/blog/editPost', label: 'Edit Post', key: 'editPost' },
+	{ to: '/admin/image', label: 'Images', key: 'images' },
 ];
 
 export function AdminNavbar() {

@@ -28,20 +28,21 @@ export const images = pgTable('images', {
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade' }),
 	url: varchar('url'),
-	alt: varchar('alt')
+	alt: varchar('alt'),
+	createdAt: timestamp('created_at', { mode: 'string' }).defaultNow(),
 });
 
 // Second table for the relationship between blogs and images
-export const blogImages = pgTable('blog_images', { 
-  id: varchar('id')
-    .primaryKey()
-    .$defaultFn(() => nanoid(BLOG_ID_LENGTH)),
-  blogId: varchar('blogId')
-    .notNull()
-    .references(() => blogs.id, { onDelete: 'cascade' }),
-  imageId: varchar('imageId')
-    .notNull()
-    .references(() => images.id, { onDelete: 'cascade' }),
-  position: integer('position').notNull(),
+export const blogImages = pgTable('blog_images', {
+	id: varchar('id')
+		.primaryKey()
+		.$defaultFn(() => nanoid(BLOG_ID_LENGTH)),
+	blogId: varchar('blogId')
+		.notNull()
+		.references(() => blogs.id, { onDelete: 'cascade' }),
+	imageId: varchar('imageId')
+		.notNull()
+		.references(() => images.id, { onDelete: 'cascade' }),
+	position: integer('position').notNull(),
+	createdAt: timestamp('created_at', { mode: 'string' }).defaultNow(),
 });
-
