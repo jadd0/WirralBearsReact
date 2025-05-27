@@ -25,7 +25,25 @@ export const getAllImages: RequestHandler = async (req, res) => {
 	}
 };
 
+export const deleteImage: RequestHandler = async (req, res) => {
+	const { imageId } = req.params;
+
+	if (!imageId) {
+		res.status(400).send('No imageId');
+	}
+
+	try {
+		const result = await imagesServices.deleteImage(imageId);
+
+		if (result) {
+			res.status(200).send();
+		}
+	} catch (error) {
+		res.status(500).send('Error deleting image');
+	}
+};
 
 export const imageControllers = {
-  getAllImages
-} as {}
+	getAllImages,
+	deleteImage,
+} as {};

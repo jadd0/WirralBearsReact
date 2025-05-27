@@ -109,12 +109,18 @@ export const imageRepository = {
 				id: images.id,
 				url: images.url,
 				alt: images.alt,
-				createdAt: images.createdAt
+				createdAt: images.createdAt,
 			})
 			.from(images)
 			.limit(IMAGE_LIMIT + 1)
 			.offset(cursor)
-			.orderBy(images.createdAt)
+			.orderBy(images.createdAt);
+
+		return result;
+	},
+
+	async delteImage(imageId: string) {
+		const result = db.delete(images).where(eq(images.id, imageId));
 
 		return result;
 	},

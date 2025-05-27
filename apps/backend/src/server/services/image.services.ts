@@ -76,8 +76,13 @@ export const getAllImages = async (cursor: number) => {
 	};
 };
 
+export const deleteImage = async (imageId: string) => {
+	const result = await imageRepository.deleteImage(imageId);
+	return result;
+}
+
 export const imagesServices = {
 	uploadPostImages,
 	getAllImages,
-	
+	deleteImage
 }
