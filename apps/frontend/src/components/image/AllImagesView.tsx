@@ -2,7 +2,13 @@ import { useGetAllImages } from '@/hooks/image.hooks';
 import { useEffect, useState } from 'react';
 import ImageDisplay from './Image';
 
-export default function AllImagesView({ deleteImage }: {deleteImage?: boolean}) {
+export default function AllImagesView({
+	deleteImage,
+	popUpActivated,
+}: {
+	deleteImage?: boolean;
+	popUpActivated?: boolean;
+}) {
 	const [images, setImages] = useState([]);
 
 	const { data, isLoading } = useGetAllImages();
@@ -17,7 +23,13 @@ export default function AllImagesView({ deleteImage }: {deleteImage?: boolean}) 
 			) : (
 				<div className="grid grid-cols-3 gap-4">
 					{data?.pages.map((page) =>
-						page.images.map((image) => <ImageDisplay image={image} deleteImage={deleteImage} />)
+						page.images.map((image) => (
+							<ImageDisplay
+								image={image}
+								deleteImage={deleteImage}
+								popUpActivated={popUpActivated}
+							/>
+						))
 					)}
 				</div>
 			)}
