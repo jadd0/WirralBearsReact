@@ -17,7 +17,7 @@ export default function AllImagesView({
 
 	return (
 		<div className="flex flex-col min-h-screen">
-			<h1 className="text-2xl font-bold mb-4">All Images</h1>
+			<h1 className="text-2xl font-bold mb-4">Image gallery</h1>
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
