@@ -1,4 +1,5 @@
 import { Image } from '@wirralbears/backend-types';
+import { CircleX } from 'lucide-react';
 
 interface ImagePopupProps {
 	image: Image;
@@ -19,7 +20,10 @@ export default function ImagePopup({ image, onClose }: ImagePopupProps) {
 			style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
 			onClick={handleParentClick}
 		>
-			<img src={image.url} alt="" />
+			<div className="flex">
+				<img src={image.url} alt="" />
+        <CircleX className='relative top-5 right-12' onClick={onClose} />
+			</div>
 		</div>
 	);
 }
