@@ -21,7 +21,8 @@ import CreateBlogPage from './pages/admin/blog/CreateBlog.page';
 import { AdminNavbar } from './components/layout/AdminNavbar';
 import BlogView from './pages/blog/BlogView';
 import BlogEditPage from './pages/admin/blog/EditBlog.page';
-import AllImagesViewPage from './pages/image/AllImagesView';
+import AllImagesViewPage from './components/image/AllImagesView';
+import ImageDashboardPage from './pages/admin/image/ImageDashboard.page';
 
 function AuthenticatedRouter() {
 	const { data, isPending, error, refetch } = useMe();
@@ -106,6 +107,8 @@ function App() {
 						<Route path="/admin" element={<AdminPage />} />
 						<Route path="/admin/blog/createPost" element={<CreateBlogPage />} />
 						<Route path="/admin/blog/edit/:id" element={<BlogEditPage />} />
+						<Route path="/admin/image/" element={<ImageDashboardPage />} />
+
 						<Route path="/logout" element={<Logout />} />
 					</Route>
 
