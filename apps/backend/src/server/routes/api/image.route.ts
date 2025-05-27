@@ -9,7 +9,7 @@ const router: Router = Router();
 router.get('/getAllImages/:cursor', imageControllers.getAllImages);
 
 // DELETE a single image by ID
-router.delete('/deleteImage/:id', ensureAuthenticated, imageControllers.deleteImage)
+router.delete('/deleteImage/:imageId', ensureAuthenticated, imageControllers.deleteImage)
 
 // TODO: refactor all image stuff from blog routes into here
 export default router;

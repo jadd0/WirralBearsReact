@@ -1,3 +1,7 @@
+import AllImagesView from "@/components/image/AllImagesView";
+
 export default function ImageDashboardPage() {
-	return <></>;
+	return <>
+    <AllImagesView deleteImage={true} />
+  </>;
 }

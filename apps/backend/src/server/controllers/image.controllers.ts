@@ -28,8 +28,11 @@ export const getAllImages: RequestHandler = async (req, res) => {
 export const deleteImage: RequestHandler = async (req, res) => {
 	const { imageId } = req.params;
 
+	console.log(imageId)
+
 	if (!imageId) {
 		res.status(400).send('No imageId');
+		return;
 	}
 
 	try {
@@ -40,6 +43,7 @@ export const deleteImage: RequestHandler = async (req, res) => {
 		}
 	} catch (error) {
 		res.status(500).send('Error deleting image');
+		return;
 	}
 };
 

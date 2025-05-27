@@ -119,7 +119,7 @@ export const imageRepository = {
 		return result;
 	},
 
-	async delteImage(imageId: string) {
+	async deleteImage(imageId: string) {
 		const result = db.delete(images).where(eq(images.id, imageId));
 
 		return result;

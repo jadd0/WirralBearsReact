@@ -19,7 +19,7 @@ export const useGetAllImages = () =>
  * Hook for deleting a blog by its ID
  * @returns Mutation object with mutate function and states
  */
-export const useDeleteBlog = () => {
+export const useDeleteImage = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
