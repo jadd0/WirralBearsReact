@@ -4,16 +4,14 @@ import ImageDisplay from './Image';
 
 export default function AllImagesView({
 	deleteImage,
-	popUpActivated,
+	popUpActivated = true,
 }: {
 	deleteImage?: boolean;
 	popUpActivated?: boolean;
 }) {
-	const [images, setImages] = useState([]);
 
 	const { data, isLoading } = useGetAllImages();
 
-	console.log(data);
 
 	return (
 		<div className="flex flex-col min-h-screen">
