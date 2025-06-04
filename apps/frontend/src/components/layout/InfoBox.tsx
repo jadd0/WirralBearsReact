@@ -1,16 +1,12 @@
 export function InfoBox({ title, children, className = '' }) {
 	return (
-		<section
-			className={`bg-gray-800 text-white rounded-lg shadow-md my-4 ${className}`}
-		>
-			<div className="p-4 sm:p-6">
-				{title && (
-					<h2 className="text-xl sm:text-2xl font-bold mb-3 text-center">
-						{title}
-					</h2>
-				)}
-				<div>{children}</div>
-			</div>
+		<section className={`rounded-2xl shadow-lg my-6 p-6 ${className}`}>
+			{title && (
+				<h2 className="text-xl sm:text-2xl font-bold mb-3 text-center text-white">
+					{title}
+				</h2>
+			)}
+			<div className="text-white">{children}</div>
 		</section>
 	);
 }
