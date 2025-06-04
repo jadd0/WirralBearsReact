@@ -7,8 +7,8 @@ import {
 
 const router: Router = Router();
 
-router.get('/instagram', initiateInstagramAuth);
-router.get('/instagram/callback', handleInstagramCallback);
-router.get('/instagram/status', getInstagramAuthStatus);
+router.get('/', initiateInstagramAuth);
+router.get('/callback', handleInstagramCallback);
+router.get('/status', getInstagramAuthStatus);
 
 export default router;
