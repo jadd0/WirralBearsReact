@@ -7,6 +7,6 @@ import {
 const router: Router = Router();
 
 router.get('/posts', getPosts);
-router.post('/refresh-token', getRefreshToken);
+router.post('/refreshToken', getRefreshToken);
 
 export default router;
