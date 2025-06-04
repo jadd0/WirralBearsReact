@@ -2,74 +2,181 @@ import { LogoBanner } from '@components/layout/LogoBanner';
 import { InfoBox } from '@components/layout/InfoBox';
 import { Footer } from '@components/layout/Footer';
 
+// Simple inline SVG check icon in red
+const CheckIcon = () => (
+	<svg
+		className="w-6 h-6 text-red-500 flex-shrink-0"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth={2}
+		viewBox="0 0 24 24"
+	>
+		<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+	</svg>
+);
+
 export default function AnInclusiveApproachPage() {
 	return (
-		<div className="bg-gray-200 min-h-screen font-sans">
+		<div className="min-h-screen font-sans flex flex-col">
 			<LogoBanner />
-			<h1 className="text-2xl font-bold my-4">
-				We tailor our approach to the young player
-			</h1>
-			<div className="max-w-3xl mx-auto my-4">
-				<div className="bg-white rounded p-4 mb-4">
-					If a young player enjoys disciplined, challenging training and
-					competitive games, we provide that.
-					<br />
-					If a young player enjoys less formal, more relaxed training and games,
-					we provide that. Both are equal to us, and we provide a bridge between
-					the two.
+			<main className="flex-1 flex flex-col items-center px-4">
+				{/* Hero Section */}
+				<section className="w-full max-w-2xl text-center py-10">
+					<h1 className="text-4xl font-extrabold mb-4 tracking-tight">
+						We Tailor Our Approach <br className="hidden sm:inline" /> to Every
+						Young Player
+					</h1>
+					<p className="text-lg text-gray-700 mb-6">
+						Every player’s journey is unique. Whether you love competitive
+						drills or relaxed games, we have a place for you.
+					</p>
+				</section>
+
+				{/* Dual Approach Cards */}
+				<section className="w-full max-w-3xl grid sm:grid-cols-2 gap-6 mb-8">
+					<div className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center border-t-4 border-red-500">
+						<span className="inline-block bg-red-50 p-3 rounded-full mb-3">
+							<svg
+								className="w-8 h-8 text-red-500"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth={2}
+								viewBox="0 0 24 24"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+								/>
+							</svg>
+						</span>
+						<h2 className="text-xl font-bold mb-2">
+							Competitive & Disciplined
+						</h2>
+						<p className="text-gray-600 text-center">
+							Enjoy challenging training and matches? We offer structured
+							sessions and competitive play.
+						</p>
+					</div>
+					<div className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center border-t-4 border-red-500">
+						<span className="inline-block bg-red-50 p-3 rounded-full mb-3">
+							<svg
+								className="w-8 h-8 text-red-500"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth={2}
+								viewBox="0 0 24 24"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M5 13l4 4L19 7"
+								/>
+							</svg>
+						</span>
+						<h2 className="text-xl font-bold mb-2">
+							Relaxed & Fun
+						</h2>
+						<p className="text-gray-600 text-center">
+							Prefer a more relaxed vibe? We create a welcoming space for
+							everyone to enjoy basketball at their own pace.
+						</p>
+					</div>
+				</section>
+
+				{/* Bridge Statement */}
+				<div className="w-full max-w-2xl bg-red-50 rounded-xl shadow p-6 mb-8 text-center">
+					<p className="text-lg text-gray-700">
+						<span className="font-semibold text-red-600">
+							Both are equal to us.
+						</span>{' '}
+						We help every player find their place and bridge the gap between
+						different styles.
+					</p>
 				</div>
-				<div className="bg-white rounded p-4">
-					We allow young players to find their own path and place within the
-					game; and will always put their best interests at heart. A lot of
-					players are put off at first by activities which are, in their eyes,
-					too competitive. Our key is working with Young People first, and
-					Basketball second.
-				</div>
-			</div>
-			<InfoBox>
-				<strong>We have set up a funding and assurance model that:</strong>
-				<ul className="list-disc list-inside text-left mt-2">
-					<li>Ensures high quality coaching</li>
-					<li>
-						Enables participation at all ability levels, including matches
-					</li>
-					<li>
-						Aims for a consistent coach per group, with focused coaching on
-						specific areas
-					</li>
-				</ul>
-			</InfoBox>
-			<div className="flex justify-center my-8">
-				<img
-					src="/images/AZ4A5789.jpg"
-					alt="High five"
-					className="w-2/3 md:w-1/2 rounded-lg shadow"
-				/>
-			</div>
-			<h2 className="text-xl font-bold mt-8">Our approach and background</h2>
-			<div className="flex flex-col md:flex-row justify-center gap-4 my-4">
-				<div className="bg-white rounded p-4 flex-1">
-					We play half-court, have experienced coaches, often have teachers as
-					coaches and have full coaching development and safeguarding programs.
-					We build from the bottom-up, with no favouritism or over focus on
-					better players. We don't allow domination of other players and always
-					look to equalise games and competitions.
-				</div>
-				<div className="bg-white rounded p-4 flex-1">
-					We actively encourage sponsorship or donations, and all our finances
-					are transparent, with all monies going towards funding the junior
-					program. We have sponsors for specific aspects of the club e.g. most
-					improved player, and if you or your company would like to help, please
-					get in touch.
-				</div>
-				<div className="bg-white rounded p-4 flex-1">
-					We can really make a difference with the help and guarantee no
-					favouritism towards your child. We also have an associate program,
-					where young players who need some extra help can work for the club in
-					lieu of fees and kit costs. Please get in touch if you would like to
-					talk about this.
-				</div>
-			</div>
+
+				{/* Funding & Assurance Model */}
+				<InfoBox className="w-full max-w-2xl bg-gray-700">
+					<div className="flex items-center mb-4">
+						<svg
+							className="w-8 h-8 text-white mr-2"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth={2}
+							viewBox="0 0 24 24"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M12 8v4l3 3M12 19a7 7 0 100-14 7 7 0 000 14z"
+							/>
+						</svg>
+						<h2 className="text-xl font-bold text-white">
+							Funding & Assurance Model
+						</h2>
+					</div>
+					<ul className="space-y-3">
+						<li className="flex items-start">
+							<CheckIcon />
+							<span className="ml-2">
+								High quality, certified coaching for all
+							</span>
+						</li>
+						<li className="flex items-start">
+							<CheckIcon />
+							<span className="ml-2">
+								Participation at every ability level, including matches
+							</span>
+						</li>
+						<li className="flex items-start">
+							<CheckIcon />
+							<span className="ml-2">
+								Consistent, focused coaching for each group
+							</span>
+						</li>
+					</ul>
+				</InfoBox>
+
+				{/* <div className="w-full max-w-3xl flex justify-center my-10">
+					<img
+						src="/images/AZ4A5789.jpg"
+						alt="High five"
+						className="rounded-2xl shadow-xl w-full object-cover max-h-72"
+					/>
+				</div> */}
+				{/* TODO: add image */}
+
+				{/* Our Approach & Background */}
+				<section className="w-full max-w-5xl grid md:grid-cols-3 gap-6 mb-12">
+					<div className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center border-l-4 border-red-500">
+						<h3 className="text-lg font-bold text-red-600 mb-2">
+							Inclusive Coaching
+						</h3>
+						<p className="text-gray-700 text-center">
+							Experienced, teacher-led coaches. No favouritism, no over-focus on
+							star players. We build from the bottom up and keep games fair.
+						</p>
+					</div>
+					<div className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center border-l-4 border-red-500">
+						<h3 className="text-lg font-bold text-red-600 mb-2">
+							Transparent Funding
+						</h3>
+						<p className="text-gray-700 text-center">
+							100% of funds go to the junior program. Sponsorships welcome. All
+							finances are open and transparent.
+						</p>
+					</div>
+					<div className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center border-l-4 border-red-500">
+						<h3 className="text-lg font-bold text-red-600 mb-2">
+							Support for All
+						</h3>
+						<p className="text-gray-700 text-center">
+							Associate program: players needing extra help can contribute to
+							the club in lieu of fees or kit. No child left behind.
+						</p>
+					</div>
+				</section>
+			</main>
 			<Footer />
 		</div>
 	);

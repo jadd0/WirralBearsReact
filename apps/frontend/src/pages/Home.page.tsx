@@ -7,7 +7,7 @@ import { BallForAllGrid } from '@components/layout/BallForAllGrid';
 import { Footer } from '@components/layout/Footer';
 import { Image } from '@wirralbears/packages/types';
 
-// TODO: use API to get images from server
+// Example images; replace with server images as needed
 const carouselImages: Image[] = [
 	{ id: 1, src: 'https://picsum.photos/800/400?random=1', name: '1' },
 	{ id: 2, src: 'https://picsum.photos/800/400?random=2', name: '2' },
@@ -17,55 +17,108 @@ const carouselImages: Image[] = [
 
 export default function HomePage() {
 	return (
-		<div className="min-h-screen w-full font-sans">
-			{/* Animated intro could be implemented with a modal or animation library if needed */}
+		<div className="min-h-screen w-full font-sans flex flex-col">
 			<LogoBanner />
-			<InfoBox title="About Us">
-				<p>
-					We are a small club located in Woodchurch, Wirral – who have started
-					many recent basketball careers.
-					<br />
-					We are an advanced club in general, yet we have groups for: Beginner,
-					Intermediate and Advanced.
-				</p>
-			</InfoBox>
-			<div className="container mx-auto my-8">
-				<CarouselComponent images={carouselImages} />
-			</div>
-			<InfoBox title="Thinking of joining?" className="mb-8">
-				<p>
-					Signing up is a simple process. All you have to do is show up to a
-					session (specific to your age group) and that's it!
-					<br />
-					Your first session is free, but after that it is £6 per session.
-					<br />
-					To join, please click below to complete your joining form:
-				</p>
-				<div className="mt-4">
-					<button
-						className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-						onClick={() =>
-							window.open(
-								'https://docs.google.com/forms/d/1xyuIacKZlv96QKh8mAARyrk7MR2WHATB1tTouBxo0CU/viewform?edit_requested=true',
-								'_blank'
-							)
-						}
-					>
-						Click Here
-					</button>
-				</div>
-			</InfoBox>
-			<h3 className="text-xl font-semibold mt-8">Our Location</h3>
-			<MapboxMap />
-			<InfoBox title="Ball 4 All">
-				<p className="px-4">
-					We have 10 policies in our club. If anyone (player or coach) wants to
-					be involved in the youth club, they must commit to the Ball for All
-					principles and hold everyone to account for them.
-				</p>
-				<BallForAllGrid />
-			</InfoBox>
+
+			<main className="flex-1 flex flex-col items-center px-4">
+				{/* Hero Section */}
+				<section className="w-full max-w-3xl text-center py-10">
+					<h1 className="text-4xl font-extrabold mb-4 tracking-tight drop-shadow">
+						Welcome to Wirral Bears Basketball Club
+					</h1>
+					<p className="text-lg text-gray-700 mb-6">
+						Building skills. Building confidence. Building community.
+						<br />
+						We are a vibrant, inclusive basketball club in Woodchurch,
+						Wirral—helping players of all ages and backgrounds find their love
+						for the game.
+					</p>
+				</section>
+
+				{/* About Us Section */}
+				<InfoBox
+					title="About Us"
+					className="w-full max-w-2xl bg-gray-700 shadow-md shadow-red-700/30"
+				>
+					<p>
+						Whether you’re picking up a basketball for the first time or aiming
+						for the next level, you’ll find your place here. <br />
+						<span className="text-red-400 font-semibold">
+							Beginner, Intermediate, or Advanced
+						</span>
+						—everyone is welcome.
+					</p>
+					<ul className="list-disc list-inside mt-4 space-y-1 text-gray-200">
+						<li>Friendly, supportive coaching</li>
+						<li>Fun, challenging sessions for all ages</li>
+						<li>Strong community spirit—on and off the court</li>
+					</ul>
+				</InfoBox>
+
+				{/* Carousel Section */}
+				<section className="w-full max-w-3xl my-10">
+					<CarouselComponent images={carouselImages} />
+				</section>
+
+				{/* Join Section */}
+				<InfoBox
+					title="Thinking of joining?"
+					className="w-full max-w-2xl bg-gray-700 shadow-md shadow-red-700/30 mb-10"
+				>
+					<p>
+						<span className="font-bold text-red-400">Joining is easy!</span>{' '}
+						Just show up to a session for your age group—your first session is
+						free, and after that it’s only £6 per session.
+						<br />
+						<br />
+						<span className="text-gray-200">
+							Ready to get started? Complete your joining form below:
+						</span>
+					</p>
+					<div className="mt-6 flex justify-center">
+						<button
+							className="bg-red-600 text-white font-bold px-8 py-3 rounded-lg shadow hover:bg-red-700 transition-colors border-2 border-red-600"
+							onClick={() =>
+								window.open(
+									'https://docs.google.com/forms/d/1xyuIacKZlv96QKh8mAARyrk7MR2WHATB1tTouBxo0CU/viewform?edit_requested=true',
+									'_blank'
+								)
+							}
+						>
+							Join Now
+						</button>
+					</div>
+				</InfoBox>
+
+				{/* Location Section */}
+				<section className="w-full max-w-2xl text-center mb-10">
+					<h3 className="text-2xl font-extrabold mb-4">
+						Our Location
+					</h3>
+					<div className="rounded-2xl shadow-lg overflow-hidden">
+						<MapboxMap />
+					</div>
+				</section>
+
+				{/* Ball 4 All Section */}
+				<InfoBox
+					title="Ball 4 All"
+					className="w-full max-w-2xl bg-gray-700 shadow-md shadow-red-700/30 mb-10"
+				>
+					<p>
+						<span className="text-red-400 font-bold">Our Promise:</span>{' '}
+						Everyone—player or coach—must commit to our 10 Ball for All
+						principles. These values make our club a safe, fair, and exciting
+						place to play and grow.
+					</p>
+					<div className="mt-6">
+						<BallForAllGrid />
+					</div>
+				</InfoBox>
+			</main>
 			<Footer />
 		</div>
 	);
 }
+
+
