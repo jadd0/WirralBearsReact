@@ -18,6 +18,7 @@
     "@wirralbears/constants": "workspace:*",
     "@wirralbears/types": "workspace:*",
     "@wirralbears/validation": "workspace:*",
+    "axios": "^1.9.0",
     "connect-pg-simple": "^10.0.0",
     "console": "^0.7.2",
     "cors": "^2.8.5",

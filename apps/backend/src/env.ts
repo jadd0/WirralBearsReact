@@ -29,6 +29,10 @@ const envSchema = z.object({
   // UPLOADTHING
   UPLOADTHING_TOKEN: z.string().min(1),
   UPLOAD_THING_APP_ID: z.string().min(1),
+
+  // FACEBOOK
+  FACEBOOK_APP_ID: z.string().min(1),
+  FACEBOOK_APP_SECRET: z.string().min(1),
 });
 
 /**
