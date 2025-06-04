@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { AuthCallbackQuery } from '@/types/instagram.types';
+import { AuthCallbackQuery } from '@wirralbears/types/src/instagram.types';
 import {
 	exchangeCodeForToken,
 	exchangeForLongLivedToken,

@@ -3,7 +3,7 @@ import {
 	InstagramPost,
 	TokenResponse,
 	InstagramApiResponse,
-} from '@/types/instagram.types';
+} from '@wirralbears/types/src/instagram.types';
 
 export const exchangeCodeForToken = async (
 	code: string
