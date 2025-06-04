@@ -96,7 +96,7 @@ export default function AnInclusiveApproachPage() {
 				</div>
 
 				{/* Funding & Assurance Model */}
-				<InfoBox className="w-full max-w-2xl bg-red-700">
+				<InfoBox className="w-full max-w-2xl bg-gray-700">
 					<div className="flex items-center mb-4">
 						<svg
 							className="w-8 h-8 text-white mr-2"
