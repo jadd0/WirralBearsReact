@@ -23,7 +23,7 @@ export default function BlogDisplay({ id }: { id: string }) {
 				style={{ marginLeft: 0, marginRight: 'auto' }}
 			>
 				{auth?.authenticated && blogData && (
-					<AdminActions id={id} data={blogData} isCoach={false} />
+					<AdminActions id={id} data={blogData} coach={false} />
 				)}
 				<div className="flex flex-col gap-4 w-full">
 					{isLoading ? (

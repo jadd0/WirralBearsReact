@@ -1,34 +1,36 @@
 import { useNavigate } from 'react-router-dom';
 import BlogDelete from './BlogDelete';
+import CoachDelete from './CoachDelete';
 import { convertFullBlogToBlogData } from '@/lib/blogUtils';
 
 export default function AdminActions({
-  id,
-  data,
-  isCoach,
+	id,
+	data,
+	coach: coach,
 }: {
-  id: string;
-  data: any;
-  isCoach: boolean;
+	id: string;
+	data: any;
+	coach: boolean;
 }) {
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 
-  const handleEditClick = () => {
-    const convertedData = convertFullBlogToBlogData(data);
-    navigate(`/admin/${isCoach ? 'coach' : 'blog'}/edit/${id}`, {
-      state: { blogData: convertedData },
-    });
-  };
+	const handleEditClick = () => {
+		const convertedData = convertFullBlogToBlogData(data);
+		navigate(`/admin/${coach ? 'coach' : 'blog'}/edit/${id}`, {
+			state: { blogData: convertedData },
+		});
+	};
 
-  return (
-    <div className="mb-4 flex gap-5">
-      <button
-        onClick={handleEditClick}
-        className="text-blue-500 hover:underline cursor-pointer"
-      >
-        Edit {isCoach ? 'Coach' : 'Blog'} Post
-      </button>
-      <BlogDelete id={id} />
-    </div>
-  );
+	return (
+		<div className="mb-4 flex gap-5">
+			<button
+				onClick={handleEditClick}
+				className="text-blue-500 hover:underline cursor-pointer"
+			>
+				Edit {coach ? 'Coach' : 'Blog'} Post
+			</button>
+
+			{coach ? <CoachDelete id={id} /> : <BlogDelete id={id} />}
+		</div>
+	);
 }

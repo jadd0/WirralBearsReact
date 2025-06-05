@@ -8,11 +8,10 @@ import AdminActions from './AdminActions';
 import { FullBlog } from '@wirralbears/backend-types';
 
 export default function CoachDisplay({ id }: { id: string }) {
-  console.log({id})
 	const { data, isLoading, error } = useGetCoach(id);
 	const { data: auth } = useMe();
 	const blogData = data as FullBlog;
-  console.log(blogData)
+	console.log(blogData);
 
 	if (error) {
 		toast.error('Failed to load coach profile. Please try again later.');
@@ -25,7 +24,7 @@ export default function CoachDisplay({ id }: { id: string }) {
 				style={{ marginLeft: 0, marginRight: 'auto' }}
 			>
 				{auth?.authenticated && blogData && (
-					<AdminActions id={id} data={blogData} isCoach={true} />
+					<AdminActions id={id} data={blogData} coach={true} />
 				)}
 				<div className="flex flex-col gap-4 w-full">
 					{isLoading ? (
