@@ -1,4 +1,3 @@
-// @/components/editors/CoachEdit.tsx
 import { useLayoutEffect, useState } from 'react';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { BlogEditor } from '@/components/blog/createBlog/BlogEditor';
@@ -17,7 +16,8 @@ export function CoachEdit() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const { data: fetchedCoach, isLoading } = useGetCoach(id ?? '');
-	const { mutate: editCoach, isPending } = useEditCoach();
+	const editCoachMutation = useEditCoach()();
+	const { mutate: editCoach, isPending } = editCoachMutation;
 
 	useLayoutEffect(() => {
 		if (location.state?.coachData) {
