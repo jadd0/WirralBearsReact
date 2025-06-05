@@ -13,6 +13,7 @@ const navLinks = [
 	{ to: '/sessions', label: 'Sessions', key: 'sessions' },
 	{ to: '/sponsorship', label: 'Sponsorship', key: 'sponsorship' },
 	{ to: '/image/viewall', label: 'Gallery', key: 'gallery' },
+	{to: '/coaches', label: 'Coaches', key: 'coaches' },
 ];
 
 export function Navbar() {

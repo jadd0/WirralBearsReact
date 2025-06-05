@@ -14,6 +14,7 @@ import LoginPage from './pages/Login.page';
 import Logout from './pages/Logout.page';
 import SponsorshipPage from './pages/Sponsorship.page';
 import ViewBlogsPage from './pages/blog/ViewBlogs.page';
+import CoachPage from './pages/Coaches.page';
 
 // Admin
 import AdminPage from './pages/admin/Admin.page';
@@ -128,6 +129,10 @@ function App() {
 
 					{/* Image routes */}
 					<Route path="/image/viewall" element={<AllImagesViewPage />} />
+
+					{/* Coaches routes */}
+					<Route path="/coaches" element={<CoachPage />} />
+
 				</Routes>
 				<Toaster position="top-right" closeButton={false} />
 			</main>
