@@ -6,9 +6,11 @@ import { HeadingElement } from '../../../../../../packages/types/src/blog.types'
 export const TitleHeadingElement = ({
 	element,
 	onChange,
+	coach,
 }: {
 	element: HeadingElement;
 	onChange: (id: string, text: string) => void;
+	coach?: boolean;
 }) => {
 	const [error, setError] = useState<string | null>(null);
 	const [isFocused, setIsFocused] = useState(false);
@@ -23,9 +25,9 @@ export const TitleHeadingElement = ({
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		if (value.length > maxLength) {
-			setError(`Title must be ${maxLength} characters or less`);
+			setError(`${coach ? "Coach name" : "Title"} must be ${maxLength} characters or less`);
 		} else if (value.trim().length === 0) {
-			setError('Title cannot be empty');
+			setError(`${coach ? "Coach name" : "Title"} cannot be empty`);
 		} else {
 			setError(null);
 		}
@@ -36,7 +38,7 @@ export const TitleHeadingElement = ({
 	const handleBlur = () => {
 		setIsFocused(false);
 		if (element.text.trim().length === 0) {
-			setError('Title cannot be empty');
+			setError(`${coach ? "Coach name" : "Title"} cannot be empty`);
 		}
 	};
 
@@ -44,7 +46,7 @@ export const TitleHeadingElement = ({
 		<div className="mb-8 border-b pb-6">
 			<h2 className="text-lg font-semibold mb-3 text-gray-800 flex items-center">
 				<span className="inline-block w-1.5 h-6 bg-blue-500 rounded-sm mr-2"></span>
-				Blog Title
+				{coach ? 'Coach Name' : 'Blog Title'}
 				<span className="ml-1 text-xs font-normal text-gray-500">
 					(Required)
 				</span>
@@ -58,7 +60,7 @@ export const TitleHeadingElement = ({
 					onChange={handleChange}
 					onFocus={() => setIsFocused(true)}
 					onBlur={handleBlur}
-					placeholder="Write an engaging title for your blog..."
+					placeholder={coach? 'Enter coach name' : "Write an engaging title for your blog..."}
 					maxLength={maxLength}
 					required
 				/>

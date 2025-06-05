@@ -35,6 +35,7 @@ interface BlogEditorProps {
 	onChange?: (data: BlogData) => void;
 	onImageUpload: (file: File) => Promise<string>;
 	onSave?: (data: BlogData) => void;
+	coach?: boolean;
 }
 
 export const BlogEditor = ({
@@ -42,6 +43,7 @@ export const BlogEditor = ({
 	onChange,
 	onImageUpload,
 	onSave,
+	coach
 }: BlogEditorProps) => {
 	const form = useForm<BlogData>({
 		defaultValues: initialData || {
@@ -342,6 +344,7 @@ export const BlogEditor = ({
 						render={({ field }) => (
 							<TitleHeadingElement
 								element={titleElement}
+								coach={coach}
 								onChange={(id, text) => {
 									field.onChange(text);
 									updateTitle(id, text);
@@ -364,7 +367,7 @@ export const BlogEditor = ({
 						{contentElements.length === 0 ? (
 							<div className="text-center py-10 border-2 border-dashed border-gray-300 rounded-md">
 								<p className="text-gray-500">
-									Your blog is empty. Add elements to get started.
+									{coach ? "Coach content" : "Your blog"} is empty. Add elements to get started.
 								</p>
 							</div>
 						) : (
@@ -407,7 +410,7 @@ export const BlogEditor = ({
 				<div className="flex justify-end mt-4 space-x-4">
 					<Button onClick={handleSave} type="button">
 						<Save className="mr-2 h-4 w-4" />
-						Save Blog
+						Save {coach ? 'Coach' : 'Blog'}
 					</Button>
 				</div>
 			</form>
