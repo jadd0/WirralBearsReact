@@ -24,6 +24,8 @@ import BlogView from './pages/blog/BlogView';
 import BlogEditPage from './pages/admin/blog/EditBlog.page';
 import AllImagesViewPage from './pages/image/AllImageView.page';
 import ImageDashboardPage from './pages/admin/image/ImageDashboard.page';
+import CreateCoachPage from './pages/admin/coaches/CreateCoach.page';
+import EditCoachPage from './pages/admin/coaches/EditCoach.page';
 
 function AuthenticatedRouter() {
 	const { data, isPending, error, refetch } = useMe();
@@ -109,7 +111,8 @@ function App() {
 						<Route path="/admin/blog/createPost" element={<CreateBlogPage />} />
 						<Route path="/admin/blog/edit/:id" element={<BlogEditPage />} />
 						<Route path="/admin/image/" element={<ImageDashboardPage />} />
-						<Route path="/admin/coaches" element={<CoachPage />} />
+						<Route path="/admin/coaches/create" element={<CreateCoachPage />} />
+						<Route path="/admin/coaches/edit/:id" element={<EditCoachPage />} />
 
 
 						<Route path="/logout" element={<Logout />} />
