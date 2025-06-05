@@ -1,7 +1,6 @@
 import { useGetCoach } from '@/hooks/coach.hooks';
 import { useMe } from '@/hooks/auth.hooks';
 import { toast } from 'sonner';
-import BlogHeader from './BlogHeader';
 import BlogContent from './BlogContent';
 import BlogSkeleton from './BlogSkeleton';
 import AdminActions from './AdminActions';
@@ -20,7 +19,7 @@ export default function CoachDisplay({ id }: { id: string }) {
 	return (
 		<main className="w-full">
 			<div
-				className="w-full pl-[60px] pr-4 py-8"
+				className="w-full pl-[20px] pr-4 py-8"
 				style={{ marginLeft: 0, marginRight: 'auto' }}
 			>
 				{auth?.authenticated && blogData && (
@@ -31,11 +30,6 @@ export default function CoachDisplay({ id }: { id: string }) {
 						<BlogSkeleton />
 					) : blogData ? (
 						<>
-							<BlogHeader
-								title={blogData.title}
-								author={blogData.author}
-								createdAt={blogData.createdAt}
-							/>
 							<BlogContent
 								headings={blogData.headings}
 								paragraphs={blogData.paragraphs}
