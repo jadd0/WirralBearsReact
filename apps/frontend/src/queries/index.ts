@@ -4,5 +4,6 @@ import { mergeQueryKeys } from '@lukemorales/query-key-factory';
 import { auth } from '@/queries/auth.queries';
 import { blog } from './blog.queries';
 import { image } from './image.queries';
+import { coach } from './coach.queries';
 
-export const queries = mergeQueryKeys(auth, blog, image);
+export const queries = mergeQueryKeys(auth, blog, image, coach);
