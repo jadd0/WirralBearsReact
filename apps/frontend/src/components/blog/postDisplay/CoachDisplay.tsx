@@ -8,10 +8,11 @@ import AdminActions from './AdminActions';
 import { FullBlog } from '@wirralbears/backend-types';
 
 export default function CoachDisplay({ id }: { id: string }) {
+  console.log({id})
 	const { data, isLoading, error } = useGetCoach(id);
 	const { data: auth } = useMe();
 	const blogData = data as FullBlog;
-
+  console.log(blogData)
 
 	if (error) {
 		toast.error('Failed to load coach profile. Please try again later.');

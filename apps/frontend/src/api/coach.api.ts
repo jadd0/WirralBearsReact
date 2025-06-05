@@ -133,10 +133,13 @@ export async function saveCoachToServer(coachData: BlogData) {
  * @returns The coach data
  */
 export async function fetchCoach(id: string) {
+	console.log("dhfkjh")
 	const { data } = await request({
 		url: `/api/coach/getCoach/${id}`,
 		method: 'GET',
 	});
+
+	console.log({data})
 
 	return data.coach as FullCoach;
 }

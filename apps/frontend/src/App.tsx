@@ -138,7 +138,7 @@ function App() {
 
 					{/* Coaches routes */}
 					<Route path="/coaches" element={<ViewCoachesPage />} />
-					<Route path="/coaches/coach/:id" element={<CoachViewPage />} />
+					<Route path="/coaches/coach/:slug" element={<CoachViewPage />} />
 
 					{/* Admin routes */}
 
