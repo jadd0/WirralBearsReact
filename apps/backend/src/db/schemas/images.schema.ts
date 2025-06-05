@@ -17,6 +17,7 @@ import {
 } from '@wirralbears/constants';
 import { ELEMENT_CONSTRAINTS } from '@wirralbears/constants';
 import { blogs } from './blog.schema';
+import { coaches } from './coach.schema';
 
 // First table for storing image metadata
 export const images = pgTable('images', {
@@ -54,7 +55,7 @@ export const coachImages = pgTable('coach_images', {
 		.$defaultFn(() => nanoid(BLOG_ID_LENGTH)),
 	coachId: varchar('coachId')
 		.notNull()
-		.references(() => blogs.id, { onDelete: 'cascade' }),
+		.references(() => coaches.id, { onDelete: 'cascade' }),
 	imageId: varchar('imageId')
 		.notNull()
 		.references(() => images.id, { onDelete: 'cascade' }),

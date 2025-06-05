@@ -1,6 +1,6 @@
 import { coachRepository } from '../repositories/coach.repo';
 import { imageRepository } from '../repositories/images.repo';
-import { Blog } from '@/db/schemas/blog.schema';
+import { Coaches } from '@/db/schemas/coach.schema';
 import {
 	BlogData,
 	HeadingElement,
@@ -14,14 +14,15 @@ export const coachServices = {
 		return coachRepository.findAll();
 	},
 	async updateCoach(
-		blogId: string,
+		coachId: string,
 		authorId: string,
-		blogData: BlogData,
+		coachData: BlogData,
 		files?: Express.Multer.File[]
-	): Promise<Blog | null> {
-		// First, verify the blog exists and the user owns it
-		const existingBlog = await coachRepository.getCoachById(blogId);
-		if (!existingBlog || existingBlog.authorId !== authorId) {
+	): Promise<Coaches | null> {
+		// First, verify the coach exists
+		const existingCoach = await coachRepository.getCoachById(coachId);
+
+		if (!existingCoach) {
 			return null;
 		}
 
@@ -30,7 +31,7 @@ export const coachServices = {
 		const imageElements: (ImageElement & { fileIndex?: number })[] = [];
 
 		// Sort elements by position and categorize them
-		blogData.elements.forEach((element) => {
+		coachData.elements.forEach((element) => {
 			switch (element.type) {
 				case 'heading':
 					headings.push(element as HeadingElement);
@@ -47,7 +48,7 @@ export const coachServices = {
 		});
 
 		// Extract title from the first heading or keep existing title
-		const title = headings.length > 0 ? headings[0].text : existingBlog.title;
+		const title = headings.length > 0 ? headings[0].text : existingCoach.title;
 
 		// Process and upload new images if there are any
 		let imageReferences: { imageId: string; position: number }[] = [];
@@ -56,7 +57,7 @@ export const coachServices = {
 		for (const imageElement of imageElements) {
 			if (imageElement.url && !('fileIndex' in imageElement)) {
 				// This is an existing image, find its ID from the database
-				const existingImage = existingBlog.images?.find(
+				const existingImage = existingCoach.images?.find(
 					(img) => img.url === imageElement.url
 				);
 
@@ -110,9 +111,9 @@ export const coachServices = {
 			}
 		}
 
-		// Use the repository to update the blog with all its components
+		// Use the repository to update the coach with all its components
 		return await coachRepository.updateCoachWithTransaction(
-			blogId,
+			coachId,
 			title,
 			headings,
 			paragraphs,
@@ -121,12 +122,12 @@ export const coachServices = {
 	},
 
 	async getCoachById(id: string) {
-		const blog = await coachRepository.getCoachById(id);
+		const coach = await coachRepository.getCoachById(id);
 
-		if (!blog) {
-			throw new Error('Blog not found');
+		if (!coach) {
+			throw new Error('Coach not found');
 		}
-		return blog;
+		return coach;
 	},
 
 	// TODO: finish image upload on next pull request
@@ -182,15 +183,15 @@ export const coachServices = {
 
 	async createCoach(
 		authorId: string,
-		blogData: BlogData,
+		coachData: BlogData,
 		files?: Express.Multer.File[]
-	): Promise<Blog> {
+	): Promise<Coaches> {
 		const headings: HeadingElement[] = [];
 		const paragraphs: ParagraphElement[] = [];
 		const imageElements: (ImageElement & { fileIndex?: number })[] = [];
 
 		// Sort elements by position and categorize them
-		blogData.elements.forEach((element) => {
+		coachData.elements.forEach((element) => {
 			switch (element.type) {
 				case 'heading':
 					headings.push(element as HeadingElement);
@@ -207,7 +208,7 @@ export const coachServices = {
 		});
 
 		// Extract title from the first heading or use default
-		const title = headings.length > 0 ? headings[0].text : 'Untitled Blog';
+		const title = headings.length > 0 ? headings[0].text : 'Untitled Coach';
 
 		// Process and upload images if there are any
 		let imageReferences: { imageId: string; position: number }[] = [];
@@ -256,7 +257,7 @@ export const coachServices = {
 			}
 		}
 
-		// Use the repository to create the blog with all its components
+		// Use the repository to create the coach with all its components
 		return await coachRepository.createCoachWithTransaction(
 			title,
 			authorId,
@@ -269,20 +270,20 @@ export const coachServices = {
 	async deleteCoach(id: string): Promise<boolean> {
 		const deleted = await coachRepository.deleteCoach(id);
 		if (!deleted) {
-			throw new Error('Blog not found or could not be deleted');
+			throw new Error('Coach not found or could not be deleted');
 		}
 		return true;
 	},
 };
 
-// Helper function to extract title from blog data
-function extractTitle(blogData: BlogData): string {
+// Helper function to extract title from coach data
+function extractTitle(coachData: BlogData): string {
 	// Find the first heading element to use as title
-	const headingElement = blogData.elements.find((el) => el.type === 'heading');
+	const headingElement = coachData.elements.find((el) => el.type === 'heading');
 	if (headingElement && 'text' in headingElement) {
 		return headingElement.text;
 	}
-	return 'Untitled Blog';
+	return 'Untitled Coach';
 }
 
 export default coachServices;
