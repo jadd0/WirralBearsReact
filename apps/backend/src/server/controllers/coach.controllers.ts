@@ -23,22 +23,22 @@ export const updateCoach: RequestHandler = async (req, res) => {
 		const files = req.files as Express.Multer.File[];
 
 		// Create the coach data object
-		const blogData = { elements };
+		const coachData = { elements };
 
-		console.log('Updating coach with elements:', blogData.elements);
+		console.log('Updating coach with elements:', coachData.elements);
 
 		// Pass the coach data and files to the service
-		const updatedBlog = await coachServices.updateCoach(
+		const updatedCoach = await coachServices.updateCoach(
 			id,
 			authorId,
-			blogData,
+			coachData,
 			files
 		);
 
-		if (updatedBlog) {
+		if (updatedCoach) {
 			res.status(200).send({
-				coach: updatedBlog,
-				id: updatedBlog.id,
+				coach: updatedCoach,
+				id: updatedCoach.id,
 				message: 'Coach updated successfully',
 			});
 		} else {
@@ -96,16 +96,16 @@ export const createCoach: RequestHandler = async (req, res) => {
 		const files = req.files as Express.Multer.File[];
 
 		// Create the coach data object
-		const blogData = { elements };
+		const coachData = { elements };
 
-		console.log(blogData.elements);
+		console.log(coachData.elements);
 
 		// Pass the coach data and files to the service
-		const newBlog = await coachServices.createCoach(authorId, blogData, files);
+		const newCoach = await coachServices.createCoach(authorId, coachData, files);
 
 		res.status(201).send({
-			coach: newBlog,
-			id: newBlog.id,
+			coach: newCoach,
+			id: newCoach.id,
 			message: 'Coach created successfully',
 		});
 	} catch (error) {
@@ -163,17 +163,17 @@ export const getAllCoachPreviews: RequestHandler = async (req, res) => {
 // 		return;
 // 	}
 
-// 	const blogData: BlogData = req.body;
+// 	const coachData: BlogData = req.body;
 
-// 	if (!blogData || !blogData.elements) {
+// 	if (!coachData || !coachData.elements) {
 // 		res.status(400).send({ message: 'Invalid coach data' });
 // 		return;
 // 	}
 
 // 	try {
-// 		const updatedBlog = await coachServices.updateCoach(id, blogData);
+// 		const updatedCoach = await coachServices.updateCoach(id, coachData);
 
-// 		if (updatedBlog) res.status(200).send({ coach: updatedBlog });
+// 		if (updatedCoach) res.status(200).send({ coach: updatedCoach });
 // 		else res.status(404).send({ message: 'Coach not found' });
 // 	} catch (error) {
 // 		console.error('Error updating coach:', error);
