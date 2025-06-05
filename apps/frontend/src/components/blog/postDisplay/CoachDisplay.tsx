@@ -5,10 +5,13 @@ import BlogHeader from './BlogHeader';
 import BlogContent from './BlogContent';
 import BlogSkeleton from './BlogSkeleton';
 import AdminActions from './AdminActions';
+import { FullBlog } from '@wirralbears/backend-types';
 
 export default function CoachDisplay({ id }: { id: string }) {
 	const { data, isLoading, error } = useGetCoach(id);
 	const { data: auth } = useMe();
+	const blogData = data as FullBlog;
+
 
 	if (error) {
 		toast.error('Failed to load coach profile. Please try again later.');
@@ -20,23 +23,23 @@ export default function CoachDisplay({ id }: { id: string }) {
 				className="w-full pl-[60px] pr-4 py-8"
 				style={{ marginLeft: 0, marginRight: 'auto' }}
 			>
-				{auth?.authenticated && data && (
-					<AdminActions id={id} data={data} isCoach={true} />
+				{auth?.authenticated && blogData && (
+					<AdminActions id={id} data={blogData} isCoach={true} />
 				)}
 				<div className="flex flex-col gap-4 w-full">
 					{isLoading ? (
 						<BlogSkeleton />
-					) : data ? (
+					) : blogData ? (
 						<>
 							<BlogHeader
-								title={data.title}
-								author={data.author}
-								createdAt={data.createdAt}
+								title={blogData.title}
+								author={blogData.author}
+								createdAt={blogData.createdAt}
 							/>
 							<BlogContent
-								headings={data.headings}
-								paragraphs={data.paragraphs}
-								images={data.images}
+								headings={blogData.headings}
+								paragraphs={blogData.paragraphs}
+								images={blogData.images}
 							/>
 						</>
 					) : (
