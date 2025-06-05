@@ -16,7 +16,6 @@ export default function ViewCoachesPage() {
 				</p>
 			</header>
 
-			{/* Passes loading state and coach data to the grid component */}
 			<CoachAllPreviews isLoading={isLoading} coaches={data || []} />
 		</div>
 	);

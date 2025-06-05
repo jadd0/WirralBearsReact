@@ -10,9 +10,12 @@ export default function AllImagesView({ deleteImage, popUpActivated = true }) {
 	);
 
 	return (
-		<div className="flex flex-col min-h-screen px-2 sm:px-4">
+		<div className="flex flex-col min-h-screen px-8 sm:px-4">
 			<h1 className="text-3xl font-bold mb-4 text-center">Image Gallery</h1>
-			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-5xl mx-auto">
+			<p className="text-lg text-gray-600 text-center">
+					View a collection of images taken at games, training etc.
+				</p>
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-5xl mx-auto mt-10">
 				{isLoading
 					? Array.from({ length: 6 }).map((_, idx) => (
 							<ImageSkeleton key={idx} />
