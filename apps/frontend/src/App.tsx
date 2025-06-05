@@ -19,14 +19,12 @@ import CoachViewPage from './pages/coach/CoachView.page';
 
 // Admin
 import AdminPage from './pages/admin/Admin.page';
-import CreateBlogPage from './pages/admin/blog/CreateBlog.page';
 import { AdminNavbar } from './components/layout/AdminNavbar';
 import BlogView from './pages/blog/BlogView';
-import BlogEditPage from './pages/admin/blog/EditBlog.page';
 import AllImagesViewPage from './pages/image/AllImageView.page';
 import ImageDashboardPage from './pages/admin/image/ImageDashboard.page';
-import CreateCoachPage from './pages/admin/coaches/CreateCoach.page';
-import EditCoachPage from './pages/admin/coaches/EditCoach.page';
+import CreatePage from './pages/admin/post/Create.page';
+import EditPage from './pages/admin/post/Edit.page';
 
 function AuthenticatedRouter() {
 	const { data, isPending, error, refetch } = useMe();
@@ -109,12 +107,23 @@ function App() {
 				<Routes>
 					<Route element={<AuthenticatedRouter />}>
 						<Route path="/admin" element={<AdminPage />} />
-						<Route path="/admin/blog/createPost" element={<CreateBlogPage />} />
-						<Route path="/admin/blog/edit/:id" element={<BlogEditPage />} />
+						<Route
+							path="/admin/blog/createPost"
+							element={<CreatePage type={'blog'} />}
+						/>
+						<Route
+							path="/admin/blog/edit/:id"
+							element={<EditPage type={'blog'} />}
+						/>
 						<Route path="/admin/image/" element={<ImageDashboardPage />} />
-						<Route path="/admin/coach/create" element={<CreateCoachPage />} />
-						<Route path="/admin/coach/edit/:id" element={<EditCoachPage />} />
-
+						<Route
+							path="/admin/coach/create"
+							element={<CreatePage type={'coach'} />}
+						/>
+						<Route
+							path="/admin/coach/edit/:id"
+							element={<EditPage type={'coach'} />}
+						/>
 
 						<Route path="/logout" element={<Logout />} />
 					</Route>
@@ -141,7 +150,6 @@ function App() {
 					<Route path="/coaches/coach/:slug" element={<CoachViewPage />} />
 
 					{/* Admin routes */}
-
 				</Routes>
 				<Toaster position="top-right" closeButton={false} />
 			</main>
