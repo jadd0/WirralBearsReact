@@ -14,6 +14,8 @@ const navLinks = [
 	{ to: '/sponsorship', label: 'Sponsorship', key: 'sponsorship' },
 	{ to: '/image/viewall', label: 'Gallery', key: 'gallery' },
 	{to: '/coaches', label: 'Coaches', key: 'coaches' },
+	{to: '/blog/blogs', label: 'Blogs', key: 'blogs' },
+
 ];
 
 export function Navbar() {
