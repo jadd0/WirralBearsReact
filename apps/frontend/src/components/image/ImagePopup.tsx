@@ -34,7 +34,6 @@ export default function ImagePopup({ image, onClose }: ImagePopupProps) {
           flex-col
           items-center
         "
-				style={{ maxWidth: '50vw' }}
 			>
 				<button
 					onClick={onClose}

@@ -14,15 +14,17 @@ import LoginPage from './pages/Login.page';
 import Logout from './pages/Logout.page';
 import SponsorshipPage from './pages/Sponsorship.page';
 import ViewBlogsPage from './pages/blog/ViewBlogs.page';
+import ViewCoachesPage from './pages/coach/ViewCoaches.page';
+import CoachViewPage from './pages/coach/CoachView.page';
 
 // Admin
 import AdminPage from './pages/admin/Admin.page';
-import CreateBlogPage from './pages/admin/blog/CreateBlog.page';
 import { AdminNavbar } from './components/layout/AdminNavbar';
 import BlogView from './pages/blog/BlogView';
-import BlogEditPage from './pages/admin/blog/EditBlog.page';
 import AllImagesViewPage from './pages/image/AllImageView.page';
 import ImageDashboardPage from './pages/admin/image/ImageDashboard.page';
+import CreatePage from './pages/admin/post/Create.page';
+import EditPage from './pages/admin/post/Edit.page';
 
 function AuthenticatedRouter() {
 	const { data, isPending, error, refetch } = useMe();
@@ -105,9 +107,23 @@ function App() {
 				<Routes>
 					<Route element={<AuthenticatedRouter />}>
 						<Route path="/admin" element={<AdminPage />} />
-						<Route path="/admin/blog/createPost" element={<CreateBlogPage />} />
-						<Route path="/admin/blog/edit/:id" element={<BlogEditPage />} />
+						<Route
+							path="/admin/blog/createPost"
+							element={<CreatePage type={'blog'} />}
+						/>
+						<Route
+							path="/admin/blog/edit/:id"
+							element={<EditPage type={'blog'} />}
+						/>
 						<Route path="/admin/image/" element={<ImageDashboardPage />} />
+						<Route
+							path="/admin/coach/create"
+							element={<CreatePage type={'coach'} />}
+						/>
+						<Route
+							path="/admin/coach/edit/:id"
+							element={<EditPage type={'coach'} />}
+						/>
 
 						<Route path="/logout" element={<Logout />} />
 					</Route>
@@ -128,6 +144,12 @@ function App() {
 
 					{/* Image routes */}
 					<Route path="/image/viewall" element={<AllImagesViewPage />} />
+
+					{/* Coaches routes */}
+					<Route path="/coaches" element={<ViewCoachesPage />} />
+					<Route path="/coaches/coach/:slug" element={<CoachViewPage />} />
+
+					{/* Admin routes */}
 				</Routes>
 				<Toaster position="top-right" closeButton={false} />
 			</main>

@@ -3,11 +3,13 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 // Navigation items
 const navLinks = [
-  { to: '/', label: 'Wirral Bears', key: 'wirralBears' },
-  { to: '/admin', label: 'Dashboard', key: 'dashboard' },
+	{ to: '/', label: 'Wirral Bears', key: 'wirralBears' },
+	{ to: '/admin', label: 'Dashboard', key: 'dashboard' },
 	{ to: '/admin/blog/createPost', label: 'Create Post', key: 'createPost' },
-  { to: '/admin/blog/editPost', label: 'Edit Post', key: 'editPost' },
+	{ to: '/admin/blog/editPost', label: 'Edit Post', key: 'editPost' },
 	{ to: '/admin/image', label: 'Images', key: 'images' },
+	{ to: '/admin/coach/create', label: 'Create Coach', key: 'createCoach' },
+	{ to: '/admin/coach/edit', label: 'Edit Coach', key: 'editCoach' },
 ];
 
 export function AdminNavbar() {

@@ -70,7 +70,7 @@ export default function ImageDisplay({
 					}
 				}}
 			>
-				<img src={image.url} alt={image.alt} className="w-full h-auto" />
+				<img src={image.url} alt={image.alt} className="w-full h-auto rounded-md" />
 				<p className="mt-2">{image.title}</p>
 			</div>
 		</div>

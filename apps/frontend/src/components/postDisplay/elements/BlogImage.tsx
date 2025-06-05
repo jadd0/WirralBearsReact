@@ -8,7 +8,6 @@ interface BlogImageProps {
 }
 
 export default function BlogImage({ image }: BlogImageProps) {
-	// Don't render if no URL
 	if (!image.url) return null;
 
 	return (

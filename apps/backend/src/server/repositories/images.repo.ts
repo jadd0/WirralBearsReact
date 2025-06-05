@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from '@/db';
-import { images, blogImages } from '@/db/schemas/images.schema';
+import { images, blogImages, coachImages } from '@/db/schemas/images.schema';
 import { IMAGE_LIMIT } from '@wirralbears/constants';
 import { Image } from '@/types/image.types';
 
@@ -37,6 +37,22 @@ export const imageRepository = {
 	},
 
 	/**
+	 * Creates a relationship between a coach and an image
+	 */
+	async createCoachImageRelation(relationData: {
+		coachId: string;
+		imageId: string;
+		position: number;
+	}) {
+		const [relation] = await db
+			.insert(coachImages)
+			.values(relationData)
+			.returning();
+
+		return relation;
+	},
+
+	/**
 	 * Batch creates multiple blog-image relations
 	 */
 	async createBlogImageRelations(
@@ -50,6 +66,26 @@ export const imageRepository = {
 
 		const insertedRelations = await db
 			.insert(blogImages)
+			.values(relations)
+			.returning();
+
+		return insertedRelations;
+	},
+
+	/**
+	 * Batch creates multiple coach-image relations
+	 */
+	async createCoachImageRelations(
+		relations: {
+			coachId: string;
+			imageId: string;
+			position: number;
+		}[]
+	) {
+		if (relations.length === 0) return [];
+
+		const insertedRelations = await db
+			.insert(coachImages)
 			.values(relations)
 			.returning();
 
@@ -71,6 +107,23 @@ export const imageRepository = {
 			.orderBy(blogImages.position);
 
 		return blogImageRelations;
+	},
+
+	/**
+	 * Gets all images for a specific coach
+	 */
+	async getCoachImages(coachId: string) {
+		const coachImageRelations = await db
+			.select({
+				image: images,
+				position: coachImages.position,
+			})
+			.from(coachImages)
+			.innerJoin(images, eq(coachImages.imageId, images.id))
+			.where(eq(coachImages.coachId, coachId))
+			.orderBy(coachImages.position);
+
+		return coachImageRelations;
 	},
 
 	/**
@@ -103,6 +156,21 @@ export const imageRepository = {
 	) {
 		await tx.insert(blogImages).values(relationData).returning();
 	},
+
+	/**
+	 * Creates a coach-image relation within a transaction
+	 */
+	async createCoachImageRelationWithTransaction(
+		tx: any,
+		relationData: {
+			coachId: string;
+			imageId: string;
+			position: number;
+		}
+	) {
+		await tx.insert(coachImages).values(relationData).returning();
+	},
+
 	async getAllImages(cursor: number): Image {
 		const result = db
 			.select({
