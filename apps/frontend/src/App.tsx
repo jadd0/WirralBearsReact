@@ -14,7 +14,8 @@ import LoginPage from './pages/Login.page';
 import Logout from './pages/Logout.page';
 import SponsorshipPage from './pages/Sponsorship.page';
 import ViewBlogsPage from './pages/blog/ViewBlogs.page';
-import CoachPage from './pages/Coaches.page';
+import ViewCoachesPage from './pages/coach/ViewCoaches.page';
+import CoachViewPage from './pages/coach/CoachView.page';
 
 // Admin
 import AdminPage from './pages/admin/Admin.page';
@@ -136,7 +137,10 @@ function App() {
 					<Route path="/image/viewall" element={<AllImagesViewPage />} />
 
 					{/* Coaches routes */}
-					<Route path="/coaches" element={<CoachPage />} />
+					<Route path="/coaches" element={<ViewCoachesPage />} />
+					<Route path="/coaches/coach/:id" element={<CoachViewPage />} />
+
+					{/* Admin routes */}
 
 				</Routes>
 				<Toaster position="top-right" closeButton={false} />
