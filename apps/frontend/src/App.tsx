@@ -109,6 +109,8 @@ function App() {
 						<Route path="/admin/blog/createPost" element={<CreateBlogPage />} />
 						<Route path="/admin/blog/edit/:id" element={<BlogEditPage />} />
 						<Route path="/admin/image/" element={<ImageDashboardPage />} />
+						<Route path="/admin/coaches" element={<CoachPage />} />
+
 
 						<Route path="/logout" element={<Logout />} />
 					</Route>

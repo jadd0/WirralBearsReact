@@ -8,6 +8,8 @@ const navLinks = [
 	{ to: '/admin/blog/createPost', label: 'Create Post', key: 'createPost' },
   { to: '/admin/blog/editPost', label: 'Edit Post', key: 'editPost' },
 	{ to: '/admin/image', label: 'Images', key: 'images' },
+	{to: '/admin/coaches', label: 'Coaches', key: 'coaches' },
+
 ];
 
 export function AdminNavbar() {
