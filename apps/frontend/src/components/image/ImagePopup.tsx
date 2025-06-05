@@ -9,20 +9,59 @@ interface ImagePopupProps {
 export default function ImagePopup({ image, onClose }: ImagePopupProps) {
 	const handleParentClick = (e: React.MouseEvent<HTMLDivElement>) => {
 		if (e.target === e.currentTarget) {
-			console.log('Clicked outside the image, closing popup');
 			onClose();
 		}
 	};
 
 	return (
 		<div
-			className="min-w-full min-h-full absolute top-0 left-0 flex items-center justify-center"
+			className="fixed inset-0 flex items-center justify-center z-50"
 			style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
 			onClick={handleParentClick}
 		>
-			<div className="flex">
-				<img src={image.url} alt="" />
-        <CircleX className='relative top-5 right-12' onClick={onClose} />
+			<div
+				className="
+          relative
+          bg-white
+          rounded-lg
+          shadow-lg
+          p-4
+          max-w-full
+          w-[90vw]
+          sm:w-[70vw]
+          md:w-[50vw]
+          flex
+          flex-col
+          items-center
+        "
+				style={{ maxWidth: '50vw' }}
+			>
+				<button
+					onClick={onClose}
+					aria-label="Close"
+					className="
+            absolute
+            top-3
+            right-3
+            bg-white
+            rounded-full
+            p-2
+            shadow
+            hover:bg-red-100
+            focus:outline-none
+            focus:ring-2
+            focus:ring-red-400
+            transition
+            z-10
+          "
+				>
+					<CircleX className="w-7 h-7 text-red-500" />
+				</button>
+				<img
+					src={image.url}
+					alt=""
+					className="max-h-[70vh] w-auto rounded-md object-contain"
+				/>
 			</div>
 		</div>
 	);
