@@ -44,8 +44,8 @@ export const sessions = pgTable('sessions', {
 	updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
-export type SessionDay = typeof sessionDays.$inferInsert;
-export type Session = typeof sessions.$inferInsert;
+export type SessionDay = typeof sessionDays.$inferSelect;
+export type Session = typeof sessions.$inferSelect;
 export type SessionWithCoach = Session & {
 	coach: typeof coaches.$inferSelect | null;
 };
