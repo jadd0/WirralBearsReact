@@ -113,19 +113,35 @@ export const sessionRepository = {
 					day: row.day,
 					createdAt: row.createdAt,
 					updatedAt: row.updatedAt,
-					sessions: [], 
+					sessions: [],
 				});
 			}
 			if (row.session) {
-				sessionDayMap.get(row.id).sessions.push(row.session); 
+				sessionDayMap.get(row.id).sessions.push(row.session);
 			}
 		}
 
-		// Convert map to array, and set sessions to null if empty
+		// Convert map to array
 		const sessionDaysArr = Array.from(sessionDayMap.values()).map((day) => ({
 			...day,
 			sessions: day.sessions.length > 0 ? day.sessions : [],
 		}));
+
+		// Define the order of days
+		const dayOrder = [
+			'Monday',
+			'Tuesday',
+			'Wednesday',
+			'Thursday',
+			'Friday',
+			'Saturday',
+			'Sunday',
+		];
+
+		// Sort sessionDaysArr by day of the week
+		sessionDaysArr.sort((a, b) => {
+			return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
+		});
 
 		return { sessionDays: sessionDaysArr };
 	},
