@@ -7,6 +7,7 @@ import {
 	SessionDay,
 	coaches,
 	SessionWithCoach,
+	FullSessionSchedule,
 } from '@/db/schema';
 import { nanoid } from 'nanoid';
 import { SESSION_ID_LENGTH } from '@wirralbears/constants';
@@ -89,8 +90,7 @@ export const sessionRepository = {
 	async getAllSessions(): Promise<Session[]> {
 		return await db.select().from(sessions);
 	},
-	async getFullSchedule() {
-		// Perform a left join to get all sessionDays and their sessions (if any)
+	async getFullSchedule(): Promise<FullSessionSchedule> {
 		const rows = await db
 			.select({
 				id: sessionDays.id,
@@ -103,15 +103,30 @@ export const sessionRepository = {
 			.leftJoin(sessions, eq(sessionDays.id, sessions.day))
 			.orderBy(sessionDays.day, sessions.time);
 
-		// Map the result to the desired structure
-		return {
-			sessionDays: rows.map((row) => ({
-				id: row.id,
-				day: row.day,
-				createdAt: row.createdAt,
-				updatedAt: row.updatedAt,
-				session: row.session ?? null,
-			})),
-		};
+		// Group sessions by sessionDay id
+		const sessionDayMap = new Map();
+
+		for (const row of rows) {
+			if (!sessionDayMap.has(row.id)) {
+				sessionDayMap.set(row.id, {
+					id: row.id,
+					day: row.day,
+					createdAt: row.createdAt,
+					updatedAt: row.updatedAt,
+					session: [],
+				});
+			}
+			if (row.session) {
+				sessionDayMap.get(row.id).session.push(row.session);
+			}
+		}
+
+		// Convert map to array, and set session to null if empty
+		const sessionDaysArr = Array.from(sessionDayMap.values()).map((day) => ({
+			...day,
+			session: day.session.length > 0 ? day.session : null,
+		}));
+
+		return { sessionDays: sessionDaysArr };
 	},
 };

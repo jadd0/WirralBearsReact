@@ -49,7 +49,8 @@ export type Session = typeof sessions.$inferSelect;
 export type SessionWithCoach = Session & {
 	coach: typeof coaches.$inferSelect | null;
 };
-export type SessionDayWithSessions = Omit<SessionDay, 'day'> & {
-	day: typeof WEEKDAYS[number];
-	sessions: Session[];
+export type FullSessionSchedule = {
+	sessionDays: (SessionDay & {
+		sessions: SessionWithCoach[];
+	})[];
 };

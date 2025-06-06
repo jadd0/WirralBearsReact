@@ -10,9 +10,10 @@ export {
 } from '@wirralbears/backend/types/coach.types.js';
 
 export {
-	Session, SessionDayWithSessions, SessionDay, SessionWithCoach
-} from "@wirralbears/backend/db/schemas/session.schema.js"
+	Session,
+	SessionDay,
+	SessionWithCoach,
+	FullSessionSchedule,
+} from '@wirralbears/backend/db/schemas/session.schema.js';
 
-export {
-	FullSessionSchedule
-} from "@wirralbears/backend/types/session.types.js"
+export { SessionDayWithSessions } from '@wirralbears/backend/types/session.types.js';

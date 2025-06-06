@@ -84,6 +84,7 @@ export async function getFullSchedule(): Promise<FullSessionSchedule> {
     url: '/api/session/getFullSchedule',
     method: 'GET',
   });
+
   return data.schedule;
 }
 
