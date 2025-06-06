@@ -90,21 +90,28 @@ export const sessionRepository = {
 		return await db.select().from(sessions);
 	},
 	async getFullSchedule() {
-		const result = await db
+		// Perform a left join to get all sessionDays and their sessions (if any)
+		const rows = await db
 			.select({
 				id: sessionDays.id,
 				day: sessionDays.day,
 				createdAt: sessionDays.createdAt,
 				updatedAt: sessionDays.updatedAt,
-				sessions: sql<
-					Session[]
-				>`COALESCE(json_agg(${sessions}.* ORDER BY ${sessions}.time), '[]'::json)`,
+				session: sessions, // This will be null if no session exists for the day
 			})
 			.from(sessionDays)
 			.leftJoin(sessions, eq(sessionDays.id, sessions.day))
-			.groupBy(sessionDays.id)
-			.orderBy(sessionDays.day);
+			.orderBy(sessionDays.day, sessions.time);
 
-		return result;
+		// Map the result to the desired structure
+		return {
+			sessionDays: rows.map((row) => ({
+				id: row.id,
+				day: row.day,
+				createdAt: row.createdAt,
+				updatedAt: row.updatedAt,
+				session: row.session ?? null,
+			})),
+		};
 	},
 };
