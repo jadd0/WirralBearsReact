@@ -19,7 +19,7 @@ export const sessionServices = {
 	 * Create a new session
 	 */
 	async createSession(
-		sessionData: Omit<Session, 'id' | 'createdAt' | 'updatedAt'>
+		sessionData: Session
 	) {
 		try {
 			return await sessionRepository.createSession(sessionData);

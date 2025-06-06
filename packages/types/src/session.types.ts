@@ -8,7 +8,8 @@ export type WeekDay =
 	| 'Sunday';
 
 export type Time = string;
-type GENDER_ENUM = ['Male', 'Female', 'Mixed'];
+
+type GENDER_ENUM = 'Male' | 'Female' | 'Mixed';
 
 type TwoDigit = `${0 | 1}${number}` | `2${0 | 1 | 2 | 3}` | `0${number}`;
 type Hour = `0${number}` | `1${number}` | `2${0 | 1 | 2 | 3}`;
