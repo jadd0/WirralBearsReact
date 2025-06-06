@@ -15,6 +15,7 @@ export type Session = {
   time: TimeString;
   leadCoach: string; // FK for coach id
   age: number;
+  gender: "Male" | "Female" | "Mixed";
 }
 
 export type SessionDay = Session[]
