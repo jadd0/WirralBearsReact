@@ -20,6 +20,8 @@ export const sessionRepository = {
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		});
+
+		if (!result) return false;
 		return true;
 	},
 
@@ -64,22 +66,21 @@ export const sessionRepository = {
 	},
 
 	async getSessionDay(dayId: string) {
-    const result = await db
-        .select({
-            id: sessionDays.id,
-            day: sessionDays.day,
-            createdAt: sessionDays.createdAt,
-            updatedAt: sessionDays.updatedAt,
-            sessions: sql<Session[]>`COALESCE(json_agg(${sessions}.*), '[]'::json)`
-        })
-        .from(sessionDays)
-        .where(eq(sessionDays.id, dayId))
-        .leftJoin(sessions, eq(sessionDays.id, sessions.day))
-        .groupBy(sessionDays.id);
+		const result = await db
+			.select({
+				id: sessionDays.id,
+				day: sessionDays.day,
+				createdAt: sessionDays.createdAt,
+				updatedAt: sessionDays.updatedAt,
+				sessions: sql<Session[]>`COALESCE(json_agg(${sessions}.*), '[]'::json)`,
+			})
+			.from(sessionDays)
+			.where(eq(sessionDays.id, dayId))
+			.leftJoin(sessions, eq(sessionDays.id, sessions.day))
+			.groupBy(sessionDays.id);
 
-    return result[0] ?? null;
-},
-
+		return result[0] ?? null;
+	},
 
 	async getAllSessionDays(): Promise<SessionDay[]> {
 		return await db.select().from(sessionDays).orderBy(sessionDays.day);
@@ -87,5 +88,23 @@ export const sessionRepository = {
 
 	async getAllSessions(): Promise<Session[]> {
 		return await db.select().from(sessions);
+	},
+	async getFullSchedule() {
+		const result = await db
+			.select({
+				id: sessionDays.id,
+				day: sessionDays.day,
+				createdAt: sessionDays.createdAt,
+				updatedAt: sessionDays.updatedAt,
+				sessions: sql<
+					Session[]
+				>`COALESCE(json_agg(${sessions}.* ORDER BY ${sessions}.time), '[]'::json)`,
+			})
+			.from(sessionDays)
+			.leftJoin(sessions, eq(sessionDays.id, sessions.day))
+			.groupBy(sessionDays.id)
+			.orderBy(sessionDays.day);
+
+		return result;
 	},
 };
