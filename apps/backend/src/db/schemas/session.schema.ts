@@ -1,34 +1,53 @@
 import { integer, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { users } from './auth.schema';
 import { nanoid } from 'nanoid';
-import { SESSION_AGE_GROUPS, SESSION_ID_LENGTH } from '@wirralbears/constants';
+import { SESSION_ID_LENGTH } from '@wirralbears/constants';
 import { coaches } from './coach.schema';
 
-const WEEKDAY_LENGTH = 9;
+// Enums and types
+const GENDER_ENUM = ['Male', 'Female', 'Mixed'] as const;
+const WEEKDAYS = [
+	'Monday',
+	'Tuesday',
+	'Wednesday',
+	'Thursday',
+	'Friday',
+	'Saturday',
+	'Sunday',
+] as const;
+const WEEKDAY_LENGTH = 10;
 
 export const sessionDays = pgTable('session_days', {
-	id: varchar('id')
+	id: varchar('id', { length: SESSION_ID_LENGTH })
 		.primaryKey()
 		.$defaultFn(() => nanoid(SESSION_ID_LENGTH)),
-	day: varchar('day', { length: WEEKDAY_LENGTH }).notNull(),
+	day: varchar('day', { length: WEEKDAY_LENGTH }).$type<
+		(typeof WEEKDAYS)[number]
+	>(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 export const session = pgTable('sessions', {
-	id: varchar('id')
+	id: varchar('id', { length: SESSION_ID_LENGTH })
 		.primaryKey()
 		.$defaultFn(() => nanoid(SESSION_ID_LENGTH)),
-	day: varchar('day')
+	day: varchar('day', { length: WEEKDAY_LENGTH })
 		.notNull()
 		.references(() => sessionDays.id, { onDelete: 'cascade' }),
-	createdAt: timestamp('created_at').defaultNow().notNull(),
-	updatedAt: timestamp('updated_at').defaultNow().notNull(),
+	time: varchar('time', { length: 5 }).notNull(), // Stores HH:MM format
 	age: integer('age').notNull(),
-	coach: varchar('coach')
+	gender: varchar('gender', { enum: GENDER_ENUM }).notNull(),
+	coach: varchar('coach', { length: SESSION_ID_LENGTH })
 		.notNull()
 		.references(() => coaches.id, { onDelete: 'cascade' }),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+	updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
-export type SessionDay = typeof sessionDays.$inferInsert;
+// Type exports
+export type WeekDay = (typeof WEEKDAYS)[number];
+export type TimeString = `${string}:${string}`;
 export type Session = typeof session.$inferInsert;
+export type SessionDay = typeof sessionDays.$inferInsert & {
+	sessions: Session[];
+};
