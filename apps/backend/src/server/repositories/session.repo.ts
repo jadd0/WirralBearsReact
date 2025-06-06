@@ -113,18 +113,18 @@ export const sessionRepository = {
 					day: row.day,
 					createdAt: row.createdAt,
 					updatedAt: row.updatedAt,
-					session: [],
+					sessions: [], 
 				});
 			}
 			if (row.session) {
-				sessionDayMap.get(row.id).session.push(row.session);
+				sessionDayMap.get(row.id).sessions.push(row.session); 
 			}
 		}
 
-		// Convert map to array, and set session to null if empty
+		// Convert map to array, and set sessions to null if empty
 		const sessionDaysArr = Array.from(sessionDayMap.values()).map((day) => ({
 			...day,
-			session: day.session.length > 0 ? day.session : null,
+			sessions: day.sessions.length > 0 ? day.sessions : null,
 		}));
 
 		return { sessionDays: sessionDaysArr };
