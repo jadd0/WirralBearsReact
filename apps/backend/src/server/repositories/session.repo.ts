@@ -124,7 +124,7 @@ export const sessionRepository = {
 		// Convert map to array, and set sessions to null if empty
 		const sessionDaysArr = Array.from(sessionDayMap.values()).map((day) => ({
 			...day,
-			sessions: day.sessions.length > 0 ? day.sessions : null,
+			sessions: day.sessions.length > 0 ? day.sessions : [],
 		}));
 
 		return { sessionDays: sessionDaysArr };
