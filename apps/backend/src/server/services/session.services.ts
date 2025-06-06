@@ -18,9 +18,7 @@ export const sessionServices = {
 	/**
 	 * Create a new session
 	 */
-	async createSession(
-		sessionData: Session
-	) {
+	async createSession(sessionData: Session) {
 		try {
 			return await sessionRepository.createSession(sessionData);
 		} catch (error) {
@@ -83,14 +81,22 @@ export const sessionServices = {
 	/**
 	 * Get all session days with their sessions
 	 */
-	async getFullSchedule() {},
+	async getFullSchedule() {
+		try {
+			const result = await sessionRepository.getFullSchedule();
+			return result;
+		} catch (error) {
+			console.error('Failed to fetch session day:', error);
+			throw new Error('Failed to fetch session day');
+		}
+	},
 
 	/**
 	 * Get a session day with its sessions
 	 */
 	async getSessionDay(dayId: string) {
 		try {
-			const result = await sessionRepository.getFullSchedule();
+			const result = await sessionRepository.getSessionDay(dayId);
 			return result;
 		} catch (error) {
 			console.error('Failed to fetch session day:', error);
