@@ -1,53 +1,101 @@
 import { request } from '@/lib/network';
 import { BlogData } from '@wirralbears/types';
-import { BlogPreview, FullBlog } from '@wirralbears/backend-types';
+import {
+	Session,
+	SessionDayWithSessions,
+	SessionDay,
+	SessionWithCoach,
+	FullSessionSchedule,
+} from '@wirralbears/backend-types';
+
 
 /**
- * Fetches a blog by its ID
- * @param id - The ID of the blog to fetch
- * @returns The blog data
+ * Gets all sessions
+ * @returns An array of session objects
  */
-export async function fetchBlog(id: string) {
-	const { data } = await request({
-		url: `/api/blog/getBlog/${id}`,
-		method: 'GET',
-	});
-
-	return data.blog as FullBlog;
+export async function getAllSessions(): Promise<Session[]> {
+  const { data } = await request({
+    url: '/api/session/getAllSessions',
+    method: 'GET',
+  });
+  return data.sessions;
 }
 
 /**
- * Uploads a single image file and returns the URL
- * @param file - The image file to upload
- * @returns The URL of the uploaded image
+ * Creates a new session
+ * @param sessionData - The data for the new session
+ * @returns The created session object
  */
-export async function uploadImage(file: File): Promise<string> {
-	const formData = new FormData();
-	formData.append('image', file);
-
-	const { data } = await request({
-		url: '/api/blog/uploadImage',
-		method: 'POST',
-		data: formData,
-	});
-
-	return data.url;
+export async function createSession(sessionData: Session): Promise<boolean> {
+  const { data } = await request({
+    url: '/api/session/createSession',
+    method: 'POST',
+    data: sessionData,
+  });
+  return data.session;
 }
 
-export async function getAllBlogPreviews(): Promise<BlogPreview[]> {
-	const { data } = await request({
-		url: `/api/blog/getAllBlogPreviews`,
-		method: 'GET',
-	});
-
-	return data.blogs as BlogPreview[];
+/**
+ * Updates an existing session
+ * @param sessionData - The updated session data
+ * @returns The updated session object
+ */
+export async function updateSession(sessionData: Session): Promise<boolean> {
+  const { data } = await request({
+    url: `/api/session/updateSesson/${sessionData.id}`,
+    method: 'PUT',
+    data: sessionData,
+  });
+  return data.session;
 }
 
-export async function deleteBlog(id: string) {
-	const { data } = await request({
-		url: `/api/blog/deleteBlog/${id}`,
-		method: 'DELETE'
-	})
+/**
+ * Gets a single session by ID
+ * @param id - The ID of the session
+ * @returns The session object
+ */
+export async function getSessionById(id: string): Promise<Session> {
+  const { data } = await request({
+    url: `/api/session/getSession/${id}`,
+    method: 'GET',
+  });
+  return data.session;
+}
 
-	return data;
+/**
+ * Deletes a session by ID
+ * @param id - The ID of the session to delete
+ * @returns A success message or status
+ */
+export async function deleteSession(id: string): Promise<boolean> {
+  const { data } = await request({
+    url: `/api/session/deleteSession/${id}`,
+    method: 'DELETE',
+  });
+  return data;
+}
+
+/**
+ * Gets the full schedule
+ * @returns The full schedule object
+ */
+export async function getFullSchedule(): Promise<FullSessionSchedule> {
+  const { data } = await request({
+    url: '/api/session/getFullSchedule',
+    method: 'GET',
+  });
+  return data.schedule;
+}
+
+/**
+ * Gets a full session day by ID
+ * @param id - The ID of the session day
+ * @returns The session day object
+ */
+export async function getSessionDay(id: string): Promise<SessionDayWithSessions> {
+  const { data } = await request({
+    url: `/api/session/getSessionDay/${id}`,
+    method: 'GET',
+  });
+  return data.sessionDay;
 }
