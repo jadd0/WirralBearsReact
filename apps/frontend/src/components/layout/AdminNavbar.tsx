@@ -10,6 +10,8 @@ const navLinks = [
 	{ to: '/admin/image', label: 'Images', key: 'images' },
 	{ to: '/admin/coach/create', label: 'Create Coach', key: 'createCoach' },
 	{ to: '/admin/coach/edit', label: 'Edit Coach', key: 'editCoach' },
+	{ to: '/admin/sessions', label: 'Sessions', key: 'sessions' },
+
 ];
 
 export function AdminNavbar() {

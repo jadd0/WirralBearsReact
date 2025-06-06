@@ -16,6 +16,7 @@ import SponsorshipPage from './pages/Sponsorship.page';
 import ViewBlogsPage from './pages/blog/ViewBlogs.page';
 import ViewCoachesPage from './pages/coach/ViewCoaches.page';
 import CoachViewPage from './pages/coach/CoachView.page';
+import SessionsPage from './pages/Sessions.page';
 
 // Admin
 import AdminPage from './pages/admin/Admin.page';
@@ -25,7 +26,7 @@ import AllImagesViewPage from './pages/image/AllImageView.page';
 import ImageDashboardPage from './pages/admin/image/ImageDashboard.page';
 import CreatePage from './pages/admin/post/Create.page';
 import EditPage from './pages/admin/post/Edit.page';
-import SessionsPage from './pages/Sessions.page';
+import EditSessionsPage from './pages/admin/Sessions.page';
 
 function AuthenticatedRouter() {
 	const { data, isPending, error, refetch } = useMe();
@@ -125,6 +126,7 @@ function App() {
 							path="/admin/coach/edit/:id"
 							element={<EditPage type={'coach'} />}
 						/>
+						<Route path="/admin/sessions" element={<EditSessionsPage />} />
 
 						<Route path="/logout" element={<Logout />} />
 					</Route>
