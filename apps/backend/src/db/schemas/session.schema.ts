@@ -27,7 +27,7 @@ export const sessionDays = pgTable('session_days', {
 	updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
-export const session = pgTable('sessions', {
+export const sessions = pgTable('sessions', {
 	id: varchar('id', { length: SESSION_ID_LENGTH })
 		.primaryKey()
 		.$defaultFn(() => nanoid(SESSION_ID_LENGTH)),
@@ -37,17 +37,19 @@ export const session = pgTable('sessions', {
 	time: varchar('time', { length: 5 }).notNull(), // Stores HH:MM format
 	age: integer('age').notNull(),
 	gender: varchar('gender', { enum: GENDER_ENUM }).notNull(),
-	coach: varchar('coach', { length: SESSION_ID_LENGTH })
+	leadCoach: varchar('lead_coach', { length: SESSION_ID_LENGTH })
 		.notNull()
 		.references(() => coaches.id, { onDelete: 'cascade' }),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
-// Type exports
-export type WeekDay = (typeof WEEKDAYS)[number];
-export type TimeString = `${string}:${string}`;
-export type Session = typeof session.$inferInsert;
-export type SessionDay = typeof sessionDays.$inferInsert & {
+export type SessionDay = typeof sessionDays.$inferInsert;
+export type Session = typeof sessions.$inferInsert;
+export type SessionWithCoach = Session & {
+	coach: typeof coaches.$inferSelect | null;
+};
+export type SessionDayWithSessions = Omit<SessionDay, 'day'> & {
+	day: typeof WEEKDAYS[number];
 	sessions: Session[];
 };

@@ -1,95 +1,91 @@
 import { eq, sql, and } from 'drizzle-orm';
 import { db } from '@/db';
-import { Session, SessionDay } from '@wirralbears/types';
-import { session, sessionDays, coaches } from '@/db/schema';
+import {
+	sessionDays,
+	sessions,
+	Session,
+	SessionDay,
+	coaches,
+	SessionWithCoach,
+} from '@/db/schema';
 import { nanoid } from 'nanoid';
 import { SESSION_ID_LENGTH } from '@wirralbears/constants';
+import { SessionDayWithSessions } from '@wirralbears/types';
 
 export const sessionRepository = {
-	async createSession(
-		sessionDetails: Omit<Session, 'id' | 'createdAt' | 'updatedAt'>
-	) {
-		const [newSession] = await db
-			.insert(session)
-			.values({
-				// Map frontend names to DB columns
-				day: sessionDetails.day,
-				time: sessionDetails.time,
-				age: sessionDetails.age,
-				gender: sessionDetails.gender,
-				coach: sessionDetails.leadCoach, 
-			})
-			.returning();
-		return newSession;
+	async createSession(sessionDetails: Session): Promise<boolean> {
+		const result = await db.insert(sessions).values({
+			...sessionDetails,
+			id: nanoid(SESSION_ID_LENGTH),
+			createdAt: new Date(),
+			updatedAt: new Date(),
+		});
+		return true;
 	},
+
 	async updateSession(
 		id: string,
 		updates: Partial<Omit<Session, 'id' | 'createdAt' | 'updatedAt'>>
-	) {
-		const [updated] = await db
-			.update(session)
+	): Promise<boolean> {
+		const result = await db
+			.update(sessions)
 			.set({ ...updates, updatedAt: new Date() })
-			.where(eq(session.id, id))
+			.where(eq(sessions.id, id))
 			.returning();
-		return updated;
+
+		if (!result) return false;
+		return true;
 	},
 
 	async deleteSession(id: string): Promise<boolean> {
 		const result = await db
-			.delete(session)
-			.where(eq(session.id, id))
+			.delete(sessions)
+			.where(eq(sessions.id, id))
 			.returning();
 		return result.length > 0;
 	},
 
-	async getSession(id: string) {
+	async getSession(id: string): Promise<SessionWithCoach | null> {
 		const result = await db
-			.select()
-			.from(session)
-			.where(eq(session.id, id))
-			.leftJoin(coaches, eq(session.coach, coaches.id));
+			.select({
+				session: sessions,
+				coach: coaches,
+			})
+			.from(sessions)
+			.where(eq(sessions.id, id))
+			.leftJoin(coaches, eq(sessions.leadCoach, coaches.id));
 
 		if (!result[0]) return null;
 
-		const { sessions, coaches: coach } = result[0];
 		return {
-			...sessions,
-			coach,
+			...result[0].session,
+			coach: result[0].coach,
 		};
 	},
 
 	async getSessionDay(dayId: string) {
-		const result = await db
-			.select()
-			.from(sessionDays)
-			.where(eq(sessionDays.id, dayId))
-			.leftJoin(session, eq(sessionDays.id, session.day));
+    const result = await db
+        .select({
+            id: sessionDays.id,
+            day: sessionDays.day,
+            createdAt: sessionDays.createdAt,
+            updatedAt: sessionDays.updatedAt,
+            sessions: sql<Session[]>`COALESCE(json_agg(${sessions}.*), '[]'::json)`
+        })
+        .from(sessionDays)
+        .where(eq(sessionDays.id, dayId))
+        .leftJoin(sessions, eq(sessionDays.id, sessions.day))
+        .groupBy(sessionDays.id);
 
-		if (!result[0]) return null;
+    return result[0] ?? null;
+},
 
-		return {
-			...result[0].session_days,
-			sessions: result.map((r) => r.sessions).filter(Boolean),
-		};
-	},
 
-	async getAllSessionDays() {
+	async getAllSessionDays(): Promise<SessionDay[]> {
 		return await db.select().from(sessionDays).orderBy(sessionDays.day);
 	},
 
-	async createSessionDay(sessionDayDetails: SessionDay) {
-		const [newSessionDay] = await db
-			.insert(sessionDays)
-			.values(sessionDayDetails)
-			.returning();
-		return newSessionDay;
-	},
-
-	async deleteSessionDay(id: string): Promise<boolean> {
-		const result = await db
-			.delete(sessionDays)
-			.where(eq(sessionDays.id, id))
-			.returning();
-		return result.length > 0;
+	async getAllSessions(): Promise<Session[]> {
+		return await db.select().from(sessions);
 	},
 };

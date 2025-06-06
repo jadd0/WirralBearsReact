@@ -8,6 +8,7 @@ export type WeekDay =
 	| 'Sunday';
 
 export type Time = string;
+type GENDER_ENUM = ['Male', 'Female', 'Mixed'];
 
 type TwoDigit = `${0 | 1}${number}` | `2${0 | 1 | 2 | 3}` | `0${number}`;
 type Hour = `0${number}` | `1${number}` | `2${0 | 1 | 2 | 3}`;
@@ -27,7 +28,7 @@ export type Session = {
 	time: TimeString;
 	leadCoach: string;
 	age: number;
-	gender: 'Male' | 'Female' | 'Mixed';
+	gender: GENDER_ENUM;
 } & {
 	coach?: string; 
 	createdAt?: Date;
@@ -35,3 +36,6 @@ export type Session = {
 };
 
 export type SessionDay = Session[];
+export type SessionDayWithSessions = SessionDay & {
+  sessions: Session[];
+};
