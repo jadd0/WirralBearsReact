@@ -136,8 +136,8 @@ export const updateFullSchedule: RequestHandler = async (req, res) => {
 
 	try {
 		const result = await sessionServices.updateFullSchedule(schedule);
-		res.status(200);
-	} catch (error) {
+    res.status(200).send({ success: result }); 
+		} catch (error) {
 		res.status(500).send({
 			message: 'Error trying to update session schedule',
 			error: error instanceof Error ? error.message : 'Unknown error',

@@ -12,6 +12,7 @@ import {
 	SessionDayWithSessions,
 	FullSessionSchedule,
 } from '@wirralbears/backend-types';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Fetches all sessions
@@ -63,16 +64,22 @@ export const useGetFullSchedule = () =>
  * Updates the full schedule
  */
 export const useUpdateFullSchedule = () => {
+	const queryClient = useQueryClient();
+	const navigate = useNavigate(); // Add this
+
 	return useMutation({
 		mutationFn: (scheduleData: FullSessionSchedule) =>
 			api.session.updateFullSchedule(scheduleData),
 		onSuccess: () => {
+			// Invalidate cached schedule data
+			queryClient.invalidateQueries({ queryKey: ['fullSchedule'] });
+
+			// Show toast and redirect
 			toast.success('Schedule updated successfully');
+			setTimeout(() => navigate('/sessions'), 1000);
 		},
 		onError: (error: Error) => {
-			toast.error('Failed to update schedule', {
-				description: error.message,
-			});
+			toast.error('Update failed', { description: error.message });
 		},
 	});
 };

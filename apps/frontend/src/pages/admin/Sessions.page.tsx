@@ -6,6 +6,8 @@ import {
 	useUpdateFullSchedule,
 } from '@/hooks/session.hooks';
 import { FullSessionSchedule } from '@wirralbears/backend-types';
+import { validateFullSchedule } from '@wirralbears/validation/src/session.validation';
+import { sessionToasts } from '@/lib/toasts';
 
 export default function EditSessionsPage() {
 	const { data: fullSchedule, isLoading } = useGetFullSchedule();
@@ -27,14 +29,21 @@ export default function EditSessionsPage() {
 	};
 
 	const saveSessions = () => {
-		if (schedule) updateFullSchedule(schedule);
+		if (!schedule) return;
+
+		try {
+			validateFullSchedule(schedule);
+			updateFullSchedule(schedule); 
+		} catch (error) {
+			if (error instanceof Error) {
+				sessionToasts.validationError(error);
+			}
+		}
 	};
 
 	return (
 		<div className="max-w-3xl mx-auto p-6">
-			<h1 className="text-3xl font-bold mb-8 text-center">
-				Edit Sessions
-			</h1>
+			<h1 className="text-3xl font-bold mb-8 text-center">Edit Sessions</h1>
 			{isLoading || !schedule ? (
 				<div className="flex justify-center items-center h-40">
 					<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
