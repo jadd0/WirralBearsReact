@@ -1,12 +1,12 @@
 import { SessionWithCoach } from '@wirralbears/backend-types';
+import { Link } from 'react-router-dom';
 
-// SessionItem.tsx
 export default function SessionItem({
 	session,
-	coachName,
+	coach,
 }: {
 	session: SessionWithCoach;
-	coachName: string;
+	coach: any;
 }) {
 	return (
 		<div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
@@ -18,7 +18,12 @@ export default function SessionItem({
 					<p className="text-gray-600">{session.gender} group</p>
 				</div>
 				<div className="text-right">
-					<p className="font-medium text-blue-600">{coachName}</p>
+					{' '}
+					<Link to={{ pathname: `/coaches/coach/${coach.id}` }}>
+						<p className="font-medium text-blue-600 cursor-pointer">
+							{coach.title}
+						</p>
+					</Link>
 					<p className="text-sm text-gray-500">Lead Coach</p>
 				</div>
 			</div>

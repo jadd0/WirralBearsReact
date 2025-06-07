@@ -7,6 +7,8 @@ export default function SessionsPage() {
 	const { data: schedule, isLoading, isError } = useGetFullSchedule();
 	const scheduleTyped = schedule as FullSessionSchedule;
 
+	console.log(scheduleTyped);
+
 	return (
 		<div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-7xl mx-auto">
@@ -16,6 +18,12 @@ export default function SessionsPage() {
 					</h1>
 					<p className="text-lg text-gray-600">
 						View our weekly training sessions and coaches
+					</p>
+					<p className="text-md text-gray-600">
+						Updated on{' '}
+						{new Date(
+							scheduleTyped?.sessionDays[0].updatedAt
+						).toLocaleDateString()}
 					</p>
 				</div>
 

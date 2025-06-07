@@ -30,7 +30,7 @@ export default function SessionDayComponent({
 							<SessionItem
 								key={session.id}
 								session={session}
-								coachName={coach?.title || 'Coach TBA'}
+								coach={coach || 'Coach TBA'}
 							/>
 						);
 					})
