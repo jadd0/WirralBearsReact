@@ -52,7 +52,7 @@ export default function SessionDayComponent({
 				</h2>
 				<button
 					onClick={addNewSession}
-					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm cursor-pointer"
 				>
 					+ Add Session
 				</button>

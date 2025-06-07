@@ -8,7 +8,7 @@ export default function SessionDelete({
 }) {
 	return (
 		<button
-			className="text-red-500 hover:text-red-700 p-2 rounded transition-colors"
+			className="text-red-500 hover:text-red-700 p-2 rounded transition-colors cursor-pointer"
 			onClick={onClick}
 			title="Delete Session"
 			type="button"
