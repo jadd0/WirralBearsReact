@@ -20,9 +20,9 @@ export const sessionDays = pgTable('session_days', {
 	id: varchar('id', { length: SESSION_ID_LENGTH })
 		.primaryKey()
 		.$defaultFn(() => nanoid(SESSION_ID_LENGTH)),
-	day: varchar('day', { length: WEEKDAY_LENGTH }).$type<
-		(typeof WEEKDAYS)[number]
-	>(),
+	day: varchar('day', { length: WEEKDAY_LENGTH })
+		.$type<(typeof WEEKDAYS)[number]>()
+		.notNull(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
@@ -51,6 +51,6 @@ export type SessionWithCoach = Session & {
 };
 export type FullSessionSchedule = {
 	sessionDays: (SessionDay & {
-		sessions: SessionWithCoach[];
+		sessions: SessionWithCoach[] | null;
 	})[];
 };

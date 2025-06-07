@@ -41,11 +41,11 @@ export const updateSession: RequestHandler = async (req, res) => {
 	try {
 		const existingSession = await sessionServices.getSession(id);
 
-    if (!existingSession) {
-      res.status(404).send({
-        message: `No such session with id ${id}`,
-      });
-    }
+		if (!existingSession) {
+			res.status(404).send({
+				message: `No such session with id ${id}`,
+			});
+		}
 
 		const updates = req.body;
 		const updatedSession = await sessionServices.updateSession(id, updates);
@@ -127,6 +127,25 @@ export const getSessionDay: RequestHandler = async (req, res) => {
 	}
 };
 
+export const updateFullSchedule: RequestHandler = async (req, res) => {
+	const schedule = req.body;
+
+	if (!schedule) {
+		res.status(400).send({ message: 'No schedule provided to update' });
+	}
+
+	try {
+		const result = await sessionServices.updateFullSchedule(schedule);
+		res.status(200);
+	}
+	catch(error) {
+		res.status(500).send({
+			message: 'Error trying to update session schedule',
+			error: error instanceof Error ? error.message : 'Unknown error',
+		});
+	}
+};
+
 export default {
 	getAllSessions,
 	createSession,
@@ -135,4 +154,5 @@ export default {
 	getSessionById,
 	getFullSchedule,
 	getSessionDay,
+	updateFullSchedule
 } as {};

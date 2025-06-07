@@ -25,10 +25,7 @@ router.put(
 );
 
 // GET a single session by ID
-router.get(
-	'/getSession/:id',
-	sessionControllers.getSessionById
-);
+router.get('/getSession/:id', sessionControllers.getSessionById);
 
 // DELETE a session
 router.delete(
@@ -38,13 +35,15 @@ router.delete(
 );
 
 // GET full schedule
-router.get(
-	'/getFullSchedule',
-	sessionControllers.getFullSchedule
-);
+router.get('/getFullSchedule', sessionControllers.getFullSchedule);
 
 // GET a full session day
 router.get('/getSessionDay/:id', sessionControllers.getSessionDay);
 
+router.put(
+	'/updateFullSchedule',
+	ensureAuthenticated,
+	sessionControllers.updateFullSchedule
+);
 
 export default router;

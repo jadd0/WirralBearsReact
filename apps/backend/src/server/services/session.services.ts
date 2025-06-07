@@ -1,6 +1,7 @@
 import { sessionRepository } from '../repositories/session.repo';
 import { Session, SessionDay } from '@wirralbears/types';
 import { Coaches } from '@/db/schemas/coach.schema';
+import { FullSessionSchedule } from '@/db/schema';
 
 export const sessionServices = {
 	/**
@@ -102,6 +103,23 @@ export const sessionServices = {
 			console.error('Failed to fetch session day:', error);
 			throw new Error('Failed to fetch session day');
 		}
+	},
+
+	async updateFullSchedule(schedule: FullSessionSchedule): Promise<boolean> {
+		if (!schedule) {
+			throw new Error('No schedule provide');
+		}
+
+		const sessions = schedule.sessionDays;
+		
+		sessions.forEach(async (session) => {
+			const result = await sessionRepository.updateSession(session.id, session);
+			if (!result) {
+				throw new Error(`Error updating session ${session.id}`)
+			}
+		});
+
+		return true;
 	},
 };
 
