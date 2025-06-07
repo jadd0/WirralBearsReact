@@ -15,18 +15,22 @@ export function SessionDropdown({
 	values,
 	onClick,
 	currentValue,
+	id,
 }: {
 	title?: string;
 	values?: any[];
 	onClick?: (value: any) => void;
 	currentValue?: any;
+	id: any;
 }) {
 	const [position, setPosition] = useState('');
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="outline">{currentValue || position || title}</Button>
+				<Button variant="outline">
+					{id === '' && position == '' ? title : currentValue || position}
+				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuLabel>{title}</DropdownMenuLabel>

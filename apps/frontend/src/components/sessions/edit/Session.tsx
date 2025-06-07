@@ -3,8 +3,6 @@ import SessionDelete from './SessionDelete';
 import { SessionDropdown } from './SessionDropdown';
 import { GENDER, SESSION_AGE_GROUPS } from '@wirralbears/constants';
 import { useGetAllCoachPreviews } from '@/hooks/coach.hooks';
-import { useEffect, useState } from 'react';
-import { coach } from '@/queries/coach.queries';
 
 export default function SessionComponent({
 	session,
@@ -87,24 +85,34 @@ export default function SessionComponent({
 				values={timeSlots}
 				currentValue={session.time}
 				onClick={(value) => handleUpdate({ time: value })}
+				id={session.id}
 			/>
 			<SessionDropdown
 				title={'Gender'}
 				values={GENDER}
 				currentValue={session.gender}
 				onClick={(value) => handleUpdate({ gender: value })}
+				id={session.id}
 			/>
 			<SessionDropdown
 				title={'Age'}
 				values={SESSION_AGE_GROUPS}
 				currentValue={session.age}
 				onClick={(value) => handleUpdate({ age: value })}
+				id={session.id}
 			/>
 			<SessionDropdown
 				title={'Lead Coach'}
 				values={coachNames}
-				currentValue={coaches?.filter((c) => c.id === session.leadCoach)[0]?.title}
-				onClick={(value) => handleUpdate({leadCoach: coaches?.filter((c) => c.title === value)[0]?.id})}
+				currentValue={
+					coaches?.filter((c) => c.id === session.leadCoach)[0]?.title
+				}
+				onClick={(value) =>
+					handleUpdate({
+						leadCoach: coaches?.filter((c) => c.title === value)[0]?.id,
+					})
+				}
+				id={session.id}
 			/>
 			<div className="flex-none">
 				<SessionDelete sessionId={session.id} onClick={onDelete} />

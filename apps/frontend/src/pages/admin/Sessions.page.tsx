@@ -16,7 +16,7 @@ export default function EditSessionsPage() {
 
 	// Initialize local state when data is loaded
 	useEffect(() => {
-		if (fullSchedule) setSchedule(fullSchedule);
+		if (fullSchedule) setSchedule(fullSchedule as FullSessionSchedule);
 	}, [fullSchedule]);
 
 	// Update sessions for a specific day
