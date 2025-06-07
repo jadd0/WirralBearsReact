@@ -100,3 +100,17 @@ export async function getSessionDay(id: string): Promise<SessionDayWithSessions>
   });
   return data.sessionDay;
 }
+
+/**
+ * Updates entire schedule
+ * @param id - The ID of the session day
+ * @returns The session day object
+ */
+export async function updateFullSchedule(schedule: FullSessionSchedule): Promise<boolean> {
+  const { data } = await request({
+    url: `/api/session/updateFullSchedule`,
+    method: 'PUT',
+    data: schedule
+  });
+  return data;
+}

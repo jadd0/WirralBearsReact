@@ -60,6 +60,34 @@ export const useGetFullSchedule = () =>
 	});
 
 /**
+ * Updates the full schedule
+ */
+export const useUpdateFullSchedule = (): ((
+	configuredOptions?: CreateMutationOptions<
+		(sessionData: Session) => Promise<boolean>,
+		unknown
+	>
+) => CreateMutationResult<
+	(sessionData: Session) => Promise<boolean>,
+	unknown
+>) => {
+	return createConfigurableMutation(
+		api.session.updateFullSchedule,
+		['schedule', 'update'],
+		{
+			onSuccess: () => {
+				toast.success('Session updated successfully');
+			},
+			onError: (error: Error) => {
+				toast.error('Failed to update session', {
+					description: error.message,
+				});
+			},
+		}
+	);
+};
+
+/**
  * Fetches a session day by its ID
  */
 export const useGetSessionDay = (id: string) =>
