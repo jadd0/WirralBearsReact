@@ -28,14 +28,20 @@ export function SessionDropdown({
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="outline">
-					{id === '' && position == '' ? title : currentValue || position}
+				<Button variant="outline" className="min-w-[110px] text-gray-700">
+					{id.startsWith('new-') && position == '' ? title : currentValue || position}
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-56">
+			<DropdownMenuContent className="w-48">
 				<DropdownMenuLabel>{title}</DropdownMenuLabel>
 				<DropdownMenuSeparator />
-				<DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+				<DropdownMenuRadioGroup
+					value={currentValue}
+					onValueChange={(val) => {
+						setPosition(val);
+						onClick?.(val);
+					}}
+				>
 					{values?.map((value) => (
 						<DropdownMenuRadioItem
 							key={value}

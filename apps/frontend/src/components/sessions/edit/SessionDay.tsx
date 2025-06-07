@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { SessionDayWithSessions, Session } from '@wirralbears/backend-types';
 import SessionComponent from './Session';
-import AddSession from './AddSession';
 
 export default function SessionDayComponent({
 	sessionDay,
@@ -12,12 +10,12 @@ export default function SessionDayComponent({
 	onSessionsChange: (newSessions: Session[]) => void;
 }) {
 	const [sessions, setSessions] = useState<Session[]>(
-		() => sessionDay.sessions ?? []
+		sessionDay.sessions ?? []
 	);
 
-	// Only sync with parent when sessions change locally
 	useEffect(() => {
 		onSessionsChange(sessions);
+		// eslint-disable-next-line
 	}, [sessions]);
 
 	const handleEditSession = (updatedSession: Session) => {
@@ -27,18 +25,16 @@ export default function SessionDayComponent({
 	};
 
 	const handleDeleteSession = (sessionId: string) => {
-		setSessions((prevSessions) =>
-			prevSessions.filter((session) => session.id !== sessionId)
-		);
+		setSessions((prev) => prev.filter((session) => session.id !== sessionId));
 	};
 
 	const addNewSession = () => {
 		setSessions((prev) => [
 			...prev,
 			{
-				id: '',
+				id: `new-${sessions.length}`,
 				day: sessionDay.id,
-				time: '09:00',
+				time: '',
 				age: 5,
 				gender: 'Mixed',
 				leadCoach: '',
@@ -49,9 +45,19 @@ export default function SessionDayComponent({
 	};
 
 	return (
-		<div className="session-day">
-			<h2>{sessionDay.day}</h2>
-			<ul>
+		<div className="bg-white shadow rounded-lg p-6">
+			<div className="flex justify-between items-center mb-4">
+				<h2 className="text-xl font-semibold text-gray-700">
+					{sessionDay.day}
+				</h2>
+				<button
+					onClick={addNewSession}
+					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+				>
+					+ Add Session
+				</button>
+			</div>
+			<ul className="space-y-3">
 				{sessions.map((session) => (
 					<SessionComponent
 						key={session.id}
@@ -61,7 +67,6 @@ export default function SessionDayComponent({
 					/>
 				))}
 			</ul>
-			<AddSession onClick={addNewSession} />
 		</div>
 	);
 }

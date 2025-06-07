@@ -10,16 +10,12 @@ import { FullSessionSchedule } from '@wirralbears/backend-types';
 export default function EditSessionsPage() {
 	const { data: fullSchedule, isLoading } = useGetFullSchedule();
 	const { mutate: updateFullSchedule } = useUpdateFullSchedule();
-
-	// Local state for editing sessions
 	const [schedule, setSchedule] = useState<FullSessionSchedule | null>(null);
 
-	// Initialize local state when data is loaded
 	useEffect(() => {
 		if (fullSchedule) setSchedule(fullSchedule as FullSessionSchedule);
 	}, [fullSchedule]);
 
-	// Update sessions for a specific day
 	const updateSessionDay = (sessionDayId: string, newSessions: any[]) => {
 		if (!schedule) return;
 		setSchedule({
@@ -30,22 +26,22 @@ export default function EditSessionsPage() {
 		});
 	};
 
-	// Save all changes (additions, deletions, edits)
 	const saveSessions = () => {
-		if (schedule) {
-			console.log(schedule);
-			updateFullSchedule(schedule);
-		}
+		if (schedule) updateFullSchedule(schedule);
 	};
 
 	return (
-		<>
-			<h1>Edit Sessions</h1>
+		<div className="max-w-3xl mx-auto p-6">
+			<h1 className="text-3xl font-bold mb-8 text-center">
+				Edit Sessions
+			</h1>
 			{isLoading || !schedule ? (
-				<p>Loading...</p>
+				<div className="flex justify-center items-center h-40">
+					<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+				</div>
 			) : (
 				<>
-					<div>
+					<div className="space-y-8">
 						{schedule.sessionDays.map((sessionDay) => (
 							<SessionDayComponent
 								key={sessionDay.id}
@@ -56,12 +52,14 @@ export default function EditSessionsPage() {
 							/>
 						))}
 					</div>
-					<SaveSessions
-						onClick={saveSessions}
-						onSuccess={() => console.log('success')}
-					/>
+					<div className="flex justify-end mt-10">
+						<SaveSessions
+							onClick={saveSessions}
+							onSuccess={() => console.log('success')}
+						/>
+					</div>
 				</>
 			)}
-		</>
+		</div>
 	);
 }
