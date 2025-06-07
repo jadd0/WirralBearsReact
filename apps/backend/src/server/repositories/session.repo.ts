@@ -1,4 +1,4 @@
-import { eq, sql, and } from 'drizzle-orm';
+import { eq, sql, and, inArray } from 'drizzle-orm';
 import { db } from '@/db';
 import {
 	sessionDays,
@@ -166,29 +166,47 @@ export const sessionRepository = {
 	): Promise<boolean> {
 		return await db.transaction(async (tx) => {
 			try {
-				// 1. Delete all existing sessions
+				// 1. Validate session days exist first
+				const allDayIds = fullSchedule.sessionDays.map((day) => day.id);
+				const existingDays = await tx
+					.select({ id: sessionDays.id })
+					.from(sessionDays)
+					.where(inArray(sessionDays.id, allDayIds));
+
+				if (existingDays.length !== allDayIds.length) {
+					throw new Error("One or more session days don't exist");
+				}
+
+				// 2. Delete all sessions
 				await tx.delete(sessions);
 
-				// 2. Insert all new sessions with proper IDs and timestamps
-				for (const day of fullSchedule.sessionDays) {
-					for (const session of day.sessions) {
-						await tx.insert(sessions).values({
-							id: nanoid(SESSION_ID_LENGTH),
-							day: day.id,
-							time: session.time,
-							age: session.age,
-							gender: session.gender,
-							leadCoach: session.leadCoach,
-							createdAt: new Date(),
-							updatedAt: new Date(),
-						});
-					}
+
+				// 3. Bulk insert new sessions
+				const insertValues = fullSchedule.sessionDays.flatMap((day) =>
+					day.sessions.map((session) => ({
+						id: nanoid(SESSION_ID_LENGTH),
+						day: day.id,
+						time: session.time,
+						age: session.age,
+						gender: session.gender,
+						leadCoach: session.leadCoach,
+						createdAt: new Date(),
+						updatedAt: new Date(),
+					}))
+				);
+
+				if (insertValues.length > 0) {
+					await tx.insert(sessions).values(insertValues);
 				}
 
 				return true;
 			} catch (error) {
-				tx.rollback();
-				throw new Error(`Session replacement failed: ${error}`);
+				console.error('Transaction failed:', error);
+				throw new Error(
+					`Session replacement failed: ${
+						error instanceof Error ? error.message : 'Unknown error'
+					}`
+				);
 			}
 		});
 	},
