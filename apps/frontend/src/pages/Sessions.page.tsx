@@ -1,9 +1,11 @@
 import { useGetFullSchedule } from '@/hooks/session.hooks';
 import SessionGrid from '@/components/sessions/display/SessionGrid';
 import SessionGridSkeleton from '@/components/sessions/display/SessionGridSkeleton';
+import { FullSessionSchedule } from '@wirralbears/backend-types';
 
 export default function SessionsPage() {
-	const { data: schedule, isLoading, isError, error } = useGetFullSchedule();
+	const { data: schedule, isLoading, isError } = useGetFullSchedule();
+	const scheduleTyped = schedule as FullSessionSchedule;
 
 	return (
 		<div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -19,10 +21,8 @@ export default function SessionsPage() {
 
 				{isLoading && <SessionGridSkeleton />}
 
-
-
-				{!isLoading && !isError && schedule && (
-					<SessionGrid schedule={schedule} />
+				{!isLoading && !isError && scheduleTyped && (
+					<SessionGrid schedule={scheduleTyped} />
 				)}
 
 				<div className="mt-8 text-center text-sm text-gray-500">
