@@ -8,3 +8,12 @@ export {
 	CoachPreview,
 	FullCoach,
 } from '@wirralbears/backend/types/coach.types.js';
+
+export {
+	Session,
+	SessionDay,
+	SessionWithCoach,
+	FullSessionSchedule,
+} from '@wirralbears/backend/db/schemas/session.schema.js';
+
+export { SessionDayWithSessions } from '@wirralbears/backend/types/session.types.js';

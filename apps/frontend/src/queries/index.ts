@@ -5,5 +5,6 @@ import { auth } from '@/queries/auth.queries';
 import { blog } from './blog.queries';
 import { image } from './image.queries';
 import { coach } from './coach.queries';
+import { session } from './session.queries';
 
-export const queries = mergeQueryKeys(auth, blog, image, coach);
+export const queries = mergeQueryKeys(auth, blog, image, coach, session);
