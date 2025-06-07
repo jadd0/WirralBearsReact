@@ -30,13 +30,28 @@ export const sessionRepository = {
 		id: string,
 		updates: Partial<Omit<Session, 'id' | 'createdAt' | 'updatedAt'>>
 	): Promise<boolean> {
+		// Attempt update first
 		const result = await db
 			.update(sessions)
 			.set({ ...updates, updatedAt: new Date() })
 			.where(eq(sessions.id, id))
 			.returning();
 
-		if (!result) return false;
+		if (result.length > 0) return true;
+
+		// Type-safe insert with required fields
+		await db.insert(sessions).values({
+			id,
+			// Provide defaults for required fields missing in updates
+			day: updates.day ?? 'defaultDay',
+			time: updates.time ?? 'defaultTime',
+			age: updates.age ?? 0,
+			gender: updates.gender ?? 'Mixed',
+			leadCoach: updates.leadCoach ?? '',
+			createdAt: new Date(),
+			updatedAt: new Date(),
+		});
+
 		return true;
 	},
 

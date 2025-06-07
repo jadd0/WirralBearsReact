@@ -110,13 +110,17 @@ export const sessionServices = {
 			throw new Error('No schedule provide');
 		}
 
-		const sessions = schedule.sessionDays;
-		
-		sessions.forEach(async (session) => {
-			const result = await sessionRepository.updateSession(session.id, session);
-			if (!result) {
-				throw new Error(`Error updating session ${session.id}`)
-			}
+		schedule.sessionDays.forEach(async (day) => {
+			day.sessions.forEach(async (session) => {
+				const result = await sessionRepository.updateSession(
+					session.id,
+					session
+				);
+				console.log(result);
+				if (!result) {
+					throw new Error(`Error updating session ${session.id}`);
+				}
+			});
 		});
 
 		return true;
