@@ -31,6 +31,7 @@ export const sessionRepository = {
 		updates: Partial<Omit<Session, 'id' | 'createdAt' | 'updatedAt'>>
 	): Promise<boolean> {
 		// Attempt update first
+		console.log(updates);
 		const result = await db
 			.update(sessions)
 			.set({ ...updates, updatedAt: new Date() })
@@ -159,5 +160,36 @@ export const sessionRepository = {
 		});
 
 		return { sessionDays: sessionDaysArr };
+	},
+	async replaceAllSessions(
+		fullSchedule: FullSessionSchedule
+	): Promise<boolean> {
+		return await db.transaction(async (tx) => {
+			try {
+				// 1. Delete all existing sessions
+				await tx.delete(sessions);
+
+				// 2. Insert all new sessions with proper IDs and timestamps
+				for (const day of fullSchedule.sessionDays) {
+					for (const session of day.sessions) {
+						await tx.insert(sessions).values({
+							id: nanoid(SESSION_ID_LENGTH),
+							day: day.id,
+							time: session.time,
+							age: session.age,
+							gender: session.gender,
+							leadCoach: session.leadCoach,
+							createdAt: new Date(),
+							updatedAt: new Date(),
+						});
+					}
+				}
+
+				return true;
+			} catch (error) {
+				tx.rollback();
+				throw new Error(`Session replacement failed: ${error}`);
+			}
+		});
 	},
 };

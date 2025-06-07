@@ -107,23 +107,10 @@ export const sessionServices = {
 
 	async updateFullSchedule(schedule: FullSessionSchedule): Promise<boolean> {
 		if (!schedule) {
-			throw new Error('No schedule provide');
+			throw new Error('No schedule provided');
 		}
 
-		schedule.sessionDays.forEach(async (day) => {
-			day.sessions.forEach(async (session) => {
-				const result = await sessionRepository.updateSession(
-					session.id,
-					session
-				);
-				console.log(result);
-				if (!result) {
-					throw new Error(`Error updating session ${session.id}`);
-				}
-			});
-		});
-
-		return true;
+		return await sessionRepository.replaceAllSessions(schedule);
 	},
 };
 
