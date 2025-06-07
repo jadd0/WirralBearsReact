@@ -2,6 +2,7 @@ import { useGetFullSchedule } from '@/hooks/session.hooks';
 import SessionGrid from '@/components/sessions/display/SessionGrid';
 import SessionGridSkeleton from '@/components/sessions/display/SessionGridSkeleton';
 import { FullSessionSchedule } from '@wirralbears/backend-types';
+import { LogoBanner } from '@/components/layout/LogoBanner';
 
 export default function SessionsPage() {
 	const { data: schedule, isLoading, isError } = useGetFullSchedule();
@@ -11,6 +12,7 @@ export default function SessionsPage() {
 
 	return (
 		<div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <LogoBanner />
 			<div className="max-w-7xl mx-auto">
 				<div className="text-center mb-12">
 					<h1 className="text-4xl font-bold text-gray-900 mb-2">
