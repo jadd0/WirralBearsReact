@@ -5,11 +5,11 @@
  * @returns {string} - The complete URL for accessing the file.
  */
 export const uploadThingFileUrlFromKey = (fileKey: string) => {
-  const appId = import.meta.env.VITE_UPLOAD_THING_APP_ID as string;
+	const appId = (import.meta as any).env.VITE_UPLOAD_THING_APP_ID as string;
 
-  if (!appId) {
-    throw new Error("VITE_UPLOAD_THING_APP_ID is not defined");
-  }
+	if (!appId) {
+		throw new Error('VITE_UPLOAD_THING_APP_ID is not defined');
+	}
 
-  return new URL(`f/${fileKey}`, `https://${appId}.ufs.sh`).toString();
+	return new URL(`f/${fileKey}`, `https://${appId}.ufs.sh`).toString();
 };

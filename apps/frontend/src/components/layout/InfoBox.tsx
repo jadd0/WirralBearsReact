@@ -1,4 +1,12 @@
-export function InfoBox({ title, children, className = '' }) {
+export function InfoBox({
+	title,
+	children,
+	className = '',
+}: {
+	title?: any;
+	children: React.ReactNode;
+	className?: string;
+}) {
 	return (
 		<section className={`rounded-2xl shadow-lg my-6 p-6 ${className}`}>
 			{title && (

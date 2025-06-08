@@ -8,7 +8,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 function wirralBearsImportsPlugin() {
   return {
     name: 'wirralbears-imports',
-    resolveId(id) {
+    resolveId(id: any) {
       if (id.startsWith('@wirralbears/')) {
         const [, packageName, ...rest] = id.split('/');
         const packagePath = path.resolve(__dirname, `../../packages/${packageName}/src`);

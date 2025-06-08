@@ -1,5 +1,3 @@
-import { useMe } from '@/hooks/auth.hooks';
-
 export default function AdminPage() {
 	return (
 		<>

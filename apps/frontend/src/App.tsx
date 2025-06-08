@@ -56,35 +56,35 @@ function AuthenticatedRouter() {
 	return <Outlet />;
 }
 
-function UnauthenticatedRouter() {
-	const { data, isPending, error, refetch } = useMe();
+// function UnauthenticatedRouter() {
+// 	const { data, isPending, error, refetch } = useMe();
 
-	useEffect(() => {
-		if (error)
-			toast.error(
-				'Failed to verify authentication status! Please try again later.'
-			);
-	}, [error]);
+// 	useEffect(() => {
+// 		if (error)
+// 			toast.error(
+// 				'Failed to verify authentication status! Please try again later.'
+// 			);
+// 	}, [error]);
 
-	if (error)
-		return (
-			<OnLoadingErrorView
-				message={
-					<>
-						We’re having trouble verifying your access.
-						<br /> Please try again later.
-					</>
-				}
-				onRetry={() => refetch()}
-			/>
-		);
+// 	if (error)
+// 		return (
+// 			<OnLoadingErrorView
+// 				message={
+// 					<>
+// 						We’re having trouble verifying your access.
+// 						<br /> Please try again later.
+// 					</>
+// 				}
+// 				onRetry={() => refetch()}
+// 			/>
+// 		);
 
-	if (isPending) return <LoadingView />;
+// 	if (isPending) return <LoadingView />;
 
-	if (data?.authenticated || data?.user) return <Navigate to="/feed" />;
+// 	if (data?.authenticated || data?.user) return <Navigate to="/feed" />;
 
-	return <Outlet />;
-}
+// 	return <Outlet />;
+// }
 
 function App() {
 	const { pathname } = useLocation();

@@ -11,13 +11,13 @@ export function CoachEdit() {
 	const location = useLocation();
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const [coachData, setCoachData] = useState<BlogData>({ elements: [] });
+	const [_, setCoachData] = useState<BlogData>({ elements: [] });
 	const [initialData, setInitialData] = useState<BlogData>({ elements: [] });
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const { data: fetchedCoach, isLoading } = useGetCoach(id ?? '');
 	const editCoachMutation = useEditCoach()();
-	const { mutate: editCoach, isPending } = editCoachMutation;
+	const { mutate: editCoach } = editCoachMutation;
 
 	useLayoutEffect(() => {
 		if (location.state?.coachData) {
@@ -79,6 +79,8 @@ export function CoachEdit() {
 			<h1 className="text-3xl font-bold mb-6 text-center">
 				Edit Coach Profile
 			</h1>
+
+			{isSubmitting && toast.loading('Saving changes...')}
 			<BlogEditor
 				key={JSON.stringify(initialData)}
 				initialData={initialData}

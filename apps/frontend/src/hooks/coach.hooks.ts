@@ -5,25 +5,13 @@ import { useQuery } from '@tanstack/react-query';
 import { BlogData } from '@wirralbears/types';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-	CreateMutationOptions,
-	CreateMutationResult,
-} from '@tanstack/react-query';
 import { CoachPreview } from '@wirralbears/backend-types';
 
 /**
  * Updates an existing coach
  * @returns The result of the update operation
  */
-export const useEditCoach = (): ((
-	configuredOptions?: CreateMutationOptions<
-		(data: { caochData: BlogData; id: string }) => Promise<{ id: string }>,
-		unknown
-	>
-) => CreateMutationResult<
-	(data: { coachData: BlogData; id: string }) => Promise<{ id: string }>,
-	unknown
->) => {
+export const useEditCoach = () => {
 	return createConfigurableMutation(
 		api.coach.editCoachOnServer,
 		['coaches', 'edit'],
@@ -46,15 +34,7 @@ export const useEditCoach = (): ((
  * Saves a coach to the server
  * @returns The result of the save operation
  */
-export const useSaveCoach = (): ((
-	configuredOptions?: CreateMutationOptions<
-		(coachData: BlogData) => Promise<{ id: string }>,
-		unknown
-	>
-) => CreateMutationResult<
-	(coachData: BlogData) => Promise<{ id: string }>,
-	unknown
->) => {
+export const useSaveCoach = () => {
 	return createConfigurableMutation(
 		api.coach.saveCoachToServer,
 		['coaches', 'save'],
@@ -103,7 +83,7 @@ export const useDeleteCoach = () => {
 			// Call the API function directly instead of queryFn()
 			return await api.coach.deleteCoach(id);
 		},
-		onSuccess: (data, id) => {
+		onSuccess: (_, id) => {
 			toast.success('Coach deleted successfully');
 
 			queryClient.invalidateQueries({

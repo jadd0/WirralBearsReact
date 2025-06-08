@@ -1,14 +1,12 @@
-import React from 'react';
 import { LogoBanner } from '@components/layout/LogoBanner';
 import { InfoBox } from '@components/layout/InfoBox';
 import { CarouselComponent } from '@components/layout/Carousel';
 import { MapboxMap } from '@components/layout/Mapbox';
 import { BallForAllGrid } from '@components/layout/BallForAllGrid';
 import { Footer } from '@components/layout/Footer';
-import { Image } from '@wirralbears/packages/types';
 
 // Example images; replace with server images as needed
-const carouselImages: Image[] = [
+const carouselImages: any[] = [
 	{ id: 1, src: 'https://picsum.photos/800/400?random=1', name: '1' },
 	{ id: 2, src: 'https://picsum.photos/800/400?random=2', name: '2' },
 	{ id: 3, src: 'https://picsum.photos/800/400?random=3', name: '3' },
@@ -92,9 +90,7 @@ export default function HomePage() {
 
 				{/* Location Section */}
 				<section className="w-full max-w-2xl text-center mb-10">
-					<h3 className="text-2xl font-extrabold mb-4">
-						Our Location
-					</h3>
+					<h3 className="text-2xl font-extrabold mb-4">Our Location</h3>
 					<div className="rounded-2xl shadow-lg overflow-hidden">
 						<MapboxMap />
 					</div>
@@ -120,5 +116,3 @@ export default function HomePage() {
 		</div>
 	);
 }
-
-
