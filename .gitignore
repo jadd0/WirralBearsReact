@@ -12,3 +12,4 @@ dist
 # data
 /apps/backend/data/*.json
 
+.turbo
