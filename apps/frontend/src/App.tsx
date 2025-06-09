@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { toast, Toaster } from 'sonner';
 import { OnLoadingErrorView, LoadingView } from './components/layout/Loading';
 import { useMe } from './hooks/auth.hooks';
@@ -141,7 +141,6 @@ function App() {
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/sponsorship" element={<SponsorshipPage />} />
 					<Route path="/sessions" element={<SessionsPage />} />
-
 
 					{/* Blog routes */}
 					<Route path="/blog/blogs" element={<ViewBlogsPage />} />

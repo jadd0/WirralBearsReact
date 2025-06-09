@@ -9,6 +9,7 @@ import connectPgSimple from 'connect-pg-simple';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
+import { createDatabasePool } from '@/utils/database';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,7 +23,6 @@ app.use(express.json());
 // For parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-
 // Global middleware for parsing JSON & URL-encoded data
 app.use(
 	cors({
@@ -31,16 +31,19 @@ app.use(
 	})
 );
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 // Authentication middleware
-const pgPool = new pg.Pool({
-	user: env.DB_USER,
-	host: env.DB_HOST,
-	port: env.DB_PORT,
-	password: env.DB_PASSWORD,
-});
+let pgPool;
+
+if (env.NODE_ENV === 'development') {
+	pgPool = new pg.Pool({
+		user: env.DB_USER,
+		host: env.DB_HOST,
+		port: env.DB_PORT,
+		password: env.DB_PASSWORD,
+	});
+} else {
+	pgPool = createDatabasePool();
+}
 const pgSessionStore = connectPgSimple(session);
 
 app.use(
@@ -53,10 +56,9 @@ app.use(
 		resave: false,
 		saveUninitialized: false,
 		cookie: {
-			// TODO: Configure cookie settings better
 			httpOnly: true,
-			secure: false, //TODO: Set to true in production
-			sameSite: 'lax',
+			secure: env.NODE_ENV === 'production', // Secure cookies in production
+			sameSite: env.NODE_ENV === 'production' ? 'strict' : 'lax',
 		},
 	})
 );

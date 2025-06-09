@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { type DropzoneOptions } from 'react-dropzone';
 import { FileUploader, FileInput } from '@/components/ui/file-upload';
 import { Trash2, ImagePlus } from 'lucide-react';
