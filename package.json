@@ -14,7 +14,8 @@
     "build:packages": "pnpm -r --filter \"@wirralbears/constants\" --filter \"@wirralbears/validation\" --filter \"@wirralbears/types\" --filter \"@wirralbears/backend-types\" --workspace-concurrency 1 build",
     "build:backend": "pnpm --filter backend run build",
     "build:frontend": "pnpm --filter frontend run build",
-    "build": "pnpm run build:packages && pnpm run build:backend && pnpm run build:frontend"
+    "build": "pnpm run build:packages && pnpm run build:backend && pnpm run build:frontend && pnpm run copy:frontend",
+    "copy:frontend": "cp -r apps/frontend/dist ./dist"
   },
   "keywords": [],
   "author": "jadd0",
