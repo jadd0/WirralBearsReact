@@ -1,0 +1,5 @@
+
+
+> backend@1.0.0 build /Users/jaddal-khabbaz/Desktop/Programming/Web/wirralbears/apps/backend
+> tsc --noEmitOnError false --skipLibCheck
+
