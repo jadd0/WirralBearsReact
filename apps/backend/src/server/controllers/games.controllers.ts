@@ -1,6 +1,6 @@
 import { gamesServices } from '../services/games.services';
 import { RequestHandler, Request, Response } from 'express';
-import { gameInsert } from '@/db/schemas/games.schema';
+import { GameInsert } from '@/db/schemas/games.schema';
 
 export const getAllGames: RequestHandler = async (req, res) => {
 	try {
@@ -148,7 +148,7 @@ export const replaceAllGames: RequestHandler = async (req, res) => {
 	}
 
 	try {
-		const success = await gamesServices.replaceAllGames(games as gameInsert[]);
+		const success = await gamesServices.replaceAllGames(games as GameInsert[]);
 
 		if (success) {
 			res.status(200).send({

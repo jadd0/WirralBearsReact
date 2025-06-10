@@ -2,14 +2,14 @@ import { eq, sql, and } from 'drizzle-orm';
 import { db } from '@/db';
 import {
 	GamesBySeason,
-	game,
-	gameInsert,
+	Game,
+	GameInsert,
 	games,
 	seasons,
 } from '@/db/schemas/games.schema';
 
 export const gamesRepository = {
-	async updateAllGames(gamesToInsert: gameInsert[]): Promise<boolean> {
+	async updateAllGames(gamesToInsert: GameInsert[]): Promise<boolean> {
 		return await db.transaction(async (tx) => {
 			try {
 				// First, delete all existing games
@@ -32,7 +32,7 @@ export const gamesRepository = {
 		});
 	},
 
-	async getAllGames(): Promise<game[]> {
+	async getAllGames(): Promise<Game[]> {
 		try {
 			return await db.select().from(games).orderBy(games.date);
 		} catch (error) {
@@ -67,7 +67,7 @@ export const gamesRepository = {
 				{
 					seasonName: string;
 					seasonId: string;
-					games: game[];
+					games: Game[];
 				}
 			> = {};
 
@@ -103,7 +103,7 @@ export const gamesRepository = {
 		}
 	},
 
-	async getGamesBySeasonId(seasonId: string): Promise<game[]> {
+	async getGamesBySeasonId(seasonId: string): Promise<Game[]> {
 		try {
 			return await db
 				.select()

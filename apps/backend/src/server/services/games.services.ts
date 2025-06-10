@@ -1,11 +1,11 @@
 import { gamesRepository } from '../repositories/games.repo';
-import { game, gameInsert, GamesBySeason } from '@/db/schemas/games.schema';
+import { Game, GameInsert, GamesBySeason } from '@/db/schemas/games.schema';
 
 export const gamesServices = {
 	/**
 	 * Get all games ordered by date
 	 */
-	async getAllGames(): Promise<game[]> {
+	async getAllGames(): Promise<Game[]> {
 		try {
 			return await gamesRepository.getAllGames();
 		} catch (error) {
@@ -37,7 +37,7 @@ export const gamesServices = {
 	/**
 	 * Get games for a specific season
 	 */
-	async getGamesBySeasonId(seasonId: string): Promise<game[]> {
+	async getGamesBySeasonId(seasonId: string): Promise<Game[]> {
 		try {
 			return await gamesRepository.getGamesBySeasonId(seasonId);
 		} catch (error) {
@@ -53,7 +53,7 @@ export const gamesServices = {
 	/**
 	 * Get a specific game by ID
 	 */
-	async getGameById(gameId: string): Promise<game> {
+	async getGameById(gameId: string): Promise<Game> {
 		try {
 			const allGames = await gamesRepository.getAllGames();
 			const game = allGames.find((g) => g.id === gameId);
@@ -77,7 +77,7 @@ export const gamesServices = {
 	 * Replace all games with new data
 	 * This is useful for bulk updates from external sources
 	 */
-	async replaceAllGames(newGames: gameInsert[]): Promise<boolean> {
+	async replaceAllGames(newGames: GameInsert[]): Promise<boolean> {
 		try {
 			const success = await gamesRepository.updateAllGames(newGames);
 
@@ -102,7 +102,7 @@ export const gamesServices = {
 	/**
 	 * Get games filtered by gender
 	 */
-	async getGamesByGender(gender: string): Promise<game[]> {
+	async getGamesByGender(gender: string): Promise<Game[]> {
 		try {
 			const allGames = await gamesRepository.getAllGames();
 			return allGames.filter((game) => game.gender === gender);
@@ -119,7 +119,7 @@ export const gamesServices = {
 	/**
 	 * Get games within a date range
 	 */
-	async getGamesByDateRange(startDate: Date, endDate: Date): Promise<game[]> {
+	async getGamesByDateRange(startDate: Date, endDate: Date): Promise<Game[]> {
 		try {
 			const allGames = await gamesRepository.getAllGames();
 			return allGames.filter((game) => {
@@ -139,7 +139,7 @@ export const gamesServices = {
 	/**
 	 * Get recent games (last N games)
 	 */
-	async getRecentGames(limit: number = 10): Promise<game[]> {
+	async getRecentGames(limit: number = 10): Promise<Game[]> {
 		try {
 			const allGames = await gamesRepository.getAllGames();
 			// Games are already ordered by date in the repository
@@ -153,7 +153,6 @@ export const gamesServices = {
 			);
 		}
 	},
-
 
 	/**
 	 * Get game results (wins, losses, draws) with statistics
@@ -172,7 +171,7 @@ export const gamesServices = {
 		scoreDifferential: number;
 	}> {
 		try {
-			let games: game[];
+			let games: Game[];
 
 			if (seasonId) {
 				games = await gamesRepository.getGamesBySeasonId(seasonId);

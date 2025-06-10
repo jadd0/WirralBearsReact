@@ -39,13 +39,13 @@ export const games = pgTable('games', {
 	otherScore: numeric('other_score').notNull(),
 });
 
-export type game = typeof games.$inferSelect;
-export type season = typeof seasons.$inferSelect;
-export type gameInsert = typeof games.$inferInsert;
-export type seasonInsert = typeof seasons.$inferInsert;
+export type Game = typeof games.$inferSelect;
+export type Season = typeof seasons.$inferSelect;
+export type GameInsert = typeof games.$inferInsert;
+export type SeasonInsert = typeof seasons.$inferInsert;
 
 export type GamesBySeason = {
 	season: string;
 	seasonId: string;
-	games: game[];
+	games: Game[];
 }[];
