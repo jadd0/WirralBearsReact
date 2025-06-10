@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "tsx watch ./src/index.ts",
     "start": "node dist/src/index.js",
-    "build": "tsc --noCheck && tsc-alias -p tsconfig.json --debug",
+    "build": "pnpm i && tsc --noCheck && tsc-alias -p tsconfig.json --debug",
     "db:push": "drizzle-kit push --config=./drizzle.config.ts",
     "db:setup": "tsx ./scripts/seed.ts"
   },
