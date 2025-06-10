@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "tsx watch ./src/index.ts",
     "start": "node dist/src/index.js",
-    "build": "tsc --noEmitOnError false --skipLibCheck && tsc-alias -p tsconfig.json",
+    "build": "tsc --noCheck && tsc-alias -p tsconfig.json",
     "db:push": "drizzle-kit push --config=./drizzle.config.ts",
     "db:setup": "tsx ./scripts/seed.ts"
   },

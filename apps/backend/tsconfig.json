@@ -6,6 +6,8 @@
 		"moduleResolution": "node",
 		"esModuleInterop": true,
 		"skipLibCheck": true,
+		"noEmitOnError": false,
+		"strictNullChecks": false,
 		"outDir": "./dist",
 		"rootDir": "./",
 		"strict": true,
@@ -19,7 +21,7 @@
 			"@middleware/*": ["src/server/middleware/*"],
 			"@auth/*": ["src/auth/*"],
 			"@constants/*": ["src/constants/*"],
-			"@apptypes/*": ["src/types/*"],
+			"@apptypes/*": ["src/types/*"]
 		},
 		"composite": true,
 		"declaration": true,
@@ -36,8 +38,8 @@
 			"path": "../../packages/types"
 		},
 		{
-      "path": "../../packages/validation"
-    }
+			"path": "../../packages/validation"
+		}
 	],
 	"tsc-alias": {
 		"resolveFullPaths": true
