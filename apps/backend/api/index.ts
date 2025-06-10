@@ -1,8 +1,8 @@
-const express = require("express");
-const app = express();
+import app from '../src/server/app';
+import { env } from '../src/env';
 
-app.get("/", (req, res) => res.send("Express on Vercel"));
+const port = env.PORT;
 
-app.listen(3000, () => console.log("Server ready on port 3000."));
-
-module.exports = app;
+app.listen(port, () => {
+	console.log(`Server is running on ${port}`);
+});
