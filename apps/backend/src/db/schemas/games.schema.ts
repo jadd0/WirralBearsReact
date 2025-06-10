@@ -1,4 +1,10 @@
-import { integer, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
+import {
+	integer,
+	pgTable,
+	timestamp,
+	varchar,
+	numeric,
+} from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 import { SESSION_ID_LENGTH } from '@wirralbears/constants';
 import { coaches } from './coach.schema';
@@ -11,7 +17,7 @@ export const seasons = pgTable('seasons', {
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at').defaultNow().notNull(),
 	season: varchar('season', { length: 10 }),
-	gender: varchar('string', { length: 10 }).notNull(),
+	gender: varchar('gender', { length: 10 }).notNull(),
 });
 
 export const games = pgTable('games', {
@@ -25,10 +31,12 @@ export const games = pgTable('games', {
 	),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at').defaultNow().notNull(),
-	gender: varchar('string', { length: 10 }).notNull(),
+	gender: varchar('gender', { length: 10 }).notNull(),
 	season: varchar('season', { length: SESSION_ID_LENGTH })
 		.notNull()
 		.references(() => seasons.id, { onDelete: 'cascade' }),
+	ourScore: numeric('our_score').notNull(),
+	otherScore: numeric('other_score').notNull(),
 });
 
 export type game = typeof games.$inferSelect;
