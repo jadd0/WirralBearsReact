@@ -42,6 +42,7 @@
 		}
 	],
 	"tsc-alias": {
-		"resolveFullPaths": true
+		"resolveFullPaths": true,
+		"verbose": true
 	}
 }
