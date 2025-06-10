@@ -40,16 +40,19 @@ if (env.NODE_ENV === 'development') {
 		host: env.DB_HOST,
 		port: env.DB_PORT,
 		password: env.DB_PASSWORD,
+		database: env.DB_NAME,
 	});
 } else {
 	pgPool = createDatabasePool();
 }
+
 const pgSessionStore = connectPgSimple(session);
 
 app.use(
 	session({
 		store: new pgSessionStore({
 			pool: pgPool,
+			createTableIfMissing: true, // Add this line to auto-create the session table
 			pruneSessionInterval: 60 * 20,
 		}),
 		secret: env.SESSION_SECRET ?? 'defaultSecret',
@@ -57,11 +60,12 @@ app.use(
 		saveUninitialized: false,
 		cookie: {
 			httpOnly: true,
-			secure: env.NODE_ENV === 'production', // Secure cookies in production
+			secure: env.NODE_ENV === 'production',
 			sameSite: env.NODE_ENV === 'production' ? 'strict' : 'lax',
 		},
 	})
 );
+
 
 app.use(passport.initialize());
 app.use(passport.session());

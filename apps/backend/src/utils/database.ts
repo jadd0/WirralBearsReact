@@ -2,6 +2,7 @@ import pg from 'pg';
 import { env } from '@/env';
 
 export const createDatabasePool = () => {
+	console.log("2helo")
 	if (env.NODE_ENV === 'production') {
 		// Use Supabase connection string in production
 		return new pg.Pool({

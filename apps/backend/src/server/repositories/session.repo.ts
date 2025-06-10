@@ -179,7 +179,6 @@ export const sessionRepository = {
 				// 2. Delete all sessions
 				await tx.delete(sessions);
 
-
 				// 3. Bulk insert new sessions
 				const insertValues = fullSchedule.sessionDays.flatMap((day) =>
 					day.sessions.map((session) => ({

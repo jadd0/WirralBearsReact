@@ -16,6 +16,8 @@ const envSchema = z.object({
 	DB_HOST: z.string().min(1),
 	DB_PORT: z.coerce.number().default(5432),
 	DB_NAME: z.string().min(1),
+	DATABASE_URL: z.string().min(1),
+
 
 	// SUPABASE - Only required in production
 	SUPABASE_URL: z.string().url().optional(),
