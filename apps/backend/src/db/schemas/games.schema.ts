@@ -10,6 +10,7 @@ import { SESSION_ID_LENGTH } from '@wirralbears/constants';
 import { coaches } from './coach.schema';
 import { blogs } from './blog.schema';
 
+// TODO: Maybe change to accomodate age groups and area?
 export const seasons = pgTable('seasons', {
 	id: varchar('id', { length: SESSION_ID_LENGTH })
 		.primaryKey()
