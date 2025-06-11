@@ -12,6 +12,7 @@ import GamesDisplayHeader from '@/components/games/display/GamesDisplayHeader';
 import GamesStatsCards from '@/components/games/display/GamesStatsCards';
 import GamesFilters from '@/components/games/display/GamesFilters';
 import GamesList from '@/components/games/display/GamesList';
+import { LogoBanner } from '@/components/layout/LogoBanner';
 
 interface GamesDisplayPageProps {
 	showFilters?: boolean;
@@ -134,6 +135,7 @@ export default function GamesDisplayPage({
 
 	return (
 		<div className="p-6 space-y-6">
+			<LogoBanner />
 			<GamesDisplayHeader totalGames={filteredGames.length} />
 
 			{showStats && statistics && <GamesStatsCards stats={statistics} />}
