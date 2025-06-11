@@ -17,6 +17,7 @@ import ViewBlogsPage from './pages/blog/ViewBlogs.page';
 import ViewCoachesPage from './pages/coach/ViewCoaches.page';
 import CoachViewPage from './pages/coach/CoachView.page';
 import SessionsPage from './pages/Sessions.page';
+import GamesPage from './pages/Games.page';
 
 // Admin
 import AdminPage from './pages/admin/Admin.page';
@@ -27,6 +28,8 @@ import ImageDashboardPage from './pages/admin/image/ImageDashboard.page';
 import CreatePage from './pages/admin/post/Create.page';
 import EditPage from './pages/admin/post/Edit.page';
 import EditSessionsPage from './pages/admin/Sessions.page';
+import GamesEditCreatePage from './pages/admin/games/GamesCreate.page';
+import GamesEditPage from './pages/admin/games/GamesEdit.page';
 
 function AuthenticatedRouter() {
 	const { data, isPending, error, refetch } = useMe();
@@ -127,6 +130,7 @@ function App() {
 							element={<EditPage type={'coach'} />}
 						/>
 						<Route path="/admin/sessions" element={<EditSessionsPage />} />
+						<Route path="/admin/games/create" element={<GamesEditCreatePage />} />
 
 						<Route path="/logout" element={<Logout />} />
 					</Route>
@@ -141,6 +145,8 @@ function App() {
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/sponsorship" element={<SponsorshipPage />} />
 					<Route path="/sessions" element={<SessionsPage />} />
+					<Route path="/games" element={<GamesPage />} />
+
 
 					{/* Blog routes */}
 					<Route path="/blog/blogs" element={<ViewBlogsPage />} />

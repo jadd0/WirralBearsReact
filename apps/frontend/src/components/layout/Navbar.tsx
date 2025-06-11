@@ -15,6 +15,8 @@ const navLinks = [
 	{ to: '/image/viewall', label: 'Gallery', key: 'gallery' },
 	{to: '/coaches', label: 'Coaches', key: 'coaches' },
 	{to: '/blog/blogs', label: 'Blogs', key: 'blogs' },
+	{to: '/games', label: 'Games', key: 'games' },
+
 
 ];
 

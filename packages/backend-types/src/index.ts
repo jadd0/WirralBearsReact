@@ -17,3 +17,10 @@ export {
 } from '@wirralbears/backend/db/schemas/session.schema.js';
 
 export { SessionDayWithSessions } from '@wirralbears/backend/types/session.types.js';
+
+export {
+	Game,
+	GameInsert,
+	GamesBySeason,
+	Season
+} from '@wirralbears/backend/db/schemas/games.schema.js';

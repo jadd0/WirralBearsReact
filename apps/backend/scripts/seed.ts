@@ -1,7 +1,8 @@
 import { dbInsertSessionDays } from './weekdays.db.setup';
+import { dbInsertSeasons } from './seasons.db.setup';
 
 async function dbSetup() {
-	await Promise.all([dbInsertSessionDays()]);
+	await Promise.all([dbInsertSessionDays(), dbInsertSeasons()]);
 }
 
 dbSetup()
