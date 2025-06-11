@@ -1,17 +1,17 @@
 import { request } from '@/lib/network';
-import { game, gameInsert, GamesBySeason } from '@wirralbears/backend-types';
+import { Game, GameInsert, GamesBySeason, Season } from '@wirralbears/backend-types';
 
 /**
  * Fetches all games from the server
  * @returns Array of all games
  */
-export async function getAllGames(): Promise<game[]> {
+export async function getAllGames(): Promise<Game[]> {
 	const { data } = await request({
 		url: '/api/games/getAllGames',
 		method: 'GET',
 	});
 
-	return data.games as game[];
+	return data.games as Game[];
 }
 
 /**
@@ -19,13 +19,13 @@ export async function getAllGames(): Promise<game[]> {
  * @param id - The ID of the game to fetch
  * @returns The game data
  */
-export async function fetchGame(id: string): Promise<game> {
+export async function fetchGame(id: string): Promise<Game> {
 	const { data } = await request({
 		url: `/api/games/getGame/${id}`,
 		method: 'GET',
 	});
 
-	return data.game as game;
+	return data.game as Game;
 }
 
 /**
@@ -53,13 +53,13 @@ export async function getGamesBySeason(
  * @param seasonId - The ID of the season
  * @returns Array of games for the season
  */
-export async function getGamesBySeasonId(seasonId: string): Promise<game[]> {
+export async function getGamesBySeasonId(seasonId: string): Promise<Game[]> {
 	const { data } = await request({
 		url: `/api/games/getGamesBySeason/${seasonId}`,
 		method: 'GET',
 	});
 
-	return data.games as game[];
+	return data.games as Game[];
 }
 
 /**
@@ -67,13 +67,13 @@ export async function getGamesBySeasonId(seasonId: string): Promise<game[]> {
  * @param gender - The gender to filter by
  * @returns Array of games for the specified gender
  */
-export async function getGamesByGender(gender: string): Promise<game[]> {
+export async function getGamesByGender(gender: string): Promise<Game[]> {
 	const { data } = await request({
 		url: `/api/games/getGamesByGender/${gender}`,
 		method: 'GET',
 	});
 
-	return data.games as game[];
+	return data.games as Game[];
 }
 
 /**
@@ -85,7 +85,7 @@ export async function getGamesByGender(gender: string): Promise<game[]> {
 export async function getGamesByDateRange(
 	startDate: Date,
 	endDate: Date
-): Promise<game[]> {
+): Promise<Game[]> {
 	const startDateStr = startDate.toISOString();
 	const endDateStr = endDate.toISOString();
 
@@ -96,7 +96,7 @@ export async function getGamesByDateRange(
 		method: 'GET',
 	});
 
-	return data.games as game[];
+	return data.games as Game[];
 }
 
 /**
@@ -104,13 +104,13 @@ export async function getGamesByDateRange(
  * @param limit - Maximum number of games to return (default: 10)
  * @returns Array of recent games
  */
-export async function getRecentGames(limit: number = 10): Promise<game[]> {
+export async function getRecentGames(limit: number = 10): Promise<Game[]> {
 	const { data } = await request({
 		url: `/api/games/getRecentGames?limit=${limit}`,
 		method: 'GET',
 	});
 
-	return data.games as game[];
+	return data.games as Game[];
 }
 
 /**
@@ -186,7 +186,7 @@ export async function getGamesStatistics(): Promise<{
  * @returns Success message
  */
 export async function replaceAllGames(
-	games: gameInsert[]
+	games: GameInsert[]
 ): Promise<{ message: string }> {
 	const { data } = await request({
 		url: '/api/games/replaceAllGames',
@@ -195,4 +195,17 @@ export async function replaceAllGames(
 	});
 
 	return data;
+}
+
+/**
+ * Fetches all seasons from the server
+ * @returns Array of all seasons
+ */
+export async function getAllSeasons(): Promise<Season[]> {
+	const { data } = await request({
+		url: '/api/games/getAllSeasons',
+		method: 'GET',
+	});
+
+	return data.seasons as Season[];
 }

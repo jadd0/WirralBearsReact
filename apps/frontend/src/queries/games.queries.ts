@@ -6,6 +6,10 @@ export const games = createQueryKeys('games', {
 		queryFn: async () => await api.games.getAllGames(),
 		queryKey: ['games', 'getAll'],
 	}),
+	getAllSeasons: () => ({
+		queryFn: async () => await api.games.getAllSeasons(),
+		queryKey: ['seasons', 'getAll'],
+	}),
 	getGameById: (id: string) => ({
 		queryFn: async () => await api.games.fetchGame(id),
 		queryKey: ['games', 'getById', id],

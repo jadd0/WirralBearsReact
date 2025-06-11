@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useGetAllGames, useReplaceAllGames } from '@/hooks/games.hooks';
 import { useGetAllBlogPreviews } from '@/hooks/blog.hooks';
-import { useGetAllSeasons } from '@/hooks/games.hooks'; // TODO: Implement
+import { useGetAllSeasons } from '@/hooks/games.hooks';
 import { GameInsert } from "@wirralbears/backend-types";
 import { toast } from 'sonner';
 import { GAMES } from '@wirralbears/validation';

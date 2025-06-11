@@ -22,4 +22,5 @@ export {
 	Game,
 	GameInsert,
 	GamesBySeason,
+	Season
 } from '@wirralbears/backend/db/schemas/games.schema.js';

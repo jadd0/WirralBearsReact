@@ -200,4 +200,18 @@ export const useGetGamesStatistics = () =>
 		},
 	});
 
-
+/**
+ * Fetches all seasons
+ * @returns All seasons from the server
+ */
+export const useGetAllSeasons = () =>
+	useQuery({
+		...queries.games.getAllSeasons(),
+		staleTime: 1000 * 60 * 10, // 10 minutes (seasons change less frequently)
+		retry: 1,
+		onError: (error: Error) => {
+			toast.error('Failed to load seasons', {
+				description: error.message,
+			});
+		},
+	});

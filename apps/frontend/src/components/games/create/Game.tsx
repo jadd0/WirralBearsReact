@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
 
 interface GameComponentProps {
 	game: GameInsert & { tempId?: string };
-	seasons: Array<{ id: string; season: string }>;
+	seasons: Array<{ id: string; season: string; gender?: string }>;
 	blogs: Array<{ id: string; title: string }>;
 	onUpdate: (
 		gameId: string | undefined,
@@ -53,27 +53,42 @@ export default function GameComponent({
 		}
 	};
 
+	const handleGenderChange = (value: string) => {
+		handleUpdate('gender', value);
+		// Clear season when gender changes to ensure consistency
+		if (game.season) {
+			handleUpdate('season', '');
+		}
+	};
+
 	const truncateTitle = (title: string, maxLength: number = 30) => {
 		return title.length > maxLength
 			? `${title.substring(0, maxLength)}...`
 			: title;
 	};
 
+	// Filter seasons based on selected gender
+	const filteredSeasons = seasons.filter(
+		(season) => !game.gender || season.gender === game.gender
+	);
+
+	// Check if season dropdown should be disabled - should be disabled when NO gender is selected
+	const isSeasonDisabled = () => !game.gender;
+
+	console.log(blogs);
+
 	return (
 		<div className="flex flex-row items-center gap-4 p-4 border rounded-lg bg-card">
 			{/* Gender Dropdown */}
 			<div className="min-w-[120px]">
-				<Select
-					value={game.gender || ''}
-					onValueChange={(value) => handleUpdate('gender', value)}
-				>
+				<Select value={game.gender || ''} onValueChange={handleGenderChange}>
 					<SelectTrigger>
 						<SelectValue placeholder="Gender" />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value="male">Male</SelectItem>
-						<SelectItem value="female">Female</SelectItem>
-						<SelectItem value="mixed">Mixed</SelectItem>
+						<SelectItem value="Male">Male</SelectItem>
+						<SelectItem value="Female">Female</SelectItem>
+						<SelectItem value="Mixed">Mixed</SelectItem>
 					</SelectContent>
 				</Select>
 			</div>
@@ -109,12 +124,21 @@ export default function GameComponent({
 				<Select
 					value={game.season || ''}
 					onValueChange={(value) => handleUpdate('season', value)}
+					disabled={isSeasonDisabled()}
 				>
-					<SelectTrigger>
-						<SelectValue placeholder="Season" />
+					<SelectTrigger
+						className={cn(
+							isSeasonDisabled() && 'opacity-50 cursor-not-allowed'
+						)}
+					>
+						<SelectValue
+							placeholder={
+								isSeasonDisabled() ? 'Select Gender First' : 'Season'
+							}
+						/>
 					</SelectTrigger>
 					<SelectContent>
-						{seasons.map((season) => (
+						{filteredSeasons.map((season) => (
 							<SelectItem key={season.id} value={season.id}>
 								{season.season}
 							</SelectItem>
@@ -131,7 +155,7 @@ export default function GameComponent({
 					value={game.ourScore || ''}
 					onChange={(e) => handleUpdate('ourScore', e.target.value)}
 					min="0"
-					step="0.1"
+					step="1"
 				/>
 			</div>
 
@@ -143,7 +167,7 @@ export default function GameComponent({
 					value={game.otherScore || ''}
 					onChange={(e) => handleUpdate('otherScore', e.target.value)}
 					min="0"
-					step="0.1"
+					step="1"
 				/>
 			</div>
 
