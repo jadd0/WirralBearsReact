@@ -31,11 +31,14 @@ router.get('/getGameResults', gamesControllers.getGameResults);
 // GET comprehensive games statistics
 router.get('/getGamesStatistics', gamesControllers.getGamesStatistics);
 
-// PUT (replace) all games 
+// PUT (replace) all games
 router.put(
 	'/replaceAllGames',
 	ensureAuthenticated,
 	gamesControllers.replaceAllGames
 );
+
+// GET all seasons
+router.get('/getAllSeasons', gamesControllers.getAllSeasons);
 
 export default router;

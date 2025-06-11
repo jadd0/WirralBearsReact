@@ -1,5 +1,5 @@
 import { gamesRepository } from '../repositories/games.repo';
-import { Game, GameInsert, GamesBySeason } from '@/db/schemas/games.schema';
+import { Game, GameInsert, GamesBySeason, Season } from '@/db/schemas/games.schema';
 
 export const gamesServices = {
 	/**
@@ -148,6 +148,22 @@ export const gamesServices = {
 			console.error('Failed to fetch recent games:', error);
 			throw new Error(
 				`Failed to retrieve recent games: ${
+					error instanceof Error ? error.message : 'Unknown error'
+				}`
+			);
+		}
+	},
+
+	/**
+	 * Get all seasons
+	 */
+	async getAllSeasons(): Promise<Season[]> {
+		try {
+			return await gamesRepository.getAllSeasons();
+		} catch (error) {
+			console.error('Failed to fetch all seasons:', error);
+			throw new Error(
+				`Failed to retrieve seasons: ${
 					error instanceof Error ? error.message : 'Unknown error'
 				}`
 			);

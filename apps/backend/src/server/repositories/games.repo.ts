@@ -6,6 +6,7 @@ import {
 	GameInsert,
 	games,
 	seasons,
+	Season,
 } from '@/db/schemas/games.schema';
 
 export const gamesRepository = {
@@ -114,6 +115,19 @@ export const gamesRepository = {
 			console.error('Failed to fetch games by season ID:', error);
 			throw new Error(
 				`Failed to fetch games for season: ${
+					error instanceof Error ? error.message : 'Unknown error'
+				}`
+			);
+		}
+	},
+
+	async getAllSeasons(): Promise<Season[]> {
+		try {
+			return await db.select().from(seasons).orderBy(seasons.season);
+		} catch (error) {
+			console.error('Failed to fetch all seasons:', error);
+			throw new Error(
+				`Failed to fetch seasons: ${
 					error instanceof Error ? error.message : 'Unknown error'
 				}`
 			);

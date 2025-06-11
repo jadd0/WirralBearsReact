@@ -2,6 +2,16 @@ import { gamesServices } from '../services/games.services';
 import { RequestHandler, Request, Response } from 'express';
 import { GameInsert } from '@/db/schemas/games.schema';
 
+export const getAllSeasons: RequestHandler = async (req, res) => {
+	try {
+		const seasons = await gamesServices.getAllSeasons();
+		res.status(200).send({ seasons });
+	} catch (error) {
+		console.error('Error fetching seasons:', error);
+		res.status(500).send({ message: 'Failed to fetch seasons' });
+	}
+};
+
 export const getAllGames: RequestHandler = async (req, res) => {
 	try {
 		const games = await gamesServices.getAllGames();
