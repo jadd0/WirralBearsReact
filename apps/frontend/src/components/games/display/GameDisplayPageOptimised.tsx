@@ -8,12 +8,12 @@ import {
 } from '@/hooks/games.hooks';
 import { useGetAllBlogPreviews } from '@/hooks/blog.hooks';
 import GamesLoading from '@/components/games/GamesLoading';
-import GamesDisplayHeader from '@/components/games/display/GamesDisplayHeader';
-import GamesStatsCards from '@/components/games/display/GamesStatsCards';
-import GamesFilters from '@/components/games/display/GamesFilters';
-import GamesList from '@/components/games/display/GamesList';
+import GamesDisplayHeader from './GamesDisplayHeader';
+import GamesStatsCards from './GamesStatsCards';
+import GamesFilters from './GamesFilters';
+import GamesList from './GamesList';
 
-interface GamesDisplayPageProps {
+interface GamesDisplayPageOptimizedProps {
 	showFilters?: boolean;
 	showStats?: boolean;
 	compact?: boolean;
@@ -23,7 +23,7 @@ interface GamesDisplayPageProps {
 	preSelectedSeason?: string;
 }
 
-export default function GamesDisplayPage({
+export default function GamesDisplayPageOptimized({
 	showFilters = true,
 	showStats = true,
 	compact = false,
@@ -31,7 +31,7 @@ export default function GamesDisplayPage({
 	recentLimit = 10,
 	preSelectedGender,
 	preSelectedSeason,
-}: GamesDisplayPageProps) {
+}: GamesDisplayPageOptimizedProps) {
 	const [selectedGender, setSelectedGender] = useState(
 		preSelectedGender || 'all'
 	);
