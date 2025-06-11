@@ -23,6 +23,7 @@ export const gameValidationSchema = z.object({
 			message: 'Other score must be a valid non-negative number',
 		}),
 	blog: z.string().nullable().optional(),
+	otherTeamName: z.string().nullable(),
 });
 
 export const gamesArrayValidationSchema = z

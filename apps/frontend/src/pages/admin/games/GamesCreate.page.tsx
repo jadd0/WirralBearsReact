@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useGetAllGames, useReplaceAllGames } from '@/hooks/games.hooks';
 import { useGetAllBlogPreviews } from '@/hooks/blog.hooks';
 import { useGetAllSeasons } from '@/hooks/games.hooks';
-import { GameInsert, Season } from "@wirralbears/backend-types";
+import { GameInsert, Season } from '@wirralbears/backend-types';
 import { toast } from 'sonner';
 import { GAMES } from '@wirralbears/validation';
 import GamesComponent from '@/components/games/create/Games';
@@ -63,13 +63,14 @@ export default function GamesEditCreatePage() {
 			ourScore: '',
 			otherScore: '',
 			blog: null,
+			otherTeamName: ''
 		};
 
 		setGames((prevGames) => [...prevGames, newGame]);
 	};
 
 	const handleSaveAllGames = async () => {
-		console.log(games)
+		console.log(games);
 		try {
 			// Prepare games for validation
 			const gamesToValidate = games.map((game) => ({
@@ -79,19 +80,22 @@ export default function GamesEditCreatePage() {
 				ourScore: game.ourScore,
 				otherScore: game.otherScore,
 				blog: game.blog || null,
+				otherTeamName: game.otherTeamName || '', // Fixed property name
 			}));
 
 			// Validate using Zod schema
-			const validatedGames = GAMES.gamesArrayValidationSchema.parse(gamesToValidate);
+			const validatedGames =
+				GAMES.gamesArrayValidationSchema.parse(gamesToValidate);
 
 			// Convert to the format expected by the API
 			const apiGames = validatedGames.map((game) => ({
 				date: game.date,
 				gender: game.gender,
 				season: game.season,
-				ourScore: game.ourScore.toString(),
-				otherScore: game.otherScore.toString(),
+				ourScore: parseInt(game.ourScore, 10), // Convert string to number
+				otherScore: parseInt(game.otherScore, 10), // Convert string to number
 				blog: game.blog,
+				otherTeamName: game.otherTeamName,
 			})) as GameInsert[];
 
 			await replaceAllGamesMutation.mutateAsync(apiGames);

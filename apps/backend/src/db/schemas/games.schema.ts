@@ -38,6 +38,7 @@ export const games = pgTable('games', {
 		.references(() => seasons.id, { onDelete: 'cascade' }),
 	ourScore: integer('our_score').notNull(),
 	otherScore: integer('other_score').notNull(),
+	otherTeamName: varchar('other_team_name', { length: 50 }).notNull(),
 });
 
 export type Game = typeof games.$inferSelect;

@@ -171,6 +171,15 @@ export default function GameComponent({
 				/>
 			</div>
 
+			{/* Other Team Name Input */}
+			<div className="min-w-[100px]">
+				<Input
+					placeholder="Other Team Name"
+					value={game.otherTeamName || ''}
+					onChange={(e) => handleUpdate('otherTeamName', e.target.value)}
+				/>
+			</div>
+
 			{/* Blog Dropdown (Optional) */}
 			<div className="min-w-[200px]">
 				<Select
