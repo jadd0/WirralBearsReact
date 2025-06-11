@@ -28,7 +28,7 @@ import ImageDashboardPage from './pages/admin/image/ImageDashboard.page';
 import CreatePage from './pages/admin/post/Create.page';
 import EditPage from './pages/admin/post/Edit.page';
 import EditSessionsPage from './pages/admin/Sessions.page';
-import GamesCreatePage from './pages/admin/games/GamesCreate.page';
+import GamesEditCreatePage from './pages/admin/games/GamesCreate.page';
 import GamesEditPage from './pages/admin/games/GamesEdit.page';
 
 function AuthenticatedRouter() {
@@ -130,8 +130,7 @@ function App() {
 							element={<EditPage type={'coach'} />}
 						/>
 						<Route path="/admin/sessions" element={<EditSessionsPage />} />
-						<Route path="/admin/games/create" element={<GamesCreatePage />} />
-						<Route path="/admin/games/edit/:id" element={<GamesEditPage />} />
+						<Route path="/admin/games/create" element={<GamesEditCreatePage />} />
 
 						<Route path="/logout" element={<Logout />} />
 					</Route>
