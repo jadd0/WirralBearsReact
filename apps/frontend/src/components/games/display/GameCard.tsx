@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface GameCardProps {
 	game: Game;
@@ -12,7 +13,12 @@ interface GameCardProps {
 	compact?: boolean;
 }
 
-export default function GameCard({ game, seasons, blogs, compact = false }: GameCardProps) {
+export default function GameCard({
+	game,
+	seasons,
+	blogs,
+	compact = false,
+}: GameCardProps) {
 	const getGameResult = (game: Game) => {
 		if (game.ourScore > game.otherScore) return 'win';
 		if (game.ourScore < game.otherScore) return 'loss';
@@ -21,21 +27,25 @@ export default function GameCard({ game, seasons, blogs, compact = false }: Game
 
 	const getResultColor = (result: string) => {
 		switch (result) {
-			case 'win': return 'bg-green-100 text-green-800 border-green-200';
-			case 'loss': return 'bg-red-100 text-red-800 border-red-200';
-			case 'draw': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-			default: return 'bg-gray-100 text-gray-800 border-gray-200';
+			case 'win':
+				return 'bg-green-100 text-green-800 border-green-200';
+			case 'loss':
+				return 'bg-red-100 text-red-800 border-red-200';
+			case 'draw':
+				return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+			default:
+				return 'bg-gray-100 text-gray-800 border-gray-200';
 		}
 	};
 
 	const getSeasonName = (seasonId: string) => {
-		const season = seasons.find(s => s.id === seasonId);
+		const season = seasons.find((s) => s.id === seasonId);
 		return season?.season || 'Unknown Season';
 	};
 
 	const getBlogTitle = (blogId: string | null) => {
 		if (!blogId) return null;
-		const blog = blogs.find(b => b.id === blogId);
+		const blog = blogs.find((b) => b.id === blogId);
 		return blog?.title || null;
 	};
 
@@ -45,7 +55,13 @@ export default function GameCard({ game, seasons, blogs, compact = false }: Game
 	return (
 		<Card className="hover:shadow-md transition-shadow">
 			<CardContent className="p-6">
-				<div className={`grid ${compact ? 'grid-cols-1 md:grid-cols-6' : 'grid-cols-1 md:grid-cols-7'} gap-4 items-center`}>
+				<div
+					className={`grid ${
+						compact
+							? 'grid-cols-1 md:grid-cols-6'
+							: 'grid-cols-1 md:grid-cols-7'
+					} gap-4 items-center`}
+				>
 					{/* Date */}
 					<div className="flex items-center gap-2">
 						<Calendar className="h-4 w-4 text-muted-foreground" />
@@ -77,8 +93,8 @@ export default function GameCard({ game, seasons, blogs, compact = false }: Game
 
 					{/* Result */}
 					<div className="flex justify-center">
-						<Badge 
-							variant="outline" 
+						<Badge
+							variant="outline"
 							className={`${getResultColor(result)} font-semibold uppercase`}
 						>
 							{result}
@@ -90,10 +106,9 @@ export default function GameCard({ game, seasons, blogs, compact = false }: Game
 						<div className="flex items-center">
 							{blogTitle ? (
 								<Button variant="link" className="p-0 h-auto">
-									{blogTitle.length > 30 
-										? `${blogTitle.substring(0, 30)}...` 
-										: blogTitle
-									}
+									{blogTitle.length > 30
+										? `${blogTitle.substring(0, 30)}...`
+										: blogTitle}
 								</Button>
 							) : (
 								<span className="text-muted-foreground text-sm">No blog</span>
@@ -104,9 +119,14 @@ export default function GameCard({ game, seasons, blogs, compact = false }: Game
 					{/* Actions */}
 					<div className="flex justify-end">
 						{blogTitle && (
-							<Button variant="outline" size="sm">
-								Read Blog
-							</Button>
+							<Link
+								to={`/blog/blog/${game.blog}`}
+								className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+							>
+								<Button variant="outline" size="sm" className='cursor-pointer'>
+									Read Blog
+								</Button>
+							</Link>
 						)}
 					</div>
 				</div>
