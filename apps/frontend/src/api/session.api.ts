@@ -1,10 +1,7 @@
 import { request } from '@/lib/network';
-import { BlogData } from '@wirralbears/types';
 import {
 	Session,
 	SessionDayWithSessions,
-	SessionDay,
-	SessionWithCoach,
 	FullSessionSchedule,
 } from '@wirralbears/backend-types';
 

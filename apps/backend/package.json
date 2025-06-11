@@ -2,18 +2,20 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start:dev": "tsx watch ./src/index.ts",
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
+    "build": "pnpm i && tsc --noCheck && tsc-alias -p tsconfig.json --debug",
     "db:push": "drizzle-kit push --config=./drizzle.config.ts",
-    "db:setup": "tsx ./scripts/seed.ts",
-    "build": "tsc"
+    "db:setup": "tsx ./scripts/seed.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@supabase/supabase-js": "^2.50.0",
     "@uploadthing/react": "^7.3.1",
     "@wirralbears/backend-types": "workspace:*",
     "@wirralbears/constants": "workspace:*",
@@ -32,8 +34,9 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "pg": "^8.15.6",
-    "postgres": "^3.4.5",
+    "postgres": "^3.4.7",
     "sharp": "^0.34.1",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.19.4",
     "uploadthing": "^7.7.2",
     "zod": "^3.24.3"
@@ -47,6 +50,7 @@
     "@types/passport": "^1.0.17",
     "@types/passport-google-oauth20": "^2.0.16",
     "@types/pg": "^8.11.14",
-    "drizzle-kit": "^0.31.0"
+    "drizzle-kit": "^0.31.1",
+    "typescript": "^5.1.3"
   }
 }

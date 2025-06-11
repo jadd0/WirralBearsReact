@@ -9,10 +9,13 @@
     "start": "pnpm --stream -r run start",
     "dev:frontend": "pnpm --filter frontend run start:dev",
     "dev:backend": "pnpm --filter backend run start:dev",
-    "build:packages": "pnpm -r --filter \"@wirralbears/constants\" --filter \"@wirralbears/validation\" --filter \"@wirralbears/types\" --filter --workspace-concurrency 1 build",
     "prebuild": "pnpm i",
     "clean": "pnpm -r clean",
-    "build": "pnpm run build:packages && pnpm --filter \"backend\" run build && pnpm --filter \"@wirralbears/backend-types\" --workspace-concurrency 1 build"
+    "build:packages": "pnpm -r --filter \"@wirralbears/constants\" --filter \"@wirralbears/validation\" --filter \"@wirralbears/types\" --filter \"@wirralbears/backend-types\" --workspace-concurrency 1 build",
+    "build:backend": "pnpm --filter backend run build",
+    "build:frontend": "pnpm --filter frontend run build",
+    "build": "pnpm run build:packages && pnpm run build:backend && pnpm run build:frontend && pnpm run copy:frontend",
+    "copy:frontend": "cp -r apps/frontend/dist ./dist"
   },
   "keywords": [],
   "author": "jadd0",

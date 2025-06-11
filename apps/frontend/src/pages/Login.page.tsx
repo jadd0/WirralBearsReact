@@ -1,7 +1,6 @@
 import { LoginForm } from "@/components/login-form";
 import { useMe } from "@hooks/auth.hooks";
 import { Skeleton } from "@/components/ui/skeleton";
-import { serverOriginUrl } from "@/lib/network";
 
 export default function LoginPage() {
   const { isLoading, error } = useMe();

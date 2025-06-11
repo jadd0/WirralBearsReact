@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { toast, Toaster } from 'sonner';
 import { OnLoadingErrorView, LoadingView } from './components/layout/Loading';
 import { useMe } from './hooks/auth.hooks';
@@ -59,35 +59,35 @@ function AuthenticatedRouter() {
 	return <Outlet />;
 }
 
-function UnauthenticatedRouter() {
-	const { data, isPending, error, refetch } = useMe();
+// function UnauthenticatedRouter() {
+// 	const { data, isPending, error, refetch } = useMe();
 
-	useEffect(() => {
-		if (error)
-			toast.error(
-				'Failed to verify authentication status! Please try again later.'
-			);
-	}, [error]);
+// 	useEffect(() => {
+// 		if (error)
+// 			toast.error(
+// 				'Failed to verify authentication status! Please try again later.'
+// 			);
+// 	}, [error]);
 
-	if (error)
-		return (
-			<OnLoadingErrorView
-				message={
-					<>
-						We’re having trouble verifying your access.
-						<br /> Please try again later.
-					</>
-				}
-				onRetry={() => refetch()}
-			/>
-		);
+// 	if (error)
+// 		return (
+// 			<OnLoadingErrorView
+// 				message={
+// 					<>
+// 						We’re having trouble verifying your access.
+// 						<br /> Please try again later.
+// 					</>
+// 				}
+// 				onRetry={() => refetch()}
+// 			/>
+// 		);
 
-	if (isPending) return <LoadingView />;
+// 	if (isPending) return <LoadingView />;
 
-	if (data?.authenticated || data?.user) return <Navigate to="/feed" />;
+// 	if (data?.authenticated || data?.user) return <Navigate to="/feed" />;
 
-	return <Outlet />;
-}
+// 	return <Outlet />;
+// }
 
 function App() {
 	const { pathname } = useLocation();
@@ -146,7 +146,6 @@ function App() {
 					<Route path="/sponsorship" element={<SponsorshipPage />} />
 					<Route path="/sessions" element={<SessionsPage />} />
 					<Route path="/games" element={<GamesPage />} />
-
 
 
 					{/* Blog routes */}

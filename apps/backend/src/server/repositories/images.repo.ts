@@ -4,7 +4,7 @@ import { images, blogImages, coachImages } from '@/db/schemas/images.schema';
 import { IMAGE_LIMIT } from '@wirralbears/constants';
 import { Image } from '@/types/image.types';
 
-export const imageRepository = {
+export const imageRepository: any = {
 	/**
 	 * Creates a new image record in the database
 	 */
@@ -14,9 +14,8 @@ export const imageRepository = {
 		authorId: string;
 		url?: string;
 		alt?: string;
-	}) {
+	}): Promise<Image> {
 		const [image] = await db.insert(images).values(imageData).returning();
-
 		return image;
 	},
 
@@ -27,12 +26,11 @@ export const imageRepository = {
 		blogId: string;
 		imageId: string;
 		position: number;
-	}) {
+	}): Promise<any> {
 		const [relation] = await db
 			.insert(blogImages)
 			.values(relationData)
 			.returning();
-
 		return relation;
 	},
 
@@ -48,7 +46,6 @@ export const imageRepository = {
 			.insert(coachImages)
 			.values(relationData)
 			.returning();
-
 		return relation;
 	},
 
@@ -61,14 +58,12 @@ export const imageRepository = {
 			imageId: string;
 			position: number;
 		}[]
-	) {
+	): Promise<any> {
 		if (relations.length === 0) return [];
-
 		const insertedRelations = await db
 			.insert(blogImages)
 			.values(relations)
 			.returning();
-
 		return insertedRelations;
 	},
 
@@ -81,21 +76,19 @@ export const imageRepository = {
 			imageId: string;
 			position: number;
 		}[]
-	) {
+	): Promise<any> {
 		if (relations.length === 0) return [];
-
 		const insertedRelations = await db
 			.insert(coachImages)
 			.values(relations)
 			.returning();
-
 		return insertedRelations;
 	},
 
 	/**
 	 * Gets all images for a specific blog
 	 */
-	async getBlogImages(blogId: string) {
+	async getBlogImages(blogId: string): Promise<any> {
 		const blogImageRelations = await db
 			.select({
 				image: images,
@@ -112,7 +105,7 @@ export const imageRepository = {
 	/**
 	 * Gets all images for a specific coach
 	 */
-	async getCoachImages(coachId: string) {
+	async getCoachImages(coachId: string): Promise<any> {
 		const coachImageRelations = await db
 			.select({
 				image: images,
@@ -137,9 +130,8 @@ export const imageRepository = {
 			authorId: string;
 			url?: string;
 		}
-	) {
+	): Promise<Image> {
 		const [image] = await tx.insert(images).values(imageData).returning();
-
 		return image;
 	},
 
@@ -153,7 +145,7 @@ export const imageRepository = {
 			imageId: string;
 			position: number;
 		}
-	) {
+	): Promise<any> {
 		await tx.insert(blogImages).values(relationData).returning();
 	},
 
@@ -167,12 +159,15 @@ export const imageRepository = {
 			imageId: string;
 			position: number;
 		}
-	) {
+	): Promise<any> {
 		await tx.insert(coachImages).values(relationData).returning();
 	},
 
-	async getAllImages(cursor: number): Image {
-		const result = db
+	/**
+	 * Gets all images with pagination
+	 */
+	async getAllImages(cursor: number): Promise<Image[]> {
+		const result = await db
 			.select({
 				id: images.id,
 				url: images.url,
@@ -187,9 +182,11 @@ export const imageRepository = {
 		return result;
 	},
 
-	async deleteImage(imageId: string) {
-		const result = db.delete(images).where(eq(images.id, imageId));
-
+	/**
+	 * Deletes an image by ID
+	 */
+	async deleteImage(imageId: string): Promise<any> {
+		const result = await db.delete(images).where(eq(images.id, imageId));
 		return result;
 	},
-};
+} as const;

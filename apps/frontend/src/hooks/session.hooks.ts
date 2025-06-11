@@ -166,7 +166,7 @@ export const useDeleteSession = () => {
 		mutationFn: async (id: string) => {
 			return await api.session.deleteSession(id);
 		},
-		onSuccess: (data, id) => {
+		onSuccess: (_, id) => {
 			toast.success('Session deleted successfully');
 			queryClient.invalidateQueries({
 				queryKey: queries.session.getAllSessions().queryKey,

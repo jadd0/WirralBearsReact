@@ -19,7 +19,7 @@ export const sessionServices = {
 	/**
 	 * Create a new session
 	 */
-	async createSession(sessionData: Session) {
+	async createSession(sessionData: any) {
 		try {
 			return await sessionRepository.createSession(sessionData);
 		} catch (error) {

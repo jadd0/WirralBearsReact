@@ -26,7 +26,7 @@ export function ContentMakerPage({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const saveMutation = useSaveHook();
-  const { mutate: saveContent, isPending } = saveMutation();
+  const { mutate: saveContent } = saveMutation();
 
   useLayoutEffect(() => {
     const storedData = localStorage.getItem(storageKey);
@@ -55,7 +55,7 @@ export function ContentMakerPage({
     setIsSubmitting(true);
     try {
       await saveContent(data, {
-        onSuccess: ({ id }: { id: string }) => {
+        onSuccess: () => {
           localStorage.removeItem(storageKey);
           toast.success(successMessage);
           navigate(successRedirect);

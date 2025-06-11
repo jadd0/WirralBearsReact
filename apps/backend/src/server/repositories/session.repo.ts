@@ -11,7 +11,6 @@ import {
 } from '@/db/schema';
 import { nanoid } from 'nanoid';
 import { SESSION_ID_LENGTH } from '@wirralbears/constants';
-import { SessionDayWithSessions } from '@wirralbears/types';
 
 export const sessionRepository = {
 	async createSession(sessionDetails: Session): Promise<boolean> {
@@ -179,7 +178,6 @@ export const sessionRepository = {
 
 				// 2. Delete all sessions
 				await tx.delete(sessions);
-
 
 				// 3. Bulk insert new sessions
 				const insertValues = fullSchedule.sessionDays.flatMap((day) =>
