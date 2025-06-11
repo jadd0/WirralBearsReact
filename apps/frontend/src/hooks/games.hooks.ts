@@ -8,39 +8,34 @@ import {
 	CreateMutationOptions,
 	CreateMutationResult,
 } from '@tanstack/react-query';
-import { game, gameInsert, GamesBySeason } from '@/db/schemas/games.schema';
+import { Game, GameInsert, GamesBySeason } from '@wirralbears/backend-types';
 
 const staleTime = 1000 * 60 * 60; // 1 hour
-
 /**
  * Replaces all games with new data (bulk operation)
  * @returns The result of the replace operation
  */
-export const useReplaceAllGames = (): ((
-	configuredOptions?: CreateMutationOptions<
-		(games: gameInsert[]) => Promise<{ message: string }>,
-		unknown
-	>
-) => CreateMutationResult<
-	(games: gameInsert[]) => Promise<{ message: string }>,
-	unknown
->) => {
-	return createConfigurableMutation(
-		api.games.replaceAllGames,
-		['games', 'replaceAll'],
-		{
-			onSuccess: (data) => {
-				toast.success('Games updated successfully', {
-					description: data.message,
-				});
-			},
-			onError: (error: Error) => {
-				toast.error('Failed to update games', {
-					description: error.message,
-				});
-			},
-		}
-	);
+export const useReplaceAllGames = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: api.games.replaceAllGames,
+		mutationKey: ['games', 'replaceAll'],
+		onSuccess: (data) => {
+			// Invalidate queries to refresh data
+			queryClient.invalidateQueries({ queryKey: ['games'] });
+			queryClient.invalidateQueries({ queryKey: ['seasons'] });
+
+			toast.success('Games updated successfully', {
+				description: data.message,
+			});
+		},
+		onError: (error: Error) => {
+			toast.error('Failed to update games', {
+				description: error.message,
+			});
+		},
+	});
 };
 
 /**

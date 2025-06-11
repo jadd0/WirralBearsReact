@@ -32,8 +32,8 @@ export const games = createQueryKeys('games', {
 		queryKey: [
 			'games',
 			'getByDateRange',
-			startDate.toISOString(),
-			endDate.toISOString(),
+			startDate,
+			endDate,
 		],
 	}),
 	getRecentGames: (limit: number = 10) => ({

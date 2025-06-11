@@ -1,5 +1,10 @@
 import { gamesRepository } from '../repositories/games.repo';
-import { Game, GameInsert, GamesBySeason, Season } from '@/db/schemas/games.schema';
+import {
+	Game,
+	GameInsert,
+	GamesBySeason,
+	Season,
+} from '@/db/schemas/games.schema';
 
 export const gamesServices = {
 	/**
@@ -79,7 +84,32 @@ export const gamesServices = {
 	 */
 	async replaceAllGames(newGames: GameInsert[]): Promise<boolean> {
 		try {
-			const success = await gamesRepository.updateAllGames(newGames);
+			// Transform the data before passing to repository
+			const transformedGames = newGames.map((game) => ({
+				...game,
+				// Convert date strings to Date objects
+				date: typeof game.date === 'string' ? new Date(game.date) : game.date,
+				// Convert numeric scores from strings to numbers
+				ourScore:
+					typeof game.ourScore === 'string'
+						? parseInt(game.ourScore)
+						: game.ourScore,
+				otherScore:
+					typeof game.otherScore === 'string'
+						? parseInt(game.otherScore)
+						: game.otherScore,
+				// Handle other timestamp fields if they exist
+				...(game.createdAt &&
+					typeof game.createdAt === 'string' && {
+						createdAt: new Date(game.createdAt),
+					}),
+				...(game.updatedAt &&
+					typeof game.updatedAt === 'string' && {
+						updatedAt: new Date(game.updatedAt),
+					}),
+			}));
+
+			const success = await gamesRepository.updateAllGames(transformedGames);
 
 			if (!success) {
 				throw new Error('Failed to replace games - transaction returned false');

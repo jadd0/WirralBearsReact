@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GameInsert } from '@wirralbears/backend-types';
+import { GameInsert, Season } from '@wirralbears/backend-types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Calendar } from '@/components/ui/calendar';
@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
 
 interface GameComponentProps {
 	game: GameInsert & { tempId?: string };
-	seasons: Array<{ id: string; season: string; gender?: string }>;
+	seasons: Season[];
 	blogs: Array<{ id: string; title: string }>;
 	onUpdate: (
 		gameId: string | undefined,

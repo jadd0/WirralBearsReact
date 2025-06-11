@@ -5,9 +5,9 @@ export const gameValidationSchema = z.object({
 		required_error: 'Date is required',
 		invalid_type_error: 'Invalid date format',
 	}),
-	gender: z.enum(['male', 'female', 'mixed'], {
+	gender: z.enum(['Male', 'Female', 'Mixed'], {
 		required_error: 'Gender is required',
-		invalid_type_error: 'Gender must be male, female, or mixed',
+		invalid_type_error: 'Gender must be Male, Female, or Mixed',
 	}),
 	season: z.string().min(1, 'Season is required'),
 	ourScore: z

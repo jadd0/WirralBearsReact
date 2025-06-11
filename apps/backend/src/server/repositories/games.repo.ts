@@ -11,6 +11,7 @@ import {
 
 export const gamesRepository = {
 	async updateAllGames(gamesToInsert: GameInsert[]): Promise<boolean> {
+		console.log(gamesToInsert)
 		return await db.transaction(async (tx) => {
 			try {
 				// First, delete all existing games

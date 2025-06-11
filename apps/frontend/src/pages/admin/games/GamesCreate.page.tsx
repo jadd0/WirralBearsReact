@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useGetAllGames, useReplaceAllGames } from '@/hooks/games.hooks';
 import { useGetAllBlogPreviews } from '@/hooks/blog.hooks';
 import { useGetAllSeasons } from '@/hooks/games.hooks';
-import { GameInsert } from "@wirralbears/backend-types";
+import { GameInsert, Season } from "@wirralbears/backend-types";
 import { toast } from 'sonner';
 import { GAMES } from '@wirralbears/validation';
 import GamesComponent from '@/components/games/create/Games';
@@ -69,6 +69,7 @@ export default function GamesEditCreatePage() {
 	};
 
 	const handleSaveAllGames = async () => {
+		console.log(games)
 		try {
 			// Prepare games for validation
 			const gamesToValidate = games.map((game) => ({
@@ -119,7 +120,7 @@ export default function GamesEditCreatePage() {
 			<GamesPageHeader
 				onAddGame={handleAddGame}
 				onSaveAllGames={handleSaveAllGames}
-				isSaving={replaceAllGamesMutation.isPending}
+				isSaving={replaceAllGamesMutation.isPending} // TODO : Replace with actual saving state later
 			/>
 
 			{games.length === 0 ? (
@@ -127,7 +128,7 @@ export default function GamesEditCreatePage() {
 			) : (
 				<GamesComponent
 					games={games}
-					seasons={seasons}
+					seasons={seasons as Season[]}
 					blogs={blogs}
 					onUpdateGame={handleUpdateGame}
 					onDeleteGame={handleDeleteGame}

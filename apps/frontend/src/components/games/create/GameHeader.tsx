@@ -12,7 +12,7 @@ export default function GamesPageHeader({
   isSaving 
 }: GamesPageHeaderProps) {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex flex-col gap-5 justify-between items-center">
       <h1 className="text-3xl font-bold">Edit Games</h1>
       <div className="space-x-2">
         <Button onClick={onAddGame} variant="outline">

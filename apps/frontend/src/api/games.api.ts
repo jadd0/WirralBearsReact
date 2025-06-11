@@ -86,8 +86,8 @@ export async function getGamesByDateRange(
 	startDate: Date,
 	endDate: Date
 ): Promise<Game[]> {
-	const startDateStr = startDate.toISOString();
-	const endDateStr = endDate.toISOString();
+	const startDateStr = startDate;
+	const endDateStr = endDate;
 
 	const { data } = await request({
 		url: `/api/games/getGamesByDateRange?startDate=${encodeURIComponent(
