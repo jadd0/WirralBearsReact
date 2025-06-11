@@ -12,7 +12,6 @@ import GamesDisplayHeader from '@/components/games/display/GamesDisplayHeader';
 import GamesStatsCards from '@/components/games/display/GamesStatsCards';
 import GamesFilters from '@/components/games/display/GamesFilters';
 import GamesList from '@/components/games/display/GamesList';
-import { LogoBanner } from '@/components/layout/LogoBanner';
 
 interface GamesDisplayPageProps {
 	showFilters?: boolean;
@@ -58,18 +57,21 @@ export default function GamesDisplayPage({
 	// Filter seasons based on selected gender
 	const availableSeasons = useMemo(() => {
 		if (selectedGender === 'all') {
-			// Show unique seasons (one of each season name)
-			const uniqueSeasonNames = new Set();
-			return seasons.filter((season) => {
-				if (uniqueSeasonNames.has(season.season)) {
-					return false;
+			// Show unique seasons (one of each season name) but keep all season objects
+			const seenSeasonNames = new Set();
+			const uniqueSeasons = [];
+			
+			seasons.forEach(season => {
+				if (!seenSeasonNames.has(season.season)) {
+					seenSeasonNames.add(season.season);
+					uniqueSeasons.push(season);
 				}
-				uniqueSeasonNames.add(season.season);
-				return true;
 			});
+			
+			return uniqueSeasons;
 		} else {
 			// Show only seasons for the selected gender
-			return seasons.filter((season) => season.gender === selectedGender);
+			return seasons.filter(season => season.gender === selectedGender);
 		}
 	}, [seasons, selectedGender]);
 
@@ -88,17 +90,29 @@ export default function GamesDisplayPage({
 		displayGames = recentGames || [];
 		isLoading = isLoading || recentLoading;
 	} else if (selectedGender !== 'all' && selectedSeason === 'all') {
+		// Gender selected, no season filter
 		displayGames = gamesByGender || [];
 		isLoading = isLoading || genderLoading;
-	} else if (selectedGender !== 'all') {
-		// Filter games by season from the gender-filtered results
+	} else if (selectedGender !== 'all' && selectedSeason !== 'all') {
+		// Both gender and season selected
 		const seasonGames = gamesBySeason?.find(
 			(season) => season.seasonId === selectedSeason
 		);
 		displayGames = seasonGames?.games || [];
 		isLoading = isLoading || seasonLoading;
+	} else if (selectedGender === 'all' && selectedSeason !== 'all') {
+		// No gender filter, but season selected - need to get all games for that season across all genders
+		const allSeasonGames = gamesBySeason?.filter(
+			(season) => {
+				// Find the season object to get the season name
+				const seasonObj = seasons.find(s => s.id === selectedSeason);
+				return seasonObj && season.season === seasonObj.season;
+			}
+		);
+		displayGames = allSeasonGames?.flatMap((season) => season.games) || [];
+		isLoading = isLoading || seasonLoading;
 	} else {
-		// Fallback to all games from gamesBySeason
+		// No filters - show all games
 		displayGames = gamesBySeason?.flatMap((season) => season.games) || [];
 		isLoading = isLoading || seasonLoading;
 	}
@@ -135,7 +149,6 @@ export default function GamesDisplayPage({
 
 	return (
 		<div className="p-6 space-y-6">
-			<LogoBanner />
 			<GamesDisplayHeader totalGames={filteredGames.length} />
 
 			{showStats && statistics && <GamesStatsCards stats={statistics} />}
