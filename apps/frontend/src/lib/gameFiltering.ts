@@ -26,6 +26,20 @@ export function useGamesFiltering(games: Game[]) {
 		});
 	}, [games, searchTerm, selectedGender, selectedSeason, selectedResult]);
 
+	// Available seasons based on selected gender
+	const availableSeasons = useMemo(() => {
+		let seasonsToShow = games;
+		
+		// If a gender is selected, only show seasons for that gender
+		if (selectedGender !== 'all') {
+			seasonsToShow = games.filter(game => game.gender === selectedGender);
+		}
+		
+		// Get unique seasons
+		const uniqueSeasons = [...new Set(seasonsToShow.map(game => game.season))];
+		return uniqueSeasons.sort();
+	}, [games, selectedGender]);
+
 	// Local stats calculation
 	const localStats = useMemo(() => {
 		const wins = filteredGames.filter(game => game.ourScore > game.otherScore).length;
@@ -44,13 +58,21 @@ export function useGamesFiltering(games: Game[]) {
 		setSelectedResult('all');
 	};
 
+	// Reset season when gender changes (optional but recommended UX)
+	const setSelectedGenderWithSeasonReset = (gender: string) => {
+		setSelectedGender(gender);
+		// Reset season when gender changes to avoid invalid combinations
+		setSelectedSeason('all');
+	};
+
 	return {
 		filteredGames,
 		localStats,
+		availableSeasons, 
 		searchTerm,
 		setSearchTerm,
 		selectedGender,
-		setSelectedGender,
+		setSelectedGender: setSelectedGenderWithSeasonReset, 
 		selectedSeason,
 		setSelectedSeason,
 		selectedResult,

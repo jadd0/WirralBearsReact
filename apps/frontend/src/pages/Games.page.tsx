@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
 	useGetGamesBySeason,
 	useGetGamesByGender,
@@ -53,6 +53,31 @@ export default function GamesDisplayPage({
 	const { data: seasons = [], isLoading: seasonsLoading } = useGetAllSeasons();
 	const { data: blogs = [], isLoading: blogsLoading } = useGetAllBlogPreviews();
 	const { data: statistics, isLoading: statsLoading } = useGetGamesStatistics();
+
+	// Filter seasons based on selected gender
+	const availableSeasons = useMemo(() => {
+		if (selectedGender === 'all') {
+			// Show unique seasons (one of each season name)
+			const uniqueSeasonNames = new Set();
+			return seasons.filter((season) => {
+				if (uniqueSeasonNames.has(season.season)) {
+					return false;
+				}
+				uniqueSeasonNames.add(season.season);
+				return true;
+			});
+		} else {
+			// Show only seasons for the selected gender
+			return seasons.filter((season) => season.gender === selectedGender);
+		}
+	}, [seasons, selectedGender]);
+
+	// Enhanced setSelectedGender that resets season when gender changes
+	const handleGenderChange = (gender: string) => {
+		setSelectedGender(gender);
+		// Reset season when gender changes to avoid invalid combinations
+		setSelectedSeason('all');
+	};
 
 	// Determine which games to display
 	let displayGames = [];
@@ -118,12 +143,12 @@ export default function GamesDisplayPage({
 					searchTerm={searchTerm}
 					setSearchTerm={setSearchTerm}
 					selectedGender={selectedGender}
-					setSelectedGender={setSelectedGender}
+					setSelectedGender={handleGenderChange}
 					selectedSeason={selectedSeason}
 					setSelectedSeason={setSelectedSeason}
 					selectedResult={selectedResult}
 					setSelectedResult={setSelectedResult}
-					seasons={seasons}
+					seasons={availableSeasons}
 					onClearFilters={clearFilters}
 				/>
 			)}
