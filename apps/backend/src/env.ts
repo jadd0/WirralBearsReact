@@ -18,7 +18,6 @@ const envSchema = z.object({
 	DB_NAME: z.string().min(1),
 	DATABASE_URL: z.string().min(1),
 
-
 	// SUPABASE - Only required in production
 	SUPABASE_URL: z.string().url().optional(),
 	SUPABASE_ANON_KEY: z.string().min(1).optional(),
@@ -36,6 +35,10 @@ const envSchema = z.object({
 	// UPLOADTHING
 	UPLOADTHING_TOKEN: z.string().min(1),
 	UPLOAD_THING_APP_ID: z.string().min(1),
+
+	// ADMIN EMAIL ADDRESSES
+	ADMIN_EMAIL_JADD: z.string().min(1),
+	ADMIN_EMAIL_WIRRALBEARS: z.string().min(1),
 });
 
 /**
