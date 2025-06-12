@@ -1,6 +1,6 @@
 import { blogRepository } from '../repositories/blog.repo';
 import { imageRepository } from '../repositories/images.repo';
-import { Blog } from '@/db/schemas/blog.schema';
+import { Blog } from '../../db/schema';
 import {
 	BlogData,
 	HeadingElement,
@@ -118,6 +118,118 @@ export const blogServices = {
 			paragraphs,
 			imageReferences
 		);
+	},
+
+	/**
+	 * Upload multiple images independently (not associated with any blog)
+	 *
+	 * @param authorId - The ID of the user uploading the images
+	 * @param files - Array of Express.Multer.File objects to upload
+	 * @param altTexts - Optional array of alt texts for the images (should match files array length)
+	 * @returns Promise containing uploaded image data with database records
+	 */
+	async uploadMultipleImages(
+		files: Express.Multer.File[],
+		authorId: string,
+		altTexts?: string[]
+	) {
+		try {
+			// Validate input
+			if (!files || files.length === 0) {
+				throw new Error('No files provided for upload');
+			}
+
+			if (altTexts && altTexts.length !== files.length) {
+				throw new Error('Alt texts array length must match files array length');
+			}
+
+			// Convert Multer files to File objects (same pattern as your existing methods)
+			const fileObjects = files.map((file) => {
+				return new File([file.buffer], file.originalname, {
+					type: file.mimetype,
+				});
+			});
+
+			// Upload images using existing uploadPostImages service
+			const uploadResult = await uploadPostImages(fileObjects);
+
+			if (uploadResult.failures > 0 || uploadResult.successes.length === 0) {
+				throw new Error(
+					`Failed to upload images. Failures: ${uploadResult.failures}`
+				);
+			}
+
+			// Create database records for successfully uploaded images
+			const databaseImages: Array<{
+				id: any;
+				url: any;
+				key: any;
+				alt: string;
+				originalName: any;
+				index: number;
+			}> = [];
+
+			const failedDatabaseInserts: Array<{
+				index: number;
+				error: string;
+			}> = [];
+
+			for (let i = 0; i < uploadResult.successes.length; i++) {
+				const uploadedImage = uploadResult.successes[i];
+
+				if (!uploadedImage) {
+					failedDatabaseInserts.push({
+						index: i,
+						error: 'Upload succeeded but no image data was returned',
+					});
+					continue;
+				}
+
+				try {
+					const alt = altTexts?.[i] || `Image ${i + 1}`;
+
+					// Use the same imageRepository.createImage pattern as your other methods
+					const image = await imageRepository.createImage({
+						key: uploadedImage.key,
+						url: uploadedImage.url,
+						alt,
+						authorId
+					});
+
+					databaseImages.push({
+						id: image.id,
+						url: uploadedImage.url,
+						key: uploadedImage.key,
+						alt: alt,
+						originalName: files[i].originalname,
+						index: i,
+					});
+				} catch (dbError) {
+					console.error(
+						`Failed to create database record for image ${i}:`,
+						dbError
+					);
+					failedDatabaseInserts.push({
+						index: i,
+						error:
+							dbError instanceof Error
+								? dbError.message
+								: 'Unknown database error',
+					});
+				}
+			}
+
+			return {
+				successes: databaseImages,
+				failures: failedDatabaseInserts,
+				totalUploaded: uploadResult.successes.length,
+				totalProcessed: files.length,
+				cloudUploadFailures: uploadResult.failures,
+			};
+		} catch (error) {
+			console.error('Error in uploadMultipleImages:', error);
+			throw error;
+		}
 	},
 
 	async getBlogById(id: string) {
