@@ -39,6 +39,9 @@ const envSchema = z.object({
 	// ADMIN EMAIL ADDRESSES
 	ADMIN_EMAIL_JADD: z.string().min(1),
 	ADMIN_EMAIL_WIRRALBEARS: z.string().min(1),
+	ADMIN_EMAIL_MARTIN: z.string().min(1),
+	ADMIN_EMAIL_DOWDSTERS: z.string().min(1),
+	ADMIN_EMAIL_SKYE: z.string().min(1)
 });
 
 /**
