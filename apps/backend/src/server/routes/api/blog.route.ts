@@ -33,13 +33,21 @@ router.post(
 	blogControllers.uploadImage
 );
 
-router.get(
-	'/getAllBlogPreviews',
-	blogControllers.getAllBlogPreviews
+// POST to upload multiple images
+router.post(
+	'/uploadMultipleImages',
+	ensureAuthenticated,
+	upload.array('images'),
+	blogControllers.uploadMultipleImages
 );
 
+router.get('/getAllBlogPreviews', blogControllers.getAllBlogPreviews);
 
 // DELETE a blog
-router.delete('/deleteBlog/:id', ensureAuthenticated, blogControllers.deleteBlog);
+router.delete(
+	'/deleteBlog/:id',
+	ensureAuthenticated,
+	blogControllers.deleteBlog
+);
 
 export default router;

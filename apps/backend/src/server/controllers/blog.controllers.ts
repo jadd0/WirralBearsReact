@@ -28,7 +28,12 @@ export const updateBlog: RequestHandler = async (req, res) => {
 		console.log('Updating blog with elements:', blogData.elements);
 
 		// Pass the blog data and files to the service
-		const updatedBlog = await blogServices.updateBlog(id, authorId, blogData, files);
+		const updatedBlog = await blogServices.updateBlog(
+			id,
+			authorId,
+			blogData,
+			files
+		);
 
 		if (updatedBlog) {
 			res.status(200).send({
@@ -47,7 +52,6 @@ export const updateBlog: RequestHandler = async (req, res) => {
 		});
 	}
 };
-
 
 export const getAllBlogs: RequestHandler = async (req, res) => {
 	try {
@@ -94,7 +98,7 @@ export const createBlog: RequestHandler = async (req, res) => {
 		// Create the blog data object
 		const blogData = { elements };
 
-		console.log(blogData.elements)
+		console.log(blogData.elements);
 
 		// Pass the blog data and files to the service
 		const newBlog = await blogServices.createBlog(authorId, blogData, files);
@@ -197,6 +201,61 @@ export const deleteBlog: RequestHandler = async (req, res) => {
 	}
 };
 
+export const uploadMultipleImages: RequestHandler = async (req, res) => {
+
+	try {
+		// Check if there are files in the request
+		const files = req.files as Express.Multer.File[];
+		if (!files || files.length === 0) {
+			res.status(400).send({ message: 'No image files provided' });
+			return;
+		}
+
+		// Parse alt texts if provided (optional)
+		let altTexts: string[] | undefined;
+		if (req.body.altTexts) {
+			try {
+				altTexts = JSON.parse(req.body.altTexts);
+			} catch (parseError) {
+				res
+					.status(400)
+					.send({ message: 'Invalid altTexts format. Must be a JSON array.' });
+				return;
+			}
+		}
+
+		// Upload the images using the blog service
+		const result = await blogServices.uploadMultipleImages(
+			files,
+			altTexts
+		);
+
+		// Check if there were any failures
+		if (result.failures.length > 0) {
+			res.status(207).send({
+				message: 'Some images uploaded successfully, but some failed',
+				successes: result.successes,
+				failures: result.failures,
+				totalUploaded: result.totalUploaded,
+				totalProcessed: result.totalProcessed,
+			});
+			return;
+		}
+
+		res.status(200).send({
+			message: 'All images uploaded successfully',
+			images: result.successes,
+			totalUploaded: result.totalUploaded,
+		});
+	} catch (error) {
+		console.error('Error uploading multiple images:', error);
+		res.status(500).send({
+			message: 'Failed to upload images',
+			error: error instanceof Error ? error.message : 'Unknown error',
+		});
+	}
+};
+
 export default {
 	getAllBlogs,
 	getBlogById,
@@ -205,4 +264,5 @@ export default {
 	deleteBlog,
 	uploadImage,
 	getAllBlogPreviews,
+	uploadMultipleImages,
 } as {};
