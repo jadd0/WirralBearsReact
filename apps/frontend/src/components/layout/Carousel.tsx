@@ -105,7 +105,7 @@ export function CarouselComponent({
 			{allImagesLoaded && images.length > 1 && (
 				<div className="flex flex-col items-center mt-4">
 					{headings && headings[current] && (
-						<div className="mb-2 text-red-600 font-semibold text-lg drop-shadow">
+						<div className="mb-2 text-white font-semibold text-lg drop-shadow">
 							{headings[current]}
 						</div>
 					)}
