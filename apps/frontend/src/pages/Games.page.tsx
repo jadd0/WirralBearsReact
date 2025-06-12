@@ -13,6 +13,7 @@ import GamesStatsCards from '@/components/games/display/GamesStatsCards';
 import GamesFilters from '@/components/games/display/GamesFilters';
 import GamesList from '@/components/games/display/GamesList';
 import { LogoBanner } from '@/components/layout/LogoBanner';
+import { Footer } from '@/components/layout/Footer';
 
 interface GamesDisplayPageProps {
 	showFilters?: boolean;
@@ -61,18 +62,18 @@ export default function GamesDisplayPage({
 			// Show unique seasons (one of each season name) but keep all season objects
 			const seenSeasonNames = new Set();
 			const uniqueSeasons = [];
-			
-			seasons.forEach(season => {
+
+			seasons.forEach((season) => {
 				if (!seenSeasonNames.has(season.season)) {
 					seenSeasonNames.add(season.season);
 					uniqueSeasons.push(season);
 				}
 			});
-			
+
 			return uniqueSeasons;
 		} else {
 			// Show only seasons for the selected gender
-			return seasons.filter(season => season.gender === selectedGender);
+			return seasons.filter((season) => season.gender === selectedGender);
 		}
 	}, [seasons, selectedGender]);
 
@@ -103,13 +104,11 @@ export default function GamesDisplayPage({
 		isLoading = isLoading || seasonLoading;
 	} else if (selectedGender === 'all' && selectedSeason !== 'all') {
 		// No gender filter, but season selected - need to get all games for that season across all genders
-		const allSeasonGames = gamesBySeason?.filter(
-			(season) => {
-				// Find the season object to get the season name
-				const seasonObj = seasons.find(s => s.id === selectedSeason);
-				return seasonObj && season.season === seasonObj.season;
-			}
-		);
+		const allSeasonGames = gamesBySeason?.filter((season) => {
+			// Find the season object to get the season name
+			const seasonObj = seasons.find((s) => s.id === selectedSeason);
+			return seasonObj && season.season === seasonObj.season;
+		});
 		displayGames = allSeasonGames?.flatMap((season) => season.games) || [];
 		isLoading = isLoading || seasonLoading;
 	} else {
@@ -149,33 +148,37 @@ export default function GamesDisplayPage({
 	}
 
 	return (
-		<div className="p-6 space-y-6">
+		<div className="space-y-6 min-w-full">
 			<LogoBanner />
-			<GamesDisplayHeader totalGames={filteredGames.length} />
 
-			{showStats && statistics && <GamesStatsCards stats={statistics} />}
+			<div className="p-6 pt-0">
+				<GamesDisplayHeader totalGames={filteredGames.length} />
 
-			{showFilters && (
-				<GamesFilters
-					searchTerm={searchTerm}
-					setSearchTerm={setSearchTerm}
-					selectedGender={selectedGender}
-					setSelectedGender={handleGenderChange}
-					selectedSeason={selectedSeason}
-					setSelectedSeason={setSelectedSeason}
-					selectedResult={selectedResult}
-					setSelectedResult={setSelectedResult}
-					seasons={availableSeasons}
-					onClearFilters={clearFilters}
+				{showStats && statistics && <GamesStatsCards stats={statistics} />}
+
+				{showFilters && (
+					<GamesFilters
+						searchTerm={searchTerm}
+						setSearchTerm={setSearchTerm}
+						selectedGender={selectedGender}
+						setSelectedGender={handleGenderChange}
+						selectedSeason={selectedSeason}
+						setSelectedSeason={setSelectedSeason}
+						selectedResult={selectedResult}
+						setSelectedResult={setSelectedResult}
+						seasons={availableSeasons}
+						onClearFilters={clearFilters}
+					/>
+				)}
+
+				<GamesList
+					games={filteredGames}
+					seasons={seasons}
+					blogs={blogs}
+					compact={compact}
 				/>
-			)}
-
-			<GamesList
-				games={filteredGames}
-				seasons={seasons}
-				blogs={blogs}
-				compact={compact}
-			/>
+			</div>
+			<Footer />
 		</div>
 	);
 }

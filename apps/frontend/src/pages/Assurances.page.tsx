@@ -16,7 +16,7 @@ const CheckIcon = () => (
 
 export default function AssurancesPage() {
 	return (
-		<div className="min-h-screen font-sans flex flex-col">
+		<div className="min-h-screen min-w-full font-sans flex flex-col">
 			<LogoBanner />
 			<main className="flex-1 flex flex-col items-center px-4">
 				<section className="w-full max-w-2xl text-center py-10">

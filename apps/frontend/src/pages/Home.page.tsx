@@ -4,6 +4,8 @@ import { CarouselComponent } from '@components/layout/Carousel';
 import { MapboxMap } from '@components/layout/Mapbox';
 import { BallForAllGrid } from '@components/layout/BallForAllGrid';
 import { Footer } from '@components/layout/Footer';
+import BlogAllPreviews from '@/components/blog/BlogAllPreviews';
+import { useGetAllBlogPreviews } from '@/hooks/blog.hooks';
 
 // Example images; replace with server images as needed
 const carouselImages: any[] = [
@@ -12,8 +14,11 @@ const carouselImages: any[] = [
 	{ id: 3, src: 'https://picsum.photos/800/400?random=3', name: '3' },
 	{ id: 4, src: 'https://picsum.photos/800/400?random=4', name: '4' },
 ];
+//TODO: RANDOM IMAGES AND CREATE HOOK
 
 export default function HomePage() {
+	const { data: blogs = [], isLoading: blogsLoading } = useGetAllBlogPreviews();
+
 	return (
 		<div className="min-h-screen w-full font-sans flex flex-col">
 			<LogoBanner />
@@ -87,6 +92,14 @@ export default function HomePage() {
 						</button>
 					</div>
 				</InfoBox>
+
+				{/* Recent blogs */}
+				<div className="flex-col min-w-full m-6 mb-12">
+					<h2 className="text-xl sm:text-2xl font-bold mb-3 text-center">
+						Recent Blog Posts
+					</h2>
+					<BlogAllPreviews blogs={blogs} isLoading={blogsLoading} limit={3} />
+				</div>
 
 				{/* Location Section */}
 				<section className="w-full max-w-2xl text-center mb-10">

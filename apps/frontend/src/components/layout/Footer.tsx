@@ -56,32 +56,21 @@ export function Footer() {
 						</li>
 						<li>
 							<a
-								href="https://goo.gl/maps/Zs2cBJ1htbrRkEcY6"
+								href="https://instagram.com/wirral_bears_basketball_club?r=nametag"
 								className="hover:text-red-400 transition-colors"
 							>
-								Neston Location
+								Instagram
+							</a>
+						</li>
+						<li>
+							<a
+								href="https://facebook.com/WirralBears/"
+								className="hover:text-red-400 transition-colors"
+							>
+								Facebook
 							</a>
 						</li>
 					</ul>
-					<div className="flex space-x-4 mt-4">
-						<a href="https://facebook.com/WirralBears/" aria-label="Facebook">
-							<img
-								src="/images/facebook.png"
-								alt="Facebook"
-								className="w-8 hover:opacity-80 transition-opacity"
-							/>
-						</a>
-						<a
-							href="https://instagram.com/wirral_bears_basketball_club?r=nametag"
-							aria-label="Instagram"
-						>
-							<img
-								src="/images/instagram.png"
-								alt="Instagram"
-								className="w-8 hover:opacity-80 transition-opacity"
-							/>
-						</a>
-					</div>
 				</div>
 			</div>
 
