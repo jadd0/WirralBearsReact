@@ -95,7 +95,7 @@ export default function MultipleImageUploadPage() {
 
 	return (
 		<div className="container mx-auto px-4 py-8 max-w-6xl">
-			<div className="mb-8">
+			<div className="mb-8 flex-col items-center flex">
 				<h1 className="text-3xl font-bold text-gray-900 mb-2">
 					Upload Multiple Images
 				</h1>
@@ -130,6 +130,7 @@ export default function MultipleImageUploadPage() {
 									<Button
 										variant="outline"
 										onClick={() => setIsPreviewMode(!isPreviewMode)}
+										className='cursor-pointer'
 									>
 										{isPreviewMode ? 'Hide Preview' : 'Show Preview'}
 									</Button>
@@ -137,6 +138,7 @@ export default function MultipleImageUploadPage() {
 										variant="outline"
 										onClick={handleClear}
 										disabled={uploadMutation.isPending}
+										className='cursor-pointer'
 									>
 										Clear All
 									</Button>
@@ -191,7 +193,7 @@ export default function MultipleImageUploadPage() {
 								disabled={
 									uploadMutation.isPending || selectedFiles.length === 0
 								}
-								className="w-full"
+								className="w-full cursor-pointer"
 								size="lg"
 							>
 								{uploadMutation.isPending ? (
