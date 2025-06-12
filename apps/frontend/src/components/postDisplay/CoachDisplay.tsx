@@ -19,7 +19,7 @@ export default function CoachDisplay({ id }: { id: string }) {
 	return (
 		<main className="w-full">
 			<div
-				className="w-full pl-[20px] pr-4 py-8"
+				className="w-full pl-[40px] pr-4 py-8"
 				style={{ marginLeft: 0, marginRight: 'auto' }}
 			>
 				{auth?.authenticated && blogData && (

@@ -5,16 +5,18 @@ import BlogPreviewSkeleton from './BlogPreviewSkeleton';
 export default function BlogAllPreviews({
 	blogs,
 	isLoading,
+	limit
 }: {
 	blogs: BlogPreview[];
 	isLoading: boolean;
+	limit?: number
 }) {
 	return (
 		<section className="w-full max-w-4xl mx-auto px-4">
 			<div className="grid gap-6">
 				{isLoading ? (
 					// Show skeleton loading state
-					Array.from({ length: 6 }).map((_, index) => (
+					Array.from({ length: limit || 6 }).map((_, index) => (
 						<BlogPreviewSkeleton key={`skeleton-${index}`} />
 					))
 				) : blogs.length > 0 ? (
