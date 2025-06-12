@@ -29,7 +29,8 @@ import CreatePage from './pages/admin/post/Create.page';
 import EditPage from './pages/admin/post/Edit.page';
 import EditSessionsPage from './pages/admin/Sessions.page';
 import GamesEditCreatePage from './pages/admin/games/GamesCreate.page';
-import GamesEditPage from './pages/admin/games/GamesEdit.page';
+import MultipleImageUploadPage from './pages/admin/image/ImagesUpload.page';
+
 
 function AuthenticatedRouter() {
 	const { data, isPending, error, refetch } = useMe();
@@ -132,6 +133,8 @@ function App() {
 						<Route path="/admin/sessions" element={<EditSessionsPage />} />
 						<Route path="/admin/games/create" element={<GamesEditCreatePage />} />
 
+						<Route path="/admin/multipleImageUpload" element={<MultipleImageUploadPage />} />
+
 						<Route path="/logout" element={<Logout />} />
 					</Route>
 
@@ -159,7 +162,6 @@ function App() {
 					<Route path="/coaches" element={<ViewCoachesPage />} />
 					<Route path="/coaches/coach/:slug" element={<CoachViewPage />} />
 
-					{/* Admin routes */}
 				</Routes>
 				<Toaster position="top-right" closeButton={false} />
 			</main>
