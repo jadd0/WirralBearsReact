@@ -15,7 +15,7 @@ const HeartIcon = () => (
 
 export default function SponsorshipPage() {
 	return (
-		<div className="min-h-screen w-screen font-sans flex flex-col overflow-hidden">
+		<div className="min-h-screen min-w-full font-sans flex flex-col overflow-hidden">
 			<LogoBanner />
 			<main className="flex-1 flex flex-col items-center px-4">
 				{/* Hero Section */}

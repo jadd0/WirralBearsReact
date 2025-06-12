@@ -43,7 +43,7 @@ const PRINCIPLES = [
 
 export default function BallForAllPage() {
 	return (
-		<div className="min-h-screen font-sans flex flex-col">
+		<div className="min-h-screen min-w-full font-sans flex flex-col">
 			<LogoBanner />
 			<main className="flex-1 flex flex-col items-center px-4">
 				{/* Hero Section */}
