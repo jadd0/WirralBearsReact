@@ -328,15 +328,12 @@ export const gamesServices = {
 			let otherScores: number[] = [];
 
 			allGames.forEach((game) => {
-				const ourScore = parseFloat(game.ourScore);
-				const otherScore = parseFloat(game.otherScore);
+				ourScores.push(game.ourScore);
+				otherScores.push(game.otherScore);
 
-				ourScores.push(ourScore);
-				otherScores.push(otherScore);
-
-				if (ourScore > otherScore) {
+				if (game.ourScore > game.otherScore) {
 					wins++;
-				} else if (ourScore < otherScore) {
+				} else if (game.ourScore < game.otherScore) {
 					losses++;
 				} else {
 					draws++;

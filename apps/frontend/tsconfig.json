@@ -1,29 +1,28 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" },
-    {
-      "path": "../../packages/constants"
-    },
-    {
-      "path": "../../packages/types"
-    },
-    {
-      "path": "../../packages/backend-types"
-    },
-    {
-      "path": "../../packages/validation"
-    },
-  ],
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"],
-    },
-    "moduleResolution": "NodeNext",
-    "noErrorTruncation": true
-  
-  }
+	"extends": "../../tsconfig.base.json",
+	"files": [],
+	"references": [
+		{ "path": "./tsconfig.app.json" },
+		{ "path": "./tsconfig.node.json" },
+		{
+			"path": "../../packages/constants"
+		},
+		{
+			"path": "../../packages/types"
+		},
+		{
+			"path": "../../packages/backend-types"
+		},
+		{
+			"path": "../../packages/validation"
+		}
+	],
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"@/*": ["src/*"]
+		},
+		"moduleResolution": "NodeNext",
+		"noErrorTruncation": true
+	}
 }
