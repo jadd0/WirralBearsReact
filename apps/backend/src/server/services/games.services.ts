@@ -217,7 +217,7 @@ export const gamesServices = {
 		scoreDifferential: number;
 	}> {
 		try {
-			let games: Game[];
+			let games = [] as Game[];
 
 			if (seasonId) {
 				games = await gamesRepository.getGamesBySeasonId(seasonId);
