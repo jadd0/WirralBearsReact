@@ -130,6 +130,7 @@ export const blogServices = {
 	 */
 	async uploadMultipleImages(
 		files: Express.Multer.File[],
+		authorId: string,
 		altTexts?: string[]
 	) {
 		try {
@@ -192,6 +193,7 @@ export const blogServices = {
 						key: uploadedImage.key,
 						url: uploadedImage.url,
 						alt,
+						authorId
 					});
 
 					databaseImages.push({

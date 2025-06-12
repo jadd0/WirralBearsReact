@@ -202,6 +202,12 @@ export const deleteBlog: RequestHandler = async (req, res) => {
 };
 
 export const uploadMultipleImages: RequestHandler = async (req, res) => {
+	const authorId = req.user?.id;
+
+	if (!authorId) {
+		res.status(401).send({ message: 'User not authenticated' });
+		return;
+	}
 
 	try {
 		// Check if there are files in the request
@@ -225,10 +231,7 @@ export const uploadMultipleImages: RequestHandler = async (req, res) => {
 		}
 
 		// Upload the images using the blog service
-		const result = await blogServices.uploadMultipleImages(
-			files,
-			altTexts
-		);
+		const result = await blogServices.uploadMultipleImages(files, authorId, altTexts);
 
 		// Check if there were any failures
 		if (result.failures.length > 0) {
