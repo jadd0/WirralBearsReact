@@ -3,6 +3,47 @@ import { BlogData } from '@wirralbears/types';
 import { BlogPreview, FullBlog } from '@wirralbears/backend-types';
 
 /**
+ * Uploads multiple images and returns their data
+ * @param files - Array of image files to upload
+ * @param altTexts - Optional array of alt texts for the images
+ * @returns Array of uploaded image data
+ */
+export async function uploadMultipleImages(
+	files: File[],
+	altTexts?: string[]
+): Promise<{
+	images: Array<{
+		id: string;
+		url: string;
+		key: string;
+		alt: string;
+		originalName: string;
+		index: number;
+	}>;
+	totalUploaded: number;
+}> {
+	const formData = new FormData();
+
+	// Add each file to the FormData
+	files.forEach((file) => {
+		formData.append('images', file);
+	});
+
+	// Add alt texts if provided
+	if (altTexts && altTexts.length > 0) {
+		formData.append('altTexts', JSON.stringify(altTexts));
+	}
+
+	const { data } = await request({
+		url: '/api/blog/uploadMultipleImages',
+		method: 'POST',
+		data: formData,
+	});
+
+	return data;
+}
+
+/**
  * Updates an existing blog on the server
  * @param data - Object containing blogData and id
  * @returns The ID of the updated blog
@@ -171,8 +212,8 @@ export async function getAllBlogPreviews(): Promise<BlogPreview[]> {
 export async function deleteBlog(id: string) {
 	const { data } = await request({
 		url: `/api/blog/deleteBlog/${id}`,
-		method: 'DELETE'
-	})
+		method: 'DELETE',
+	});
 
 	return data;
 }

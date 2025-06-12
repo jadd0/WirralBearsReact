@@ -12,6 +12,28 @@ import {
 import { BlogPreview } from '@wirralbears/backend-types';
 
 /**
+ * Hook for uploading multiple images
+ * @returns Mutation object with mutate function and states
+ */
+export const useUploadMultipleImages = () => {
+	return useMutation({
+		mutationFn: async (data: { files: File[]; altTexts?: string[] }) => {
+			return await api.blog.uploadMultipleImages(data.files, data.altTexts);
+		},
+		onSuccess: (data) => {
+			toast.success('Images uploaded successfully', {
+				description: `${data.totalUploaded} images uploaded successfully`,
+			});
+		},
+		onError: (error: Error) => {
+			toast.error('Failed to upload images', {
+				description: error.message,
+			});
+		},
+	});
+};
+
+/**
  * Updates an existing blog
  * @returns The result of the update operation
  */
