@@ -151,7 +151,7 @@ export default function GamesDisplayPage({
 		<div className="space-y-6 min-w-full">
 			<LogoBanner />
 
-			<div className="p-6">
+			<div className="p-6 pt-0">
 				<GamesDisplayHeader totalGames={filteredGames.length} />
 
 				{showStats && statistics && <GamesStatsCards stats={statistics} />}
