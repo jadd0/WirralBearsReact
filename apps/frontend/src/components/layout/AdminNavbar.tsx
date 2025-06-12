@@ -9,10 +9,8 @@ const navLinks = [
 	{ to: '/admin/blog/editPost', label: 'Edit Post', key: 'editPost' },
 	{ to: '/admin/image', label: 'Images', key: 'images' },
 	{ to: '/admin/coach/create', label: 'Create Coach', key: 'createCoach' },
-	{ to: '/admin/coach/edit', label: 'Edit Coach', key: 'editCoach' },
 	{ to: '/admin/sessions', label: 'Sessions', key: 'sessions' },
 	{ to: '/admin/games/create', label: 'Create Game', key: 'createGame' },
-	{ to: '/admin/games/edit', label: 'Edit Games', key: 'editGames' },
 	{to: '/admin/multipleImageUpload', label: 'Upload Images', key: 'uploadImages' },
 ];
 
