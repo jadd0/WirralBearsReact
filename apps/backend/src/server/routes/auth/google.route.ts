@@ -37,13 +37,29 @@ router.get(
 			cookies: req.headers.cookie ? 'present' : 'missing',
 		});
 
-		// Force session save before redirect
+		// Ensure user is authenticated before proceeding
+		if (!req.isAuthenticated() || !req.user) {
+			console.error('Authentication failed in callback');
+			return res.redirect(createClientURL('/login?error=auth_failed'));
+		}
+
+		// Force session save with proper error handling
 		req.session.save((err) => {
 			if (err) {
 				console.error('Session save error:', err);
+				return res.redirect(createClientURL('/login?error=session_failed'));
 			}
-			console.log('Session saved, redirecting...');
-			res.redirect(createClientURL('/'));
+
+			console.log('Session saved successfully:', {
+				sessionID: req.sessionID,
+				userID: req.user?.id,
+				timestamp: new Date().toISOString(),
+			});
+
+			// Add a small delay to ensure PostgreSQL commit completes
+			setTimeout(() => {
+				res.redirect(createClientURL('/'));
+			}, 100);
 		});
 	}
 );
