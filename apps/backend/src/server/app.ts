@@ -50,8 +50,6 @@ if (env.NODE_ENV === 'development') {
 		connectionTimeoutMillis: 30000,
 		idleTimeoutMillis: 30000,
 		max: 10,
-		min: 2,
-		acquireTimeoutMillis: 30000,
 	});
 } else {
 	pgPool = createDatabasePool();
