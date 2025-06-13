@@ -35,6 +35,8 @@ import MultipleImageUploadPage from './pages/admin/image/ImagesUpload.page';
 function AuthenticatedRouter() {
 	const { data, isPending, error, refetch } = useMe();
 
+	console.log(data)
+
 	if (error)
 		toast.error(
 			'Failed to verify authentication status! Please try again later.'
