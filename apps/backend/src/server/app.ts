@@ -17,6 +17,11 @@ const __dirname = path.dirname(__filename);
 const app: Application = express();
 const upload = multer();
 
+if (env.NODE_ENV === 'production') {
+	app.set('trust proxy', 1); // Essential for Render/Vercel
+}
+
+
 // For parsing application/json
 app.use(express.json());
 
@@ -77,6 +82,7 @@ app.use(
 		resave: false,
 		saveUninitialized: false,
 		name: 'connect.sid',
+		rolling: false,
 		cookie: {
 			httpOnly: true,
 			secure: env.NODE_ENV === 'production', // Only secure in production
