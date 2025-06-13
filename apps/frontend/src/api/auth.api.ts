@@ -7,6 +7,8 @@ import { User } from "@wirralbears/types";
 export async function getMe() {
 	const { data } = await request({ url: '/auth/me', method: 'GET' });
 
+	console.log({data})
+
 	return { authenticated: data.authenticated, user: data.user } as {
 		authenticated: boolean;
 		user?: User;
