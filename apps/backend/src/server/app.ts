@@ -79,9 +79,9 @@ app.use(
 		name: 'connect.sid',
 		cookie: {
 			httpOnly: true,
-			secure: false, // Always false for localhost testing
-			sameSite: 'lax', // Use lax for localhost
-			maxAge: 1000 * 60 * 60 * 24,
+			secure: env.NODE_ENV === 'production', // Only secure in production
+			sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-origin in production
+			maxAge: 1000 * 60 * 60 * 24, // 24 hours
 		},
 	})
 );
