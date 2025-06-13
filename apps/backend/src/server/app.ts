@@ -21,24 +21,24 @@ if (env.NODE_ENV === 'production') {
 	app.set('trust proxy', 1); // Essential for Render/Vercel
 }
 
-
 // For parsing application/json
 app.use(express.json());
 
 // For parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-// Enhanced CORS configuration
+// Enhanced CORS configuration for cross-origin cookies
 app.use(
 	cors({
 		origin: [
 			'http://localhost:5173',
 			'http://localhost:3000',
-			env.CLIENT_ORIGIN,
+			env.CLIENT_ORIGIN, // Make sure this is your exact Vercel domain
 		],
 		credentials: true,
 		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 		allowedHeaders: ['Content-Type', 'Authorization'],
+		optionsSuccessStatus: 200, // For legacy browser support
 	})
 );
 
@@ -62,11 +62,7 @@ if (env.NODE_ENV === 'development') {
 
 const pgSessionStore = connectPgSimple(session);
 
-// Check if we're running on localhost
-const isLocalhost =
-	env.CLIENT_ORIGIN.includes('localhost') ||
-	env.CLIENT_ORIGIN.includes('127.0.0.1');
-
+// Updated session configuration for cross-origin
 app.use(
 	session({
 		store: new pgSessionStore({
@@ -85,8 +81,8 @@ app.use(
 		rolling: false,
 		cookie: {
 			httpOnly: true,
-			secure: env.NODE_ENV === 'production', // Only secure in production
-			sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-origin in production
+			secure: env.NODE_ENV === 'production', // Must be true for cross-origin in production
+			sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' required for cross-origin
 			maxAge: 1000 * 60 * 60 * 24, // 24 hours
 		},
 	})
@@ -104,6 +100,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 		cookies: req.headers.cookie ? 'present' : 'missing',
 		authenticated: req.isAuthenticated?.(),
 		user: req.user?.id || 'none',
+		origin: req.headers.origin,
+		userAgent: req.headers['user-agent']?.substring(0, 50) + '...',
 	});
 	next();
 });
@@ -119,9 +117,23 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 			cookies: req.headers.cookie ? 'present' : 'missing',
 			user: req.user?.id || 'none',
 			origin: req.headers.origin,
+			referer: req.headers.referer,
 		});
 	}
 	next();
+});
+
+// Additional middleware to handle preflight requests
+app.use((req: Request, res: Response, next: NextFunction) => {
+	if (req.method === 'OPTIONS') {
+		res.header('Access-Control-Allow-Origin', req.headers.origin);
+		res.header('Access-Control-Allow-Credentials', 'true');
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+		res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+		res.sendStatus(200);
+	} else {
+		next();
+	}
 });
 
 app.use(express.static(path.join(__dirname, '../public')));
