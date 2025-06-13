@@ -1,13 +1,47 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
-export const ensureUnauthenticated = (req: Request, res: Response, next: NextFunction) => {
-  if (req.isAuthenticated()) {
-    res.status(403).send("Forbidden. Already authenticated.");
-  } else next();
+export const ensureAuthenticated = (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	console.log('ensureAuthenticated check:', {
+		authenticated: req.isAuthenticated(),
+		user: req.user?.id || 'none',
+		sessionID: req.sessionID,
+		url: req.url,
+		cookies: req.headers.cookie ? 'present' : 'missing',
+	});
+
+	if (req.isAuthenticated()) {
+		return next();
+	}
+
+	res.status(401).json({
+		message: 'Authentication required',
+		authenticated: false,
+	});
 };
 
-export const ensureAuthenticated = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.isAuthenticated()) {
-    res.status(401).send("Unauthorized. Please login.");
-  } else next();
+export const ensureUnauthenticated = (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	console.log('ensureUnauthenticated check:', {
+		authenticated: req.isAuthenticated(),
+		user: req.user?.id || 'none',
+		sessionID: req.sessionID,
+		url: req.url,
+		cookies: req.headers.cookie ? 'present' : 'missing',
+	});
+
+	if (!req.isAuthenticated()) {
+		return next();
+	}
+
+	res.status(403).json({
+		message: 'Already authenticated',
+		authenticated: true,
+	});
 };

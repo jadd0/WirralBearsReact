@@ -23,16 +23,22 @@ app.use(express.json());
 // For parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-// Global middleware for parsing JSON & URL-encoded data
+// Enhanced CORS configuration
 app.use(
 	cors({
-		origin: env.CLIENT_ORIGIN,
+		origin: [
+			'http://localhost:5173',
+			'http://localhost:3000',
+			env.CLIENT_ORIGIN,
+		],
 		credentials: true,
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+		allowedHeaders: ['Content-Type', 'Authorization'],
 	})
 );
 
 // Authentication middleware
-let pgPool;
+let pgPool: any;
 
 if (env.NODE_ENV === 'development') {
 	pgPool = new pg.Pool({
@@ -41,6 +47,11 @@ if (env.NODE_ENV === 'development') {
 		port: env.DB_PORT,
 		password: env.DB_PASSWORD,
 		database: env.DB_NAME,
+		connectionTimeoutMillis: 30000,
+		idleTimeoutMillis: 30000,
+		max: 10,
+		min: 2,
+		acquireTimeoutMillis: 30000,
 	});
 } else {
 	pgPool = createDatabasePool();
@@ -48,27 +59,66 @@ if (env.NODE_ENV === 'development') {
 
 const pgSessionStore = connectPgSimple(session);
 
+// Check if we're running on localhost
+const isLocalhost =
+	env.CLIENT_ORIGIN.includes('localhost') ||
+	env.CLIENT_ORIGIN.includes('127.0.0.1');
+
 app.use(
 	session({
 		store: new pgSessionStore({
 			pool: pgPool,
-			createTableIfMissing: true, // Add this line to auto-create the session table
+			createTableIfMissing: true,
 			pruneSessionInterval: 60 * 20,
+			ttl: 60 * 60 * 24,
+			errorLog: (error) => {
+				console.error('Session store error:', error);
+			},
 		}),
 		secret: env.SESSION_SECRET ?? 'defaultSecret',
 		resave: false,
 		saveUninitialized: false,
+		name: 'connect.sid',
 		cookie: {
 			httpOnly: true,
-			secure: env.NODE_ENV === 'production',
-			sameSite: env.NODE_ENV === 'production' ? 'strict' : 'lax',
+			secure: false, // Always false for localhost testing
+			sameSite: 'lax', // Use lax for localhost
+			maxAge: 1000 * 60 * 60 * 24,
 		},
 	})
 );
 
-
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Session debug middleware
+app.use((req: Request, res: Response, next: NextFunction) => {
+	console.log('Session Debug:', {
+		url: req.url,
+		sessionID: req.sessionID,
+		hasSession: !!req.session,
+		cookies: req.headers.cookie ? 'present' : 'missing',
+		authenticated: req.isAuthenticated?.(),
+		user: req.user?.id || 'none',
+	});
+	next();
+});
+
+// Debug middleware for production
+app.use((req: Request, res: Response, next: NextFunction) => {
+	if (env.NODE_ENV === 'production' && req.url.includes('/auth')) {
+		console.log('Auth Debug:', {
+			url: req.url,
+			method: req.method,
+			authenticated: req.isAuthenticated?.(),
+			sessionID: req.sessionID,
+			cookies: req.headers.cookie ? 'present' : 'missing',
+			user: req.user?.id || 'none',
+			origin: req.headers.origin,
+		});
+	}
+	next();
+});
 
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -82,8 +132,42 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // Global catch-all error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-	console.error(err.stack);
-	res.status(500).send('Something went wrong');
+	console.error('Global error handler:', err.stack);
+
+	// Handle database connection errors specifically
+	if (err.message && err.message.includes('CONNECT_TIMEOUT')) {
+		console.error('Database connection timeout detected');
+		res.status(503).json({
+			error: 'Database connection timeout',
+			message: 'Please try again later',
+		});
+		return;
+	}
+
+	res.status(500).json({
+		error: 'Internal server error',
+		message:
+			env.NODE_ENV === 'development' ? err.message : 'Something went wrong',
+	});
+});
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+	console.log('Received SIGINT, shutting down gracefully...');
+	if (pgPool) {
+		await pgPool.end();
+		console.log('Database pool closed.');
+	}
+	process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+	console.log('Received SIGTERM, shutting down gracefully...');
+	if (pgPool) {
+		await pgPool.end();
+		console.log('Database pool closed.');
+	}
+	process.exit(0);
 });
 
 export default app;

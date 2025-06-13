@@ -8,6 +8,13 @@
       "when": 1749588110102,
       "tag": "0000_swift_grandmaster",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1749771990449,
+      "tag": "0001_flimsy_stranger",
+      "breakpoints": true
     }
   ]
 }
