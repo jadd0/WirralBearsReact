@@ -1,6 +1,5 @@
 import { CarouselComponent } from '@components/layout/Carousel';
 
-// Example: generate random Unsplash images for demonstration
 const policies = [
 	{ title: 'Joy' },
 	{ title: 'Positivity' },
