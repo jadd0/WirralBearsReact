@@ -14,11 +14,7 @@ passport.use(
 		},
 		async (accessToken, refreshToken, profile, done) => {
 			try {
-				console.log('Google OAuth strategy callback:', {
-					profileId: profile.id,
-					email: profile.emails?.[0]?.value,
-					hasRefreshToken: !!refreshToken,
-				});
+
 
 				// Check if user already exists
 				const existingConnection = await db
@@ -33,7 +29,6 @@ passport.use(
 					.limit(1);
 
 				if (existingConnection.length > 0) {
-					console.log('Existing user found, updating tokens');
 
 					// Update tokens
 					await db
@@ -56,10 +51,8 @@ passport.use(
 						.where(eq(users.id, existingConnection[0].userId))
 						.limit(1);
 
-					console.log('User authenticated:', user[0]?.id);
 					return done(null, user[0]);
 				} else {
-					console.log('Creating new user and connection');
 
 					// Create new user and connection
 					const newUser = await db
@@ -94,21 +87,17 @@ passport.use(
 
 // Serialize user for session
 passport.serializeUser((user: any, done) => {
-	console.log('Serializing user:', user.id);
 	done(null, user.id);
 });
 
 // Deserialize user from session
 passport.deserializeUser(async (id: string, done) => {
 	try {
-		console.log('Deserializing user:', id);
 
 		const user = await db.select().from(users).where(eq(users.id, id)).limit(1);
 
-		console.log('User deserialized:', user[0]?.id || 'not found');
 		done(null, user[0] || null);
 	} catch (error) {
-		console.error('User deserialization error:', error);
 		done(error, null);
 	}
 });
