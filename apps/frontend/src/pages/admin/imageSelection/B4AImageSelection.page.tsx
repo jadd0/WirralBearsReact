@@ -9,7 +9,7 @@ const policies = [
   { title: 'Positivity' },
   { title: 'Respect' },
   { title: 'Equality' },
-  { title: 'Dedication and Effort' },
+  { title: 'Ded. and Effort' },
   { title: 'Growth' },
   { title: 'Pass' },
   { title: 'Defence' },
