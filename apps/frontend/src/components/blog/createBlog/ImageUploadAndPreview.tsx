@@ -74,7 +74,7 @@ export function ImageUploadAndPreview({
 										or drag and drop
 									</p>
 									<p className="text-xs text-gray-500">
-										PNG, JPG or GIF (max. 5MB)
+										PNG, JPG or GIF (max. 20MB)
 									</p>
 								</>
 							)}
