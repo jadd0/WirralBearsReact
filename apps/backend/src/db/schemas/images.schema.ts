@@ -71,7 +71,6 @@ export const firstCarousel = pgTable('first_carousel', {
 	imageId: varchar('imageId')
 		.notNull()
 		.references(() => images.id, { onDelete: 'cascade' }),
-	position: integer('position').notNull(),
 	createdAt: timestamp('created_at', { mode: 'string' }).defaultNow(),
 });
 
@@ -83,6 +82,5 @@ export const secondCarousel = pgTable('second_carousel', {
 	imageId: varchar('imageId')
 		.notNull()
 		.references(() => images.id, { onDelete: 'cascade' }),
-	position: integer('position').notNull(),
 	createdAt: timestamp('created_at', { mode: 'string' }).defaultNow(),
 });

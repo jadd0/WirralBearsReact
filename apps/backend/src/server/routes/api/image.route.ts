@@ -11,5 +11,17 @@ router.get('/getAllImages/:cursor', imageControllers.getAllImages);
 // DELETE a single image by ID
 router.delete('/deleteImage/:imageId', ensureAuthenticated, imageControllers.deleteImage)
 
+// GET all images for the first home images carousel
+router.delete('/getAllFirstCarouselImages', imageControllers.getAllFirstCarouselImages)
+
+// GET all images for the b4a home images carousel
+router.delete('/getAllFirstHomeCarouselImages', imageControllers.getAllB4ACarouselImages)
+
+// PUT all images to replace home carousel images
+router.put('/replaceAllFirstCarouselImages', ensureAuthenticated, imageControllers.replaceAllFirstCarouselImages)
+
+// PUT all images to replace b4a carousel images
+router.put('/replaceAllB4ACarouselImages', ensureAuthenticated, imageControllers.replaceAllB4ACarouselImages)
+
 // TODO: refactor all image stuff from blog routes into here
 export default router;
