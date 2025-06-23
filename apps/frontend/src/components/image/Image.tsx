@@ -8,13 +8,13 @@ export default function ImageDisplay({
 	popUpActivated,
 	deleteImage,
 	clickable = false,
-	onImageClick = (imageId: string) => {},
+	onImageClick = (imageId: string, imageUrl: string) => {},
 }: {
 	image: Image;
 	popUpActivated?: boolean;
 	deleteImage?: boolean;
 	clickable?: boolean;
-	onImageClick?: (imageId: string) => void;
+	onImageClick?: (imageId: string, imageUrl: string) => void;
 }) {
 	const [isPopupOpen, setIsPopupOpen] = useState(false);
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -74,7 +74,7 @@ export default function ImageDisplay({
 					}
 
 					if (clickable) {
-						onImageClick(image.id);
+						onImageClick(image.id, image.url);
 					}
 				}}
 			>

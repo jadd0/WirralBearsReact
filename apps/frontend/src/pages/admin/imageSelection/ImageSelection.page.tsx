@@ -10,14 +10,14 @@ export default function ImageSelectionPage() {
 
 			<div className="flex-row flex w-full mt-15 justify-center gap-12">
 				<Link
-					to="/admin/imageSelection/b4a"
+					to="/admin/imageSelection/first"
 					className="p-4 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition-colors"
 				>
 					<h2 className="text-2xl font-bold">First Carousel</h2>
 				</Link>
 
 				<Link
-					to="/admin/imageSelection/first"
+					to="/admin/imageSelection/b4a"
 					className="p-4 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition-colors"
 				>
 					<h2 className="text-2xl font-bold">B4A Carousel</h2>

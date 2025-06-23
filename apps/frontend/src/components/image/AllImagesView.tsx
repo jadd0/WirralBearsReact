@@ -6,7 +6,7 @@ interface AllImagesViewProps {
 	deleteImage?: boolean;
 	popUpActivated?: boolean;
 	clickable?: boolean;
-	onImageClick?: (imageId: string) => void;
+	onImageClick?: (imageId: string, imageUrl: string) => void;
 	data?: any;
 	isLoading?: boolean;
 }
@@ -15,7 +15,7 @@ export default function AllImagesView({
 	deleteImage = false,
 	popUpActivated = true,
 	clickable = false,
-	onImageClick = (imageId: string) => {},
+	onImageClick = (imageId: string, imageUrl: string) => {},
 	data: propData,
 	isLoading: propIsLoading = false,
 }: AllImagesViewProps) {

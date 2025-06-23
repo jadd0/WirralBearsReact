@@ -68,7 +68,9 @@ export const getAllB4ACarouselImages: RequestHandler = async (req, res) => {
 }
 
 export const replaceAllFirstCarouselImages: RequestHandler = async (req, res) => {
-	const images = req.body.images
+	const images = req.body
+
+	console.log(images)
 	
 	const result = await imagesServices.replaceAllFirstCarouselImages(images);
 	
