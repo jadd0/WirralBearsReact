@@ -46,7 +46,8 @@ app.use(
 			const allowedOrigins = [
 				'http://localhost:5173',
 				'http://localhost:3000',
-				'https://wirralbears.com',
+				'https://wirralbears.com', // Non-www version
+				'https://www.wirralbears.com', // www version
 			];
 
 			// Allow requests with no origin (mobile apps, Postman, etc.)
