@@ -17,3 +17,51 @@ export async function deleteImage(imageId: string) {
 
 	return data;
 }
+
+export async function getAllFirstCarouselImages() {
+	const { data } = await request({
+		url: `/api/image/getAllFirstCarouselImages`,
+		method: 'GET',
+	});
+
+	return data;
+}
+
+export async function getAllB4ACarouselImages() {
+	const { data } = await request({
+		url: `/api/image/getAllB4ACarouselImages`,
+		method: 'GET',
+	});
+
+	return data;
+}
+
+export async function replaceAllFirstCarouselImages(
+	images: {
+		imageId: string;
+		key: string;
+	}[]
+) {
+	const { data } = await request({
+		url: `/api/image/replaceAllFirstCarouselImages`,
+		method: 'PUT',
+		data: images,
+	});
+
+	return data;
+}
+
+export async function replaceAllB4ACarouselImages(
+	images: {
+		imageId: string;
+		key: string;
+	}[]
+) {
+	const { data } = await request({
+		url: `/api/image/replaceAllB4ACarouselImages`,
+		method: 'PUT',
+		data: images,
+	});
+
+	return data;
+}
