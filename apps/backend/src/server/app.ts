@@ -27,18 +27,6 @@ app.use(express.json());
 // For parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-// CORS Debug middleware (place before CORS)
-app.use((req: Request, res: Response, next: NextFunction) => {
-	console.log('CORS Debug:', {
-		origin: req.headers.origin,
-		method: req.method,
-		url: req.url,
-		clientOrigin: env.CLIENT_ORIGIN,
-		userAgent: req.headers['user-agent']?.substring(0, 50) + '...',
-	});
-	next();
-});
-
 // Enhanced CORS configuration for cross-origin cookies
 app.use(
 	cors({
@@ -57,7 +45,6 @@ app.use(
 			}
 
 			if (allowedOrigins.includes(origin)) {
-				console.log('Origin allowed:', origin);
 				callback(null, true);
 			} else {
 				console.log('Origin blocked:', origin);
@@ -122,59 +109,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Session debug middleware
-app.use((req: Request, res: Response, next: NextFunction) => {
-	console.log('Session Debug:', {
-		url: req.url,
-		method: req.method,
-		sessionID: req.sessionID,
-		hasSession: !!req.session,
-		cookies: req.headers.cookie ? 'present' : 'missing',
-		authenticated: req.isAuthenticated?.(),
-		user: req.user?.id || 'none',
-		origin: req.headers.origin,
-		referer: req.headers.referer,
-	});
-	next();
-});
 
-// Debug middleware for production
-app.use((req: Request, res: Response, next: NextFunction) => {
-	if (env.NODE_ENV === 'production' && req.url.includes('/auth')) {
-		console.log('Auth Debug:', {
-			url: req.url,
-			method: req.method,
-			authenticated: req.isAuthenticated?.(),
-			sessionID: req.sessionID,
-			cookies: req.headers.cookie ? 'present' : 'missing',
-			user: req.user?.id || 'none',
-			origin: req.headers.origin,
-			referer: req.headers.referer,
-			corsHeaders: {
-				'access-control-allow-origin':
-					req.headers['access-control-allow-origin'],
-				'access-control-allow-credentials':
-					req.headers['access-control-allow-credentials'],
-			},
-		});
-	}
-	next();
-});
-
-// Additional debugging for all requests in production
-app.use((req: Request, res: Response, next: NextFunction) => {
-	if (env.NODE_ENV === 'production') {
-		console.log('Production Request Debug:', {
-			url: req.url,
-			method: req.method,
-			origin: req.headers.origin,
-			host: req.headers.host,
-			'x-forwarded-proto': req.headers['x-forwarded-proto'],
-			'x-forwarded-host': req.headers['x-forwarded-host'],
-		});
-	}
-	next();
-});
 
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -183,24 +118,11 @@ app.use('/', indexRouter);
 
 // Global 404 error handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
-	console.log('404 Error:', {
-		url: req.url,
-		method: req.method,
-		origin: req.headers.origin,
-	});
 	res.status(404).send('404 - Not Found');
 });
 
 // Global catch-all error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-	console.error('Global error handler:', {
-		error: err.message,
-		stack: err.stack,
-		url: req.url,
-		method: req.method,
-		origin: req.headers.origin,
-	});
-
 	// Handle database connection errors specifically
 	if (err.message && err.message.includes('CONNECT_TIMEOUT')) {
 		console.error('Database connection timeout detected');

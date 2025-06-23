@@ -62,3 +62,25 @@ export const coachImages = pgTable('coach_images', {
 	position: integer('position').notNull(),
 	createdAt: timestamp('created_at', { mode: 'string' }).defaultNow(),
 });
+
+export const firstCarousel = pgTable('first_carousel', {
+	id: varchar('id')
+		.primaryKey()
+		.$defaultFn(() => nanoid(BLOG_ID_LENGTH)),
+	key: varchar('key').notNull(),
+	imageId: varchar('imageId')
+		.notNull()
+		.references(() => images.id, { onDelete: 'cascade' }),
+	createdAt: timestamp('created_at', { mode: 'string' }).defaultNow(),
+});
+
+export const secondCarousel = pgTable('second_carousel', {
+	id: varchar('id')
+		.primaryKey()
+		.$defaultFn(() => nanoid(BLOG_ID_LENGTH)),
+	key: varchar('key').notNull(),
+	imageId: varchar('imageId')
+		.notNull()
+		.references(() => images.id, { onDelete: 'cascade' }),
+	createdAt: timestamp('created_at', { mode: 'string' }).defaultNow(),
+});

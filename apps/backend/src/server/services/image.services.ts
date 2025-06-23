@@ -79,10 +79,44 @@ export const getAllImages = async (cursor: number) => {
 export const deleteImage = async (imageId: string) => {
 	const result = await imageRepository.deleteImage(imageId);
 	return result;
-}
+};
+
+export const getAllFirstCarouselImages = async () => {
+	const result = await imageRepository.getAllFirstCarouselImages();
+	return result;
+};
+
+export const getAllB4ACarouselImages = async () => {
+	const result = await imageRepository.getAllB4ACarouselImages();
+	return result;
+};
+
+export const replaceAllFirstCarouselImages = async (
+	images: {
+		imageId: string;
+		key: string;
+	}[]
+) => {
+	const result = await imageRepository.replaceAllFirstCarouselImages(images);
+	return result;
+};
+
+export const replaceAllB4ACarouselImages = async (
+	images: {
+		imageId: string;
+		key: string;
+	}[]
+) => {
+	const result = await imageRepository.replaceAllB4ACarouselImages(images);
+	return result;
+};
 
 export const imagesServices = {
 	uploadPostImages,
 	getAllImages,
-	deleteImage
-}
+	deleteImage,
+	getAllFirstCarouselImages,
+	getAllB4ACarouselImages,
+	replaceAllFirstCarouselImages,
+	replaceAllB4ACarouselImages
+};

@@ -12,6 +12,8 @@ const navLinks = [
 	{ to: '/admin/sessions', label: 'Sessions', key: 'sessions' },
 	{ to: '/admin/games/create', label: 'Create Game', key: 'createGame' },
 	{to: '/admin/multipleImageUpload', label: 'Upload Images', key: 'uploadImages' },
+	{to: '/admin/imageSelection', label: 'Image Selection', key: 'imageSelection' },
+
 ];
 
 export function AdminNavbar() {

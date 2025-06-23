@@ -1,6 +1,12 @@
 import { eq } from 'drizzle-orm';
 import { db } from '@/db';
-import { images, blogImages, coachImages } from '@/db/schemas/images.schema';
+import {
+	images,
+	blogImages,
+	coachImages,
+	firstCarousel,
+	secondCarousel,
+} from '@/db/schemas/images.schema';
 import { IMAGE_LIMIT } from '@wirralbears/constants';
 import { Image } from '@/types/image.types';
 
@@ -187,6 +193,76 @@ export const imageRepository: any = {
 	 */
 	async deleteImage(imageId: string): Promise<any> {
 		const result = await db.delete(images).where(eq(images.id, imageId));
+		return result;
+	},
+
+	/**
+	 * Gets all images for the first home page carousel
+	 */
+	async getAllFirstCarouselImages(): Promise<any> {
+		const result = await db
+			.select({
+				id: firstCarousel.id,
+				key: firstCarousel.key,
+				imageId: firstCarousel.imageId,
+				imageUrl: images.url,
+			})
+			.from(firstCarousel)
+			.innerJoin(images, eq(firstCarousel.imageId, images.id));
+		return result;
+	},
+
+	/**
+	 * Gets all images for the b4a home page carousel
+	 */
+	async getAllB4ACarouselImages(): Promise<any> {
+		const result = await db
+			.select({
+				id: secondCarousel.id,
+				key: secondCarousel.key,
+				imageId: secondCarousel.imageId,
+				imageUrl: images.url,
+			})
+			.from(secondCarousel)
+			.innerJoin(images, eq(secondCarousel.imageId, images.id));
+		return result;
+	},
+
+	/**
+	 * Replaces all images for the first home page carousel
+	 */
+	async replaceAllFirstCarouselImages(
+		images: {
+			imageId: string;
+			key: string;
+		}[]
+	): Promise<any> {
+		const firstRes = await db.delete(firstCarousel);
+
+		if (!firstRes) {
+			throw new Error('Unable to delete all images from the first carousel');
+		}
+
+		const result = await db.insert(firstCarousel).values(images);
+		return result;
+	},
+
+	/**
+	 * Replaces all images for the B4A home page carousel
+	 */
+	async replaceAllB4ACarouselImages(
+		images: {
+			imageId: string;
+			key: string;
+		}[]
+	): Promise<any> {
+		const firstRes = await db.delete(secondCarousel);
+
+		if (!firstRes) {
+			throw new Error('Unable to delete all images from the b4a carousel');
+		}
+
+		const result = await db.insert(secondCarousel).values(images);
 		return result;
 	},
 } as const;

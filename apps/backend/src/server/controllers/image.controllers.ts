@@ -47,7 +47,57 @@ export const deleteImage: RequestHandler = async (req, res) => {
 	}
 };
 
+export const getAllFirstCarouselImages: RequestHandler = async (req, res) => {
+	const result = await imagesServices.getAllFirstCarouselImages();
+	console.log({result})
+	if (!result) {
+		res.status(500).send('Error retrieving images')
+	}
+
+	res.status(200).send(result)
+}
+
+export const getAllB4ACarouselImages: RequestHandler = async (req, res) => {
+	const result = await imagesServices.getAllB4ACarouselImages();
+	
+	if (!result) {
+		res.status(500).send('Error retrieving images')
+	}
+
+	res.status(200).send(result)
+}
+
+export const replaceAllFirstCarouselImages: RequestHandler = async (req, res) => {
+	const images = req.body
+
+	console.log(images)
+	
+	const result = await imagesServices.replaceAllFirstCarouselImages(images);
+	
+	if (!result) {
+		res.status(500).send('Error replacing images')
+	}
+
+	res.status(200).send(result)
+}
+
+export const replaceAllB4ACarouselImages: RequestHandler = async (req, res) => {
+	const images = req.body.images
+	
+	const result = await imagesServices.replaceAllB4ACarouselImages(images);
+	
+	if (!result) {
+		res.status(500).send('Error replacing images')
+	}
+
+	res.status(200).send(result)
+}
+
 export const imageControllers = {
 	getAllImages,
 	deleteImage,
+	getAllFirstCarouselImages,
+	getAllB4ACarouselImages,
+	replaceAllFirstCarouselImages,
+	replaceAllB4ACarouselImages
 } as {};
