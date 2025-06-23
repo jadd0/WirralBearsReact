@@ -49,12 +49,12 @@ export const deleteImage: RequestHandler = async (req, res) => {
 
 export const getAllFirstCarouselImages: RequestHandler = async (req, res) => {
 	const result = await imagesServices.getAllFirstCarouselImages();
-	
+	console.log({result})
 	if (!result) {
 		res.status(500).send('Error retrieving images')
 	}
 
-	res.status(200).send(...result)
+	res.status(200).send(result)
 }
 
 export const getAllB4ACarouselImages: RequestHandler = async (req, res) => {
@@ -64,7 +64,7 @@ export const getAllB4ACarouselImages: RequestHandler = async (req, res) => {
 		res.status(500).send('Error retrieving images')
 	}
 
-	res.status(200).send(...result)
+	res.status(200).send(result)
 }
 
 export const replaceAllFirstCarouselImages: RequestHandler = async (req, res) => {
@@ -78,7 +78,7 @@ export const replaceAllFirstCarouselImages: RequestHandler = async (req, res) =>
 		res.status(500).send('Error replacing images')
 	}
 
-	res.status(200).send(...result)
+	res.status(200).send(result)
 }
 
 export const replaceAllB4ACarouselImages: RequestHandler = async (req, res) => {
@@ -90,7 +90,7 @@ export const replaceAllB4ACarouselImages: RequestHandler = async (req, res) => {
 		res.status(500).send('Error replacing images')
 	}
 
-	res.status(200).send(...result)
+	res.status(200).send(result)
 }
 
 export const imageControllers = {

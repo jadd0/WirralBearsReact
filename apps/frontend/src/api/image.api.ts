@@ -24,6 +24,8 @@ export async function getAllFirstCarouselImages() {
 		method: 'GET',
 	});
 
+	console.log({data})
+
 	return data;
 }
 

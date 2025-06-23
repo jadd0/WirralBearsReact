@@ -200,7 +200,15 @@ export const imageRepository: any = {
 	 * Gets all images for the first home page carousel
 	 */
 	async getAllFirstCarouselImages(): Promise<any> {
-		const result = await db.select().from(firstCarousel);
+		const result = await db
+			.select({
+				id: firstCarousel.id,
+				key: firstCarousel.key,
+				imageId: firstCarousel.imageId,
+				imageUrl: images.url,
+			})
+			.from(firstCarousel)
+			.innerJoin(images, eq(firstCarousel.imageId, images.id));
 		return result;
 	},
 
@@ -208,7 +216,15 @@ export const imageRepository: any = {
 	 * Gets all images for the b4a home page carousel
 	 */
 	async getAllB4ACarouselImages(): Promise<any> {
-		const result = await db.select().from(secondCarousel);
+		const result = await db
+			.select({
+				id: secondCarousel.id,
+				key: secondCarousel.key,
+				imageId: secondCarousel.imageId,
+				imageUrl: images.url,
+			})
+			.from(secondCarousel)
+			.innerJoin(images, eq(secondCarousel.imageId, images.id));
 		return result;
 	},
 

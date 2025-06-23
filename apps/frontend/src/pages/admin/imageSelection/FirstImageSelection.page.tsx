@@ -3,7 +3,7 @@ import {
 	useReplaceAllFirstCarouselImages,
 } from '@/hooks/image.hooks';
 import AllImagesView from '@/components/image/AllImagesView';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 interface CarouselImage {
 	id?: string;
@@ -11,20 +11,12 @@ interface CarouselImage {
 	key: string;
 	createdAt?: Date;
 	updatedAt?: Date;
-	imageUrl?: string; // Optional field for local image URL
-}
-
-interface Image {
-	id: string;
-	key: string;
-	authorId: string;
-	url: string;
-	alt: string;
-	createdAt: Date;
+	imageUrl?: string;
 }
 
 export default function FirstImageSelectionPage() {
-	const { data: carouselImages, isLoading } = useGetAllFirstCarouselImages();
+	const { data: carouselImagesData, isLoading } =
+		useGetAllFirstCarouselImages();
 	const replaceAllImagesMutation = useReplaceAllFirstCarouselImages();
 	const [selectedImageKey, setSelectedImageKey] = useState<string | null>(null);
 	const [selectorOpen, setSelectorOpen] = useState(false);
@@ -34,69 +26,62 @@ export default function FirstImageSelectionPage() {
 		[]
 	);
 
-	// Create a normalized data array with 4 elements
-	const retrievedData: CarouselImage[] = useMemo(() => {
-		// Use local state if it has data, otherwise use API data
-		if (localCarouselData.length > 0) {
-			return localCarouselData;
-		}
+	const carouselImages = carouselImagesData as CarouselImage[] | undefined;
 
-		// Create default array with 4 placeholder elements
-		const defaultData = Array.from({ length: 4 }, (_, index) => ({
-			imageId: '',
-			key: index.toString(),
-		}));
+	// Update local state when API data changes
+	useEffect(() => {
+		if (
+			carouselImages &&
+			Array.isArray(carouselImages) &&
+			carouselImages.length > 0
+		) {
+			// Create default array with 4 placeholder elements
+			const defaultData = Array.from({ length: 4 }, (_, index) => ({
+				imageId: '',
+				key: index.toString(),
+			}));
 
-		// Return default if no carousel images data
-		if (!carouselImages || !Array.isArray(carouselImages)) {
-			return defaultData;
-		}
+			// Map existing images and append them to the array
+			const normalizedData = [...defaultData];
 
-		// Map existing images and fill remaining slots with placeholders
-		const normalizedData = Array.from({ length: 4 }, (_, index) => {
-			const existingImage = carouselImages[index];
-			return existingImage
-				? {
+			carouselImages.forEach((existingImage, index) => {
+				if (index < 4) {
+					normalizedData[index] = {
 						id: existingImage.id,
 						imageId: existingImage.imageId,
 						key: index.toString(),
 						createdAt: existingImage.createdAt,
 						updatedAt: existingImage.updatedAt,
-				  }
-				: {
-						imageId: '',
-						key: index.toString(),
-				  };
-		});
-
-		return normalizedData;
-	}, [carouselImages, localCarouselData]);
-
-	// Update local state when API data changes
-	useMemo(() => {
-		if (
-			carouselImages &&
-			Array.isArray(carouselImages) &&
-			localCarouselData.length === 0
-		) {
-			const normalizedData = Array.from({ length: 4 }, (_, index) => {
-				const existingImage = carouselImages[index];
-				return existingImage
-					? {
-							id: existingImage.id,
-							imageId: existingImage.imageId,
-							key: index.toString(),
-							createdAt: existingImage.createdAt,
-							updatedAt: existingImage.updatedAt,
-					  }
-					: {
-							imageId: '',
-							key: index.toString(),
-					  };
+						imageUrl:
+							existingImage.imageUrl
+					};
+				}
 			});
+
 			setLocalCarouselData(normalizedData);
+		} else if (!isLoading && (!carouselImages || carouselImages.length === 0)) {
+			// Set default empty data if no carousel images
+			const defaultData = Array.from({ length: 4 }, (_, index) => ({
+				imageId: '',
+				key: index.toString(),
+			}));
+			setLocalCarouselData(defaultData);
 		}
-	}, [carouselImages, localCarouselData.length]);
+	}, [carouselImages, isLoading]);
+
+	// Create a normalized data array with 4 elements
+	const retrievedData: CarouselImage[] = useMemo(() => {
+		// Use local state if it has data
+		if (localCarouselData.length > 0) {
+			return localCarouselData;
+		}
+
+		// Create default array with 4 placeholder elements as fallback
+		return Array.from({ length: 4 }, (_, index) => ({
+			imageId: '',
+			key: index.toString(),
+		}));
+	}, [localCarouselData]);
 
 	const handleImageClick = (key: string) => {
 		setSelectedImageKey(key);
@@ -164,7 +149,22 @@ export default function FirstImageSelectionPage() {
 
 		return (
 			<div className="w-full h-full bg-blue-100 flex items-center justify-center">
-				<img src={carouselImage.imageUrl} alt="" />
+				{carouselImage.imageUrl ? (
+					<img
+						src={carouselImage.imageUrl}
+						alt=""
+						className="w-full h-full object-cover"
+						onError={(e) => {
+							console.error('Image failed to load:', carouselImage.imageUrl);
+						}}
+					/>
+				) : (
+					<div className="w-full h-full bg-gray-200 flex items-center justify-center">
+						<span className="text-gray-500">
+							Image ID: {carouselImage.imageId}
+						</span>
+					</div>
+				)}
 			</div>
 		);
 	};
@@ -201,7 +201,7 @@ export default function FirstImageSelectionPage() {
 			</div>
 
 			{/* Save Button */}
-			<div className="flex justify-center mt-8">
+			<div className="flex justify-center mt-8 mb-10">
 				<button
 					onClick={handleSave}
 					disabled={!hasChanges || replaceAllImagesMutation.isPending}
