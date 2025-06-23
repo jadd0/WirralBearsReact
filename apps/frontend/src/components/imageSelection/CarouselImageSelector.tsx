@@ -1,4 +1,3 @@
-// components/image/CarouselImageSelector.tsx
 import AllImagesView from '@/components/image/AllImagesView';
 import { useState, useMemo, useEffect } from 'react';
 

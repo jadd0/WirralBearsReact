@@ -6,18 +6,24 @@ import { BallForAllGrid } from '@components/layout/BallForAllGrid';
 import { Footer } from '@components/layout/Footer';
 import BlogAllPreviews from '@/components/blog/BlogAllPreviews';
 import { useGetAllBlogPreviews } from '@/hooks/blog.hooks';
+import { useGetAllFirstCarouselImages } from '@/hooks/image.hooks';
+import { use } from 'react';
 
-// Example images; replace with server images as needed
-const carouselImages: any[] = [
-	{ id: 1, src: 'https://picsum.photos/800/400?random=1', name: '1' },
-	{ id: 2, src: 'https://picsum.photos/800/400?random=2', name: '2' },
-	{ id: 3, src: 'https://picsum.photos/800/400?random=3', name: '3' },
-	{ id: 4, src: 'https://picsum.photos/800/400?random=4', name: '4' },
-];
-//TODO: RANDOM IMAGES AND CREATE HOOK
+interface CarouselImage {
+	id?: string;
+	imageId: string;
+	key: string;
+	createdAt?: Date;
+	updatedAt?: Date;
+	imageUrl?: string;
+}
 
 export default function HomePage() {
 	const { data: blogs = [], isLoading: blogsLoading } = useGetAllBlogPreviews();
+	const {
+		data: carouselImages = [] as CarouselImage[],
+		isLoading: carouselLoading,
+	} = useGetAllFirstCarouselImages();
 
 	return (
 		<div className="min-h-screen w-full font-sans flex flex-col">
@@ -44,8 +50,8 @@ export default function HomePage() {
 					className="w-full max-w-2xl bg-gray-700 shadow-md shadow-red-700/30"
 				>
 					<p>
-						Whether you’re picking up a basketball for the first time or aiming
-						for the next level, you’ll find your place here. <br />
+						Whether you're picking up a basketball for the first time or aiming
+						for the next level, you'll find your place here. <br />
 						<span className="text-red-400 font-semibold">
 							Beginner, Intermediate, or Advanced
 						</span>
@@ -60,9 +66,13 @@ export default function HomePage() {
 
 				{/* Carousel Section */}
 				<section className="w-full max-w-3xl my-10">
-					<CarouselComponent images={carouselImages} />
+					<CarouselComponent
+						images={carouselImages}
+						isLoading={carouselLoading}
+					/>
 				</section>
 
+				{/* Rest of your components remain the same... */}
 				{/* Join Section */}
 				<InfoBox
 					title="Thinking of joining?"
@@ -71,7 +81,7 @@ export default function HomePage() {
 					<p>
 						<span className="font-bold text-red-400">Joining is easy!</span>{' '}
 						Just show up to a session for your age group—your first session is
-						free, and after that it’s only £6 per session.
+						free, and after that it's only £6 per session.
 						<br />
 						<br />
 						<span className="text-gray-200">
