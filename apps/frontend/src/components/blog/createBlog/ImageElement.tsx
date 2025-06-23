@@ -38,10 +38,10 @@ const useImageValidation = (
 				return;
 			}
 
-			// Validate file size (max 5MB)
-			const maxSize = 5 * 1024 * 1024;
+			// Validate file size (max 20MB)
+			const maxSize = 20 * 1024 * 1024;
 			if (file.size > maxSize) {
-				reject(new Error('Image is too large. Maximum size is 5MB.'));
+				reject(new Error('Image is too large. Maximum size is 20MB.'));
 				return;
 			}
 
@@ -245,7 +245,7 @@ export const ImageUploadElement = ({
 								? `${images.length} image selected`
 								: 'No image selected'}
 						</p>
-						<p className="text-xs text-gray-400">Max size: 5MB</p>
+						<p className="text-xs text-gray-400">Max size: 20MB</p>
 					</div>
 				</div>
 
