@@ -7,10 +7,14 @@ export default function ImageDisplay({
 	image,
 	popUpActivated,
 	deleteImage,
+	clickable = false,
+	onImageClick = (imageId: string) => {},
 }: {
 	image: Image;
 	popUpActivated?: boolean;
 	deleteImage?: boolean;
+	clickable?: boolean;
+	onImageClick?: (imageId: string) => void;
 }) {
 	const [isPopupOpen, setIsPopupOpen] = useState(false);
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -68,9 +72,17 @@ export default function ImageDisplay({
 					if (deleteImage) {
 						setShowDeleteConfirm(true);
 					}
+
+					if (clickable) {
+						onImageClick(image.id);
+					}
 				}}
 			>
-				<img src={image.url} alt={image.alt} className="w-full h-auto rounded-md" />
+				<img
+					src={image.url}
+					alt={image.alt}
+					className="w-full h-auto rounded-md"
+				/>
 				<p className="mt-2">{image.title}</p>
 			</div>
 		</div>
