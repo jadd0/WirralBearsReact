@@ -3,6 +3,7 @@ import { FileUploader, FileInput } from '@/components/ui/file-upload';
 import { ImagePlus, Trash2, X } from 'lucide-react';
 import { IMAGE_UPLOAD_CONFIG } from '@wirralbears/constants';
 import { Button } from '@/components/ui/button';
+import imageCompression from 'browser-image-compression';
 
 interface MultipleImageUploaderProps {
 	files: File[];
@@ -31,22 +32,51 @@ export function MultipleImageUploader({
 		};
 	}, [imagePreviewUrls]);
 
-	// Handle file selection
+	// Compress a single image file
+	const compressImage = useCallback(async (file: File): Promise<File> => {
+		try {
+			const options = {
+				maxSizeMB: 2, // Maximum size in MB
+				maxWidthOrHeight: 1920, // Max width or height
+				useWebWorker: true,
+			};
+			const compressedFile = await imageCompression(file, options);
+			return compressedFile;
+		} catch (error) {
+			console.error('Error compressing image:', error);
+			return file; // fallback to original file
+		}
+	}, []);
+
+	// Handle file selection with compression
 	const handleFilesChange = useCallback(
-		(newFiles: File[] | null) => {
+		async (newFiles: File[] | null) => {
 			if (!newFiles) return;
-			
+
 			const totalFiles = files.length + newFiles.length;
+			let filesToProcess: File[];
+
 			if (totalFiles > maxFiles) {
 				// Take only the files that fit within the limit
 				const availableSlots = maxFiles - files.length;
-				const filesToAdd = newFiles.slice(0, availableSlots);
-				onFilesChange([...files, ...filesToAdd]);
+				filesToProcess = newFiles.slice(0, availableSlots);
 			} else {
-				onFilesChange([...files, ...newFiles]);
+				filesToProcess = newFiles;
+			}
+
+			// Compress all files in parallel
+			try {
+				const compressedFiles = await Promise.all(
+					filesToProcess.map((file) => compressImage(file))
+				);
+				onFilesChange([...files, ...compressedFiles]);
+			} catch (error) {
+				console.error('Error processing files:', error);
+				// Fallback to original files if compression fails
+				onFilesChange([...files, ...filesToProcess]);
 			}
 		},
-		[files, maxFiles, onFilesChange]
+		[files, maxFiles, onFilesChange, compressImage]
 	);
 
 	// Remove a specific file
@@ -76,6 +106,7 @@ export function MultipleImageUploader({
 					dropzoneOptions={{
 						...IMAGE_UPLOAD_CONFIG,
 						maxFiles: maxFiles - files.length,
+						multiple: true, // Enable multiple file selection
 					}}
 					className="w-full p-0.5"
 					disabled={disabled}
@@ -92,10 +123,13 @@ export function MultipleImageUploader({
 								or drag and drop
 							</p>
 							<p className="text-xs text-gray-500">
-								PNG, JPG or GIF (max. 5MB each)
+								PNG, JPG or GIF (max. 20MB each)
 							</p>
 							<p className="text-xs text-gray-400">
 								{files.length} of {maxFiles} files selected
+							</p>
+							<p className="text-xs text-blue-500 font-medium">
+								Hold Ctrl/Cmd to select multiple files
 							</p>
 						</div>
 					</FileInput>
@@ -114,7 +148,7 @@ export function MultipleImageUploader({
 							size="sm"
 							onClick={clearAllFiles}
 							disabled={disabled}
-							className='cursor-pointer'
+							className="cursor-pointer"
 						>
 							<Trash2 className="w-4 h-4 mr-1" />
 							Clear All

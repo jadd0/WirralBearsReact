@@ -15,7 +15,7 @@ export const ELEMENT_LABELS = {
 
 export const IMAGE_UPLOAD_CONFIG = {
   maxFiles: 1,
-  maxSize: 4 * 1024 * 1024, // 4MB
+  maxSize: 20 * 1024 * 1024, // 20MB
   accept: {
     'image/*': [],
   },
@@ -33,4 +33,4 @@ export const BLOG_MAX_HEADING_LENGTH = 50;
 // ## IMAGES
 export const BLOG_IMAGE_MIN_COUNT = 1;
 export const BLOG_IMAGE_MAX_COUNT = 10;
-export const BLOG_IMAGE_MAX_FILE_SIZE = 1024 * 1024 * 5;
+export const BLOG_IMAGE_MAX_FILE_SIZE = 1024 * 1024 * 20; // 20MB
