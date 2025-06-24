@@ -29,7 +29,7 @@ router.get('/callback', (req: Request, res: Response, next) => {
 	passport.authenticate('google', {
 		failureRedirect: createClientURL('/login?error=unauthorised'), // Default failure
 		failureMessage: true,
-	})(req, res, (err) => {
+	})(req, res, (err: any) => {
 		if (err) {
 			console.error('Authentication error:', err);
 			return res.redirect(createClientURL('/login?error=server_error'));
