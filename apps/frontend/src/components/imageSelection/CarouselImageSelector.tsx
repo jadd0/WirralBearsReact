@@ -128,11 +128,24 @@ export default function CarouselImageSelector({
 	};
 
 	const hasChanges = useMemo(() => {
-		if (!carouselImages || localCarouselData.length === 0) return false;
+		// If we have no original data but have local selections, that's a change
+		if (!carouselImages || carouselImages.length === 0) {
+			return localCarouselData.some(
+				(item) => item.imageId && item.imageId !== ''
+			);
+		}
+
+		// If we have original data, compare with local changes
+		if (localCarouselData.length === 0) return false;
 
 		return localCarouselData.some((localItem, index) => {
 			const originalItem = carouselImages[index];
-			return originalItem?.imageId !== localItem.imageId;
+			// Handle case where original item doesn't exist (new additions)
+			if (!originalItem) {
+				return localItem.imageId && localItem.imageId !== '';
+			}
+			// Compare existing items
+			return originalItem.imageId !== localItem.imageId;
 		});
 	}, [carouselImages, localCarouselData]);
 

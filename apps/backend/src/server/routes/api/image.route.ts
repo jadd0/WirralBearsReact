@@ -15,7 +15,7 @@ router.delete('/deleteImage/:imageId', ensureAuthenticated, imageControllers.del
 router.get('/getAllFirstCarouselImages', imageControllers.getAllFirstCarouselImages)
 
 // GET all images for the b4a home images carousel
-router.get('/getAllFirstHomeCarouselImages', imageControllers.getAllB4ACarouselImages)
+router.get('/getAllB4ACarouselImages', imageControllers.getAllB4ACarouselImages)
 
 // PUT all images to replace home carousel images
 router.put('/replaceAllFirstCarouselImages', ensureAuthenticated, imageControllers.replaceAllFirstCarouselImages)

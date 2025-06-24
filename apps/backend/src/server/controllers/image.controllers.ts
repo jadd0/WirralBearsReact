@@ -82,7 +82,7 @@ export const replaceAllFirstCarouselImages: RequestHandler = async (req, res) =>
 }
 
 export const replaceAllB4ACarouselImages: RequestHandler = async (req, res) => {
-	const images = req.body.images
+	const images = req.body
 	
 	const result = await imagesServices.replaceAllB4ACarouselImages(images);
 	

@@ -88,6 +88,7 @@ export const getAllFirstCarouselImages = async () => {
 
 export const getAllB4ACarouselImages = async () => {
 	const result = await imageRepository.getAllB4ACarouselImages();
+	console.log({result})
 	return result;
 };
 
