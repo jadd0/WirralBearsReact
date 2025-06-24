@@ -34,7 +34,7 @@ export default function BlogPreviewElement({ blog }: { blog: BlogPreview }) {
 									year: 'numeric',
 								})}
 							</time>
-							<span className="flex items-center gap-1 font-medium">
+							<span className="flex items-center gap-1 font-medium sm:block hidden">
 								<User />
 								{blog.username}
 							</span>
