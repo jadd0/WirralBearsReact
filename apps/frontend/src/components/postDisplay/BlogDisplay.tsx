@@ -19,8 +19,7 @@ export default function BlogDisplay({ id }: { id: string }) {
 	return (
 		<main className="w-full">
 			<div
-				className="w-full pl-[60px] pr-4 py-8"
-				style={{ marginLeft: 0, marginRight: 'auto' }}
+				className="w-full sm:pl-[60px] pl-[15px] pr-4 py-8"
 			>
 				{auth?.authenticated && blogData && (
 					<AdminActions id={id} data={blogData} coach={false} />
