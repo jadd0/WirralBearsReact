@@ -5,6 +5,31 @@ import { users, account_connections } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { env } from '@/env';
 
+// Serialize user for session storage
+passport.serializeUser((user: any, done) => {
+	console.log('Serializing user:', user.id);
+	done(null, user.id);
+});
+
+// Deserialize user from session
+passport.deserializeUser(async (id: string, done) => {
+	try {
+		console.log('Deserializing user ID:', id);
+		const user = await db.select().from(users).where(eq(users.id, id)).limit(1);
+
+		if (user.length > 0) {
+			console.log('User deserialized successfully:', user[0].id);
+			done(null, user[0]);
+		} else {
+			console.log('User not found during deserialization:', id);
+			done(null, false);
+		}
+	} catch (error) {
+		console.error('Deserialization error:', error);
+		done(error, null);
+	}
+});
+
 passport.use(
 	new GoogleStrategy(
 		{
@@ -14,7 +39,6 @@ passport.use(
 		},
 		async (accessToken, refreshToken, profile, done) => {
 			try {
-				// Get the user's email from the profile
 				const userEmail = profile.emails?.[0]?.value;
 
 				if (!userEmail) {
@@ -23,7 +47,6 @@ passport.use(
 					});
 				}
 
-				// CHECK IF EMAIL IS ALLOWED
 				const allowedEmails = [
 					env.ADMIN_EMAIL_JADD,
 					env.ADMIN_EMAIL_WIRRALBEARS,
@@ -38,7 +61,6 @@ passport.use(
 					allowedEmails.includes(userEmail)
 				);
 
-				// Return false for unauthorised emails - this will trigger failureRedirect
 				if (!allowedEmails.includes(userEmail)) {
 					console.log('Unauthorised email attempt:', userEmail);
 					return done(null, false, {
@@ -46,7 +68,6 @@ passport.use(
 					});
 				}
 
-				// Logic for authorised emails
 				const existingConnection = await db
 					.select()
 					.from(account_connections)
@@ -59,7 +80,6 @@ passport.use(
 					.limit(1);
 
 				if (existingConnection.length > 0) {
-					// Update tokens and return user
 					await db
 						.update(account_connections)
 						.set({
@@ -79,9 +99,9 @@ passport.use(
 						.where(eq(users.id, existingConnection[0].userId))
 						.limit(1);
 
+					console.log('Existing user authenticated:', user[0].id);
 					return done(null, user[0]);
 				} else {
-					// Create new user for authorised email
 					const newUser = await db
 						.insert(users)
 						.values({

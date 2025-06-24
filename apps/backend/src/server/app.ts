@@ -17,9 +17,7 @@ const __dirname = path.dirname(__filename);
 const app: Application = express();
 const upload = multer();
 
-if (env.NODE_ENV === 'production') {
-	app.set('trust proxy', 1); // Essential for Render/Vercel
-}
+app.set('trust proxy', 1);
 
 // For parsing application/json
 app.use(express.json());
@@ -108,8 +106,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-
 
 app.use(express.static(path.join(__dirname, '../public')));
 
