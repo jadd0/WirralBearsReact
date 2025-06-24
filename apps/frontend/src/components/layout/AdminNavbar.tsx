@@ -102,18 +102,6 @@ export function AdminNavbar() {
 								{link.label}
 							</NavLink>
 						))}
-						<a
-							href="https://wirral-bears.myspreadshop.co.uk"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="block w-full text-center py-4 px-6 text-xl font-medium rounded-xl transition-all duration-300 transform hover:scale-105 text-black hover:bg-[#ff0000]/10 hover:text-black border border-black/20 mt-4"
-							style={{
-								animationDelay: open ? `${navLinks.length * 0.1}s` : '0s',
-								animation: open ? 'slideInUp 0.6s ease-out forwards' : 'none',
-							}}
-						>
-							Shop
-						</a>
 					</div>
 				</div>
 			</nav>
