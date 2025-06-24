@@ -53,52 +53,18 @@ export default function GameCard({
 	const blogTitle = getBlogTitle(game.blog);
 
 	return (
-		<Card className="hover:shadow-md transition-shadow">
-			<CardContent className="p-6">
-				<div
-					className={`grid ${
-						compact
-							? 'grid-cols-1 md:grid-cols-6'
-							: 'grid-cols-1 md:grid-cols-7'
-					} gap-4 items-center`}
-				>
-					{/* Date */}
-					<div className="flex items-center gap-2">
-						<Calendar className="h-4 w-4 text-muted-foreground" />
-						<span className="font-medium">
-							{format(new Date(game.date), 'MMM dd, yyyy')}
-						</span>
-					</div>
-
-					{/* Gender, Age Group & Season */}
-					<div className="flex flex-col gap-1 items-center">
-						<div className="flex-row flex">
-							<Badge variant="secondary" className="w-fit">
-								{game.gender}
-							</Badge>
-							<Badge variant="secondary" className="w-fit ml-2">
-								U{game.ageGroup}
-							</Badge>
+		<Card className="hover:shadow-md transition-shadow w-full">
+			<CardContent className="p-4 sm:p-6">
+				{/* Mobile Layout */}
+				<div className="block sm:hidden space-y-4">
+					{/* Date and Result */}
+					<div className="flex items-center justify-between">
+						<div className="flex items-center gap-2">
+							<Calendar className="h-4 w-4 text-muted-foreground" />
+							<span className="font-medium text-sm">
+								{format(new Date(game.date), 'MMM dd, yyyy')}
+							</span>
 						</div>
-
-						<span className="text-sm text-muted-foreground">
-							{getSeasonName(game.season)}
-						</span>
-					</div>
-
-					{/* Teams & Score */}
-					<div className="flex items-center gap-2 col-span-2">
-						<div className="flex items-center gap-2 flex-1">
-							<span className="font-semibold">Wirral Bears</span>
-							<span className="text-2xl font-bold">{game.ourScore}</span>
-							<span className="text-muted-foreground">-</span>
-							<span className="text-2xl font-bold">{game.otherScore}</span>
-							<span className="font-semibold">{game.otherTeamName}</span>
-						</div>
-					</div>
-
-					{/* Result */}
-					<div className="flex justify-center">
 						<Badge
 							variant="outline"
 							className={`${getResultColor(result)} font-semibold uppercase`}
@@ -107,33 +73,117 @@ export default function GameCard({
 						</Badge>
 					</div>
 
+					{/* Gender, Age & Season */}
+					<div className="flex items-center justify-between">
+						<div className="flex gap-2">
+							<Badge variant="secondary">{game.gender}</Badge>
+							<Badge variant="secondary">U{game.ageGroup}</Badge>
+						</div>
+						<span className="text-sm text-muted-foreground">
+							{getSeasonName(game.season)}
+						</span>
+					</div>
+
+					{/* Score */}
+					<div className="text-center">
+						<div className="flex items-center justify-center gap-2">
+							<span className="font-semibold text-sm">Wirral Bears</span>
+							<span className="text-xl font-bold">{game.ourScore}</span>
+							<span className="text-muted-foreground">-</span>
+							<span className="text-xl font-bold">{game.otherScore}</span>
+							<span className="font-semibold text-sm">
+								{game.otherTeamName}
+							</span>
+						</div>
+					</div>
+
 					{/* Blog Link */}
-					{!compact && (
-						<div className="flex items-center">
-							{blogTitle ? (
-								<Button variant="link" className="p-0 h-auto">
-									{blogTitle.length > 30
-										? `${blogTitle.substring(0, 30)}...`
+					{blogTitle && (
+						<div className="text-center">
+							<Link to={`/blog/blog/${game.blog}`}>
+								<Button variant="outline" size="sm" className="w-full">
+									Read Blog:{' '}
+									{blogTitle.length > 25
+										? `${blogTitle.substring(0, 25)}...`
 										: blogTitle}
 								</Button>
-							) : (
-								<span className="text-muted-foreground text-sm">No blog</span>
-							)}
+							</Link>
 						</div>
 					)}
+				</div>
 
-					{/* Actions */}
-					<div className="flex justify-end">
-						{blogTitle && (
-							<Link
-								to={`/blog/blog/${game.blog}`}
-								className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+				{/* Desktop Layout */}
+				<div className="hidden sm:block">
+					<div
+						className={`grid ${
+							compact ? 'grid-cols-6' : 'grid-cols-7'
+						} gap-4 items-center`}
+					>
+						{/* Date */}
+						<div className="flex items-center gap-2">
+							<Calendar className="h-4 w-4 text-muted-foreground" />
+							<span className="font-medium">
+								{format(new Date(game.date), 'MMM dd, yyyy')}
+							</span>
+						</div>
+
+						{/* Gender, Age Group & Season */}
+						<div className="flex flex-col gap-1 items-center">
+							<div className="flex gap-2">
+								<Badge variant="secondary">{game.gender}</Badge>
+								<Badge variant="secondary">U{game.ageGroup}</Badge>
+							</div>
+							<span className="text-sm text-muted-foreground">
+								{getSeasonName(game.season)}
+							</span>
+						</div>
+
+						{/* Teams & Score */}
+						<div className="flex items-center gap-2 col-span-2">
+							<div className="flex items-center gap-2 flex-1">
+								<span className="font-semibold">Wirral Bears</span>
+								<span className="text-2xl font-bold">{game.ourScore}</span>
+								<span className="text-muted-foreground">-</span>
+								<span className="text-2xl font-bold">{game.otherScore}</span>
+								<span className="font-semibold">{game.otherTeamName}</span>
+							</div>
+						</div>
+
+						{/* Result */}
+						<div className="flex justify-center">
+							<Badge
+								variant="outline"
+								className={`${getResultColor(result)} font-semibold uppercase`}
 							>
-								<Button variant="outline" size="sm" className="cursor-pointer">
-									Read Blog
-								</Button>
-							</Link>
+								{result}
+							</Badge>
+						</div>
+
+						{/* Blog Link */}
+						{!compact && (
+							<div className="flex items-center">
+								{blogTitle ? (
+									<Button variant="link" className="p-0 h-auto text-left">
+										{blogTitle.length > 30
+											? `${blogTitle.substring(0, 30)}...`
+											: blogTitle}
+									</Button>
+								) : (
+									<span className="text-muted-foreground text-sm">No blog</span>
+								)}
+							</div>
 						)}
+
+						{/* Actions */}
+						<div className="flex justify-end">
+							{blogTitle && (
+								<Link to={`/blog/blog/${game.blog}`}>
+									<Button variant="outline" size="sm">
+										Read Blog
+									</Button>
+								</Link>
+							)}
+						</div>
 					</div>
 				</div>
 			</CardContent>

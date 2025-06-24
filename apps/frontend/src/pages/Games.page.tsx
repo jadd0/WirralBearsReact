@@ -48,23 +48,18 @@ export default function GamesDisplayPage({
 	const [selectedResult, setSelectedResult] = useState('all');
 
 	// Data fetching hooks
-	// Recent games for when recentOnly is true
 	const { data: recentGames, isLoading: recentLoading } =
 		useGetRecentGames(recentLimit);
 
-	// Games filtered by gender (when gender is selected)
 	const { data: gamesByGender, isLoading: genderLoading } = useGetGamesByGender(
 		selectedGender === 'all' ? '' : selectedGender
 	);
 
-	// Games grouped by season - fetch all seasons
 	const { data: gamesBySeason, isLoading: seasonLoading } =
 		useGetGamesBySeason(undefined);
 
-	// All available seasons from the database
 	const { data: seasons = [], isLoading: seasonsLoading } = useGetAllSeasons();
 
-	// Blog data and statistics
 	const { data: blogs = [], isLoading: blogsLoading } = useGetAllBlogPreviews();
 	const { data: statistics, isLoading: statsLoading } = useGetGamesStatistics();
 
@@ -80,51 +75,32 @@ export default function GamesDisplayPage({
 		setSelectedAge(age);
 	};
 
-	/**
-	 * Determine which games to display based on current filter selections
-	 * Priority order:
-	 * 1. Recent games (if recentOnly is true)
-	 * 2. Season selected (with optional gender filtering)
-	 * 3. Gender only
-	 * 4. All games
-	 */
 	let displayGames = [];
 	let isLoading = seasonsLoading || blogsLoading;
 
 	if (recentOnly) {
-		// Show only recent games regardless of other filters
 		displayGames = recentGames || [];
 		isLoading = isLoading || recentLoading;
 	} else if (selectedSeason !== 'all') {
-		// Season is selected - show games from that season
 		const seasonGames = gamesBySeason?.find(
 			(seasonGroup) => seasonGroup.seasonId === selectedSeason
 		);
 		displayGames = seasonGames?.games || [];
 		isLoading = isLoading || seasonLoading;
 	} else if (selectedGender !== 'all') {
-		// Only gender is selected - show all games for that gender
 		displayGames = gamesByGender || [];
 		isLoading = isLoading || genderLoading;
 	} else {
-		// No specific filters - show all games
 		displayGames =
 			gamesBySeason?.flatMap((seasonGroup) => seasonGroup.games) || [];
 		isLoading = isLoading || seasonLoading;
 	}
 
-	/**
-	 * Apply client-side filtering for search term, result type, age, and gender
-	 * These filters are applied after the main data selection logic above
-	 * Note: Gender filtering is applied here when a season is selected
-	 */
 	const filteredGames = displayGames.filter((game) => {
-		// Search term filtering (case-insensitive team name search)
 		const matchesSearch =
 			!searchTerm ||
 			game.otherTeamName.toLowerCase().includes(searchTerm.toLowerCase());
 
-		// Result type filtering (win/loss/draw)
 		let matchesResult = true;
 		if (selectedResult !== 'all') {
 			if (selectedResult === 'win')
@@ -135,13 +111,11 @@ export default function GamesDisplayPage({
 				matchesResult = game.ourScore === game.otherScore;
 		}
 
-		// Age group filtering (applied to games)
 		let matchesAge = true;
 		if (selectedAge !== 'all') {
 			matchesAge = game.ageGroup === selectedAge;
 		}
 
-		// Gender filtering (applied when season is selected, since season data includes all genders)
 		let matchesGender = true;
 		if (selectedGender !== 'all' && selectedSeason !== 'all') {
 			matchesGender = game.gender === selectedGender;
@@ -150,9 +124,6 @@ export default function GamesDisplayPage({
 		return matchesSearch && matchesResult && matchesAge && matchesGender;
 	});
 
-	/**
-	 * Reset all filters to their default state
-	 */
 	const clearFilters = () => {
 		setSearchTerm('');
 		setSelectedGender('all');
@@ -161,48 +132,50 @@ export default function GamesDisplayPage({
 		setSelectedResult('all');
 	};
 
-	// Show loading state while any required data is being fetched
 	if (isLoading || (showStats && statsLoading)) {
 		return <GamesLoading />;
 	}
 
 	return (
-		<div className="space-y-6 min-w-full">
+		<div className="min-h-screen w-full flex flex-col">
 			<LogoBanner />
 
-			<div className="p-6 pt-0 flex flex-col items-center">
-				{/* Header showing total number of filtered games */}
-				<GamesDisplayHeader totalGames={filteredGames.length} />
+			<div className="flex-1 px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+				<div className="max-w-7xl mx-auto space-y-6">
+					{/* Header */}
+					<GamesDisplayHeader totalGames={filteredGames.length} />
 
-				{/* Statistics cards (optional) */}
-				{showStats && statistics && <GamesStatsCards stats={statistics} />}
+					{/* Statistics cards */}
+					{showStats && statistics && <GamesStatsCards stats={statistics} />}
 
-				{/* Filter controls (optional) */}
-				{showFilters && (
-					<GamesFilters
-						searchTerm={searchTerm}
-						setSearchTerm={setSearchTerm}
-						selectedGender={selectedGender}
-						setSelectedGender={handleGenderChange}
-						selectedAge={selectedAge}
-						setSelectedAge={handleAgeChange}
-						selectedSeason={selectedSeason}
-						setSelectedSeason={setSelectedSeason}
-						selectedResult={selectedResult}
-						setSelectedResult={setSelectedResult}
-						seasons={availableSeasons}
-						onClearFilters={clearFilters}
+					{/* Filter controls */}
+					{showFilters && (
+						<GamesFilters
+							searchTerm={searchTerm}
+							setSearchTerm={setSearchTerm}
+							selectedGender={selectedGender}
+							setSelectedGender={handleGenderChange}
+							selectedAge={selectedAge}
+							setSelectedAge={handleAgeChange}
+							selectedSeason={selectedSeason}
+							setSelectedSeason={setSelectedSeason}
+							selectedResult={selectedResult}
+							setSelectedResult={setSelectedResult}
+							seasons={availableSeasons}
+							onClearFilters={clearFilters}
+						/>
+					)}
+
+					{/* Main games list */}
+					<GamesList
+						games={filteredGames}
+						seasons={seasons}
+						blogs={blogs}
+						compact={compact}
 					/>
-				)}
-
-				{/* Main games list display */}
-				<GamesList
-					games={filteredGames}
-					seasons={seasons}
-					blogs={blogs}
-					compact={compact}
-				/>
+				</div>
 			</div>
+
 			<Footer />
 		</div>
 	);
