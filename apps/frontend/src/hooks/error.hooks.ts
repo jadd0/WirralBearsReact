@@ -22,7 +22,7 @@ export const useAuthError = () => {
 					errorMessage = 'Authentication failed. Please try again.';
 					break;
 				case 'unauthorised':
-					errorMessage = 'Access denied. Your email is not authorized.';
+					errorMessage = 'Access denied. Your email is not authorised.';
 					break;
 				case 'server_error':
 					errorMessage = 'Server error occurred. Please try again later.';

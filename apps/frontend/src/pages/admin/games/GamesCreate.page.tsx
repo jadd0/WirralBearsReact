@@ -20,7 +20,7 @@ export default function GamesEditCreatePage() {
 	const { data: blogs = [], isLoading: blogsLoading } = useGetAllBlogPreviews();
 	const replaceAllGamesMutation = useReplaceAllGames();
 
-	// Initialize games when data is loaded
+	// Initialise games when data is loaded
 	useEffect(() => {
 		if (existingGames && existingGames.length > 0) {
 			setGames(

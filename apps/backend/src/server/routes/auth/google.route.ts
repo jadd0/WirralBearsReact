@@ -35,9 +35,9 @@ router.get('/callback', (req: Request, res: Response, next) => {
 			return res.redirect(createClientURL('/login?error=server_error'));
 		}
 
-		// Check if authentication failed (user not authorized)
+		// Check if authentication failed (user not authorised)
 		if (!req.user) {
-			console.log('Authentication failed - user not authorized');
+			console.log('Authentication failed - user not authorised');
 			return res.redirect(createClientURL('/login?error=unauthorised'));
 		}
 

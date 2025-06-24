@@ -40,9 +40,9 @@ passport.use(
 
 				// Return false for unauthorised emails - this will trigger failureRedirect
 				if (!allowedEmails.includes(userEmail)) {
-					console.log('Unauthorized email attempt:', userEmail);
+					console.log('Unauthorised email attempt:', userEmail);
 					return done(null, false, {
-						message: 'Access denied: Email not authorized',
+						message: 'Access denied: Email not authorised',
 					});
 				}
 
