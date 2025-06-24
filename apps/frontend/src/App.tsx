@@ -110,6 +110,8 @@ function App() {
 
 	return (
 		<div className="font-sans tracking-wide flex flex-col min-h-screen w-full bg-gray-#d3d2d2">
+			<Toaster position="top-right" closeButton={false} />
+
 			{shouldShowNav && <Navbar />}
 			{!shouldShowNav && <AdminNavbar />}
 
@@ -144,7 +146,7 @@ function App() {
 							path="/admin/multipleImageUpload"
 							element={<MultipleImageUploadPage />}
 						/>
-						
+
 						<Route
 							path="/admin/imageSelection"
 							element={<ImageSelectionPage />}
@@ -184,7 +186,6 @@ function App() {
 					<Route path="/coaches" element={<ViewCoachesPage />} />
 					<Route path="/coaches/coach/:slug" element={<CoachViewPage />} />
 				</Routes>
-				<Toaster position="top-right" closeButton={false} />
 			</main>
 		</div>
 	);

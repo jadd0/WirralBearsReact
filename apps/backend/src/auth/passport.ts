@@ -38,14 +38,15 @@ passport.use(
 					allowedEmails.includes(userEmail)
 				);
 
-				// Reject unauthorized emails
+				// Return false for unauthorised emails - this will trigger failureRedirect
 				if (!allowedEmails.includes(userEmail)) {
+					console.log('Unauthorized email attempt:', userEmail);
 					return done(null, false, {
 						message: 'Access denied: Email not authorized',
 					});
 				}
 
-				// Check if user already exists
+				// Logic for authorised emails
 				const existingConnection = await db
 					.select()
 					.from(account_connections)
@@ -58,7 +59,7 @@ passport.use(
 					.limit(1);
 
 				if (existingConnection.length > 0) {
-					// Update tokens
+					// Update tokens and return user
 					await db
 						.update(account_connections)
 						.set({
@@ -72,7 +73,6 @@ passport.use(
 							)
 						);
 
-					// Get the user
 					const user = await db
 						.select()
 						.from(users)
@@ -81,7 +81,7 @@ passport.use(
 
 					return done(null, user[0]);
 				} else {
-					// Create new user and connection
+					// Create new user for authorised email
 					const newUser = await db
 						.insert(users)
 						.values({
@@ -101,7 +101,7 @@ passport.use(
 						refreshToken,
 					});
 
-					console.log('New user created:', newUser[0].id);
+					console.log('New authorised user created:', newUser[0].id);
 					return done(null, newUser[0]);
 				}
 			} catch (error) {
@@ -111,18 +111,5 @@ passport.use(
 		}
 	)
 );
-
-passport.serializeUser((user: any, done) => {
-	done(null, user.id);
-});
-
-passport.deserializeUser(async (id: string, done) => {
-	try {
-		const user = await db.select().from(users).where(eq(users.id, id)).limit(1);
-		done(null, user[0] || null);
-	} catch (error) {
-		done(error, null);
-	}
-});
 
 export default passport;

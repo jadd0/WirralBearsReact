@@ -23,44 +23,36 @@ router.get(
  *
  * Google OAuth callback route with proper failure handling
  */
-router.get(
-	'/callback',
-	(req: Request, res: Response, next) => {
-		console.log('Google callback received');
-		
-		passport.authenticate('google', {
-			failureRedirect: createClientURL('/login?error=auth_failed'),
-			failureMessage: true,
-		})(req, res, (err) => {
+router.get('/callback', (req: Request, res: Response, next) => {
+	console.log('Google callback received');
+
+	passport.authenticate('google', {
+		failureRedirect: createClientURL('/login?error=unauthorised'), // Default failure
+		failureMessage: true,
+	})(req, res, (err) => {
+		if (err) {
+			console.error('Authentication error:', err);
+			return res.redirect(createClientURL('/login?error=server_error'));
+		}
+
+		// Check if authentication failed (user not authorized)
+		if (!req.user) {
+			console.log('Authentication failed - user not authorized');
+			return res.redirect(createClientURL('/login?error=unauthorised'));
+		}
+
+		// Authentication successful
+		console.log('Google OAuth callback success');
+
+		req.session.save((err) => {
 			if (err) {
-				console.error('Authentication error:', err);
+				console.error('Session save error:', err);
 				return res.redirect(createClientURL('/login?error=server_error'));
 			}
-			
-			// Check if authentication failed (user not authorized)
-			if (!req.user) {
-				console.log('Authentication failed - user not authorized');
-				return res.redirect(createClientURL('/login?error=unauthorized'));
-			}
-			
-			// Authentication successful
-			console.log('Google OAuth callback success:', {
-				authenticated: req.isAuthenticated(),
-				user: req.user?.id || 'none',
-				sessionID: req.sessionID,
-				cookies: req.headers.cookie ? 'present' : 'missing',
-			});
-
-			// Force session save before redirect
-			req.session.save((err) => {
-				if (err) {
-					console.error('Session save error:', err);
-				}
-				console.log('Session saved, redirecting...');
-				res.redirect(createClientURL('/admin'));
-			});
+			console.log('Session saved, redirecting...');
+			res.redirect(createClientURL('/admin'));
 		});
-	}
-);
+	});
+});
 
 export default router;
