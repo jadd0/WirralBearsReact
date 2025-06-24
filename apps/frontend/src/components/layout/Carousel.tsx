@@ -123,7 +123,7 @@ export function CarouselComponent({
 			</Carousel>
 
 			{/* Below the carousel: heading and dots */}
-			{allImagesLoaded && images.length > 1 && (
+			{allImagesLoaded && images.length >= 1 && (
 				<div className="flex flex-col items-center mt-4">
 					{headings && headings[current] && (
 						<div className="mb-2 text-white font-semibold text-lg drop-shadow">
