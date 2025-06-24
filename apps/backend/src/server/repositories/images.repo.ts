@@ -9,6 +9,7 @@ import {
 } from '@/db/schemas/images.schema';
 import { IMAGE_LIMIT } from '@wirralbears/constants';
 import { Image } from '@/types/image.types';
+import { UTApi } from 'uploadthing/server';
 
 export const imageRepository: any = {
 	/**
@@ -192,8 +193,22 @@ export const imageRepository: any = {
 	 * Deletes an image by ID
 	 */
 	async deleteImage(imageId: string): Promise<any> {
+		const image = await db.select({ key: images.key }).from(images);
+
+		if (!image) {
+			throw new Error('No image found');
+		}
+
 		const result = await db.delete(images).where(eq(images.id, imageId));
-		return result;
+
+		if (!result) {
+			throw new Error('Error occured whilst trying to delete image');
+		}
+
+		const utapi = new UTApi();
+		await utapi.deleteFiles(image[0].key);
+
+		return true;
 	},
 
 	/**
