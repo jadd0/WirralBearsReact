@@ -43,7 +43,7 @@ router.get(
 				console.error('Session save error:', err);
 			}
 			console.log('Session saved, redirecting...');
-			res.redirect(createClientURL('/'));
+			res.redirect(createClientURL('/admin'));
 		});
 	}
 );

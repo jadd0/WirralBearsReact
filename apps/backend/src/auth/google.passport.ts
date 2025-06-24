@@ -29,7 +29,13 @@ export const googleStrategy = new GoogleStrategy(
 			}
 
 			// Check if the email is in the allowed list
-			const allowedEmails = [env.ADMIN_EMAIL_JADD, env.ADMIN_EMAIL_WIRRALBEARS];
+			const allowedEmails = [
+				env.ADMIN_EMAIL_JADD,
+				env.ADMIN_EMAIL_WIRRALBEARS,
+				env.ADMIN_EMAIL_MARTIN,
+				env.ADMIN_EMAIL_DOWDSTERS,
+				env.ADMIN_EMAIL_SKYE,
+			];
 
 			if (!allowedEmails.includes(userEmail)) {
 				return done(new Error('Access denied: Email not authorized'));

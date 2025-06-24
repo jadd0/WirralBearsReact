@@ -6,14 +6,20 @@ const navLinks = [
 	{ to: '/', label: 'Wirral Bears', key: 'wirralBears' },
 	{ to: '/admin', label: 'Dashboard', key: 'dashboard' },
 	{ to: '/admin/blog/createPost', label: 'Create Post', key: 'createPost' },
-	{ to: '/admin/blog/editPost', label: 'Edit Post', key: 'editPost' },
 	{ to: '/admin/image', label: 'Images', key: 'images' },
 	{ to: '/admin/coach/create', label: 'Create Coach', key: 'createCoach' },
 	{ to: '/admin/sessions', label: 'Sessions', key: 'sessions' },
 	{ to: '/admin/games/create', label: 'Create Game', key: 'createGame' },
-	{to: '/admin/multipleImageUpload', label: 'Upload Images', key: 'uploadImages' },
-	{to: '/admin/imageSelection', label: 'Image Selection', key: 'imageSelection' },
-
+	{
+		to: '/admin/multipleImageUpload',
+		label: 'Upload Images',
+		key: 'uploadImages',
+	},
+	{
+		to: '/admin/imageSelection',
+		label: 'Image Selection',
+		key: 'imageSelection',
+	},
 ];
 
 export function AdminNavbar() {
@@ -46,47 +52,52 @@ export function AdminNavbar() {
 			{/* UnderNav */}
 			<div className="hidden md:block sticky top-[0px] z-40 w-full h-[37px] backdrop-blur-sm" />
 
-			{/* Mobile Navbar */}
-			<nav className="md:hidden bg-[#333] sticky top-0 z-50">
-				<div className="flex items-center justify-between px-4 py-2">
-					<span className="text-white font-bold text-lg">Menu</span>
+			{/* Modern Mobile Navbar */}
+			<nav className="md:hidden bg-[#333333] sticky top-0 z-50 shadow-lg">
+				<div className="flex items-center justify-end px-6 py-4">
 					<button
-						className="flex flex-col h-10 w-10 justify-center items-center group"
+						className="flex flex-col h-12 w-12 justify-center items-center group rounded-lg hover:bg-[#ff0000]/10 transition-all duration-300"
 						onClick={() => setOpen((o) => !o)}
 						aria-label="Toggle menu"
 					>
-						{/* Hamburger lines */}
+						{/* Modern Hamburger lines */}
 						<div
-							className={`h-1 w-8 my-1 rounded bg-white transition-all duration-300 
-                ${open ? 'rotate-[-45deg] translate-y-3' : ''}`}
+							className={`h-0.5 w-7 my-1 rounded-full bg-white transition-all duration-500 ease-in-out
+                ${open ? 'rotate-45 translate-y-2.5 bg-[#ff0000]' : ''}`}
 						/>
 						<div
-							className={`h-1 w-8 my-1 rounded bg-white transition-all duration-300 
-                ${open ? 'opacity-0' : ''}`}
+							className={`h-0.5 w-7 my-1 rounded-full bg-white transition-all duration-500 ease-in-out
+                ${open ? 'opacity-0 scale-0' : ''}`}
 						/>
 						<div
-							className={`h-1 w-8 my-1 rounded bg-white transition-all duration-300 
-                ${open ? 'rotate-[45deg] -translate-y-3' : ''}`}
+							className={`h-0.5 w-7 my-1 rounded-full bg-white transition-all duration-500 ease-in-out
+                ${open ? '-rotate-45 -translate-y-2.5 bg-[#ff0000]' : ''}`}
 						/>
 					</button>
 				</div>
+
+				{/* Full Screen Mobile Menu */}
 				<div
-					className={`overflow-hidden transition-all duration-300 
-            ${open ? 'max-h-[500px]' : 'max-h-0'} bg-[#bbbabaa4]`}
+					className={`fixed inset-0 top-[72px] bg-[#d3d2d2] transition-all duration-500 ease-in-out
+            ${open ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
 				>
-					<div className="flex flex-col items-center py-2">
-						{navLinks.map((link) => (
+					<div className="flex flex-col h-full justify-center items-center space-y-2 px-8">
+						{navLinks.map((link, index) => (
 							<NavLink
 								key={link.key}
 								to={link.to}
 								className={({ isActive }) =>
-									`block w-full text-center py-3 text-lg font-bold transition-colors duration-200 
+									`block w-full text-center py-4 px-6 text-xl font-medium rounded-xl transition-all duration-300 transform hover:scale-105
                   ${
 										isActive
-											? 'bg-black text-white'
-											: 'text-black hover:bg-black hover:text-gray-300'
+											? 'bg-[#ff0000] text-white shadow-lg'
+											: 'text-black hover:bg-[#ff0000]/10 hover:text-black border border-black/20'
 									}`
 								}
+								style={{
+									animationDelay: open ? `${index * 0.1}s` : '0s',
+									animation: open ? 'slideInUp 0.6s ease-out forwards' : 'none',
+								}}
 							>
 								{link.label}
 							</NavLink>
@@ -95,13 +106,31 @@ export function AdminNavbar() {
 							href="https://wirral-bears.myspreadshop.co.uk"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="block w-full text-center py-3 text-lg font-bold text-black hover:bg-black hover:text-gray-300"
+							className="block w-full text-center py-4 px-6 text-xl font-medium rounded-xl transition-all duration-300 transform hover:scale-105 text-black hover:bg-[#ff0000]/10 hover:text-black border border-black/20 mt-4"
+							style={{
+								animationDelay: open ? `${navLinks.length * 0.1}s` : '0s',
+								animation: open ? 'slideInUp 0.6s ease-out forwards' : 'none',
+							}}
 						>
 							Shop
 						</a>
 					</div>
 				</div>
 			</nav>
+
+			{/* CSS Animation */}
+			<style jsx>{`
+				@keyframes slideInUp {
+					from {
+						opacity: 0;
+						transform: translateY(30px);
+					}
+					to {
+						opacity: 1;
+						transform: translateY(0);
+					}
+				}
+			`}</style>
 		</>
 	);
 }
