@@ -30,7 +30,7 @@ export default function GamesStatsCards({ stats }: GamesStatsCardsProps) {
   }
 
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-5">
+		<div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-5 md:w-2/3">
 			<Card>
 				<CardHeader className="pb-2">
 					<CardTitle className="text-sm font-medium">Total Games</CardTitle>

@@ -65,7 +65,7 @@ export default function GamesFilters({
 	onClearFilters,
 }: GamesFiltersProps) {
 	return (
-		<div className="mt-3 mb-8">
+		<div className="mt-3 mb-8 md:w-2/3">
 			<Card>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">

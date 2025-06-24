@@ -30,7 +30,7 @@ export default function GamesList({ games, seasons, blogs, compact = false }: Ga
 	);
 
 	return (
-		<div className="space-y-4">
+		<div className="space-y-4 flex justify-center">
 			{sortedGames.map((game) => (
 				<GameCard
 					key={game.id}

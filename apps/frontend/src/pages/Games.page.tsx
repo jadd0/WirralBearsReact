@@ -170,7 +170,7 @@ export default function GamesDisplayPage({
 		<div className="space-y-6 min-w-full">
 			<LogoBanner />
 
-			<div className="p-6 pt-0">
+			<div className="p-6 pt-0 flex flex-col items-center">
 				{/* Header showing total number of filtered games */}
 				<GamesDisplayHeader totalGames={filteredGames.length} />
 
