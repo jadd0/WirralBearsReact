@@ -10,6 +10,7 @@ export const gameValidationSchema = z.object({
 		invalid_type_error: 'Gender must be Male, Female, or Mixed',
 	}),
 	season: z.string().min(1, 'Season is required'),
+	ageGroup: z.string().min(1, 'Age Group is required'),
 	ourScore: z
 		.string()
 		.min(1, 'Our score is required')

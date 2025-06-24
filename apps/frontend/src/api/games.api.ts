@@ -188,6 +188,7 @@ export async function getGamesStatistics(): Promise<{
 export async function replaceAllGames(
 	games: GameInsert[]
 ): Promise<{ message: string }> {
+	console.log({games})
 	const { data } = await request({
 		url: '/api/games/replaceAllGames',
 		method: 'PUT',

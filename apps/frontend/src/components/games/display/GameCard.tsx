@@ -70,11 +70,17 @@ export default function GameCard({
 						</span>
 					</div>
 
-					{/* Gender & Season */}
-					<div className="flex flex-col gap-1">
-						<Badge variant="secondary" className="w-fit">
-							{game.gender}
-						</Badge>
+					{/* Gender, Age Group & Season */}
+					<div className="flex flex-col gap-1 items-center">
+						<div className="flex-row flex">
+							<Badge variant="secondary" className="w-fit">
+								{game.gender}
+							</Badge>
+							<Badge variant="secondary" className="w-fit ml-2">
+								U{game.ageGroup}
+							</Badge>
+						</div>
+
 						<span className="text-sm text-muted-foreground">
 							{getSeasonName(game.season)}
 						</span>
@@ -123,7 +129,7 @@ export default function GameCard({
 								to={`/blog/blog/${game.blog}`}
 								className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
 							>
-								<Button variant="outline" size="sm" className='cursor-pointer'>
+								<Button variant="outline" size="sm" className="cursor-pointer">
 									Read Blog
 								</Button>
 							</Link>

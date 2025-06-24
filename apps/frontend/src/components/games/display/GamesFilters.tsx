@@ -12,23 +12,51 @@ import { Search, Filter } from 'lucide-react';
 import { Season } from '@wirralbears/backend-types';
 
 interface GamesFiltersProps {
+	// Search functionality
 	searchTerm: string;
 	setSearchTerm: (term: string) => void;
+
+	// Gender filtering
 	selectedGender: string;
 	setSelectedGender: (gender: string) => void;
+
+	// Age filtering (applied to games only)
+	selectedAge: string;
+	setSelectedAge: (age: string) => void;
+
+	// Season filtering (now gender-independent)
 	selectedSeason: string;
 	setSelectedSeason: (season: string) => void;
+
+	// Result filtering
 	selectedResult: string;
 	setSelectedResult: (result: string) => void;
+
+	// Available seasons (no longer filtered by gender)
 	seasons: Season[];
+
+	// Clear all filters function
 	onClearFilters: () => void;
 }
 
+/**
+ * GamesFilters Component
+ *
+ * Provides a comprehensive filtering interface for games data including:
+ * - Text search by team name
+ * - Gender filtering (Male/Female/Mixed) - affects games only
+ * - Age group filtering (11-18) - affects games only
+ * - Season filtering (gender-independent) - shows all available seasons
+ * - Result filtering (Win/Loss/Draw)
+ * - Clear all filters functionality
+ */
 export default function GamesFilters({
 	searchTerm,
 	setSearchTerm,
 	selectedGender,
 	setSelectedGender,
+	selectedAge,
+	setSelectedAge,
 	selectedSeason,
 	setSelectedSeason,
 	selectedResult,
@@ -46,8 +74,9 @@ export default function GamesFilters({
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-						{/* Search */}
+					{/* Responsive grid layout for filter controls */}
+					<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+						{/* Search Input - Filter by team name */}
 						<div className="relative">
 							<Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
 							<Input
@@ -58,7 +87,8 @@ export default function GamesFilters({
 							/>
 						</div>
 
-						{/* Gender Filter - Fixed */}
+						{/* Gender Filter - Male/Female/Mixed/All */}
+						{/* This affects game filtering only (not season availability) */}
 						<Select value={selectedGender} onValueChange={setSelectedGender}>
 							<SelectTrigger>
 								<SelectValue placeholder="All Genders" />
@@ -71,13 +101,34 @@ export default function GamesFilters({
 							</SelectContent>
 						</Select>
 
-						{/* Season Filter - Fixed */}
+						{/* Age Filter - Age groups 11-18 */}
+						{/* This affects game filtering only */}
+						<Select value={selectedAge} onValueChange={setSelectedAge}>
+							<SelectTrigger>
+								<SelectValue placeholder="All Ages" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all">All Ages</SelectItem>
+								{/* Generate age options from 11 to 18 */}
+								{Array.from({ length: 8 }, (_, i) => i + 11).map((age) => (
+									<SelectItem key={age} value={age.toString()}>
+										{age}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+
+						{/* Season Filter - Shows all available seasons */}
+						{/* No longer filtered by gender since seasons are gender-independent */}
 						<Select value={selectedSeason} onValueChange={setSelectedSeason}>
 							<SelectTrigger>
 								<SelectValue placeholder="All Seasons" />
 							</SelectTrigger>
 							<SelectContent>
 								<SelectItem value="all">All Seasons</SelectItem>
+								{/* 
+                  Display all available seasons
+                */}
 								{seasons.map((season) => (
 									<SelectItem key={season.id} value={season.id}>
 										{season.season}
@@ -86,7 +137,7 @@ export default function GamesFilters({
 							</SelectContent>
 						</Select>
 
-						{/* Result Filter - Fixed */}
+						{/* Result Filter - Win/Loss/Draw */}
 						<Select value={selectedResult} onValueChange={setSelectedResult}>
 							<SelectTrigger>
 								<SelectValue placeholder="All Results" />
@@ -99,7 +150,7 @@ export default function GamesFilters({
 							</SelectContent>
 						</Select>
 
-						{/* Clear Filters */}
+						{/* Clear All Filters Button */}
 						<Button variant="outline" onClick={onClearFilters}>
 							Clear Filters
 						</Button>

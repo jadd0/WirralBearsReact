@@ -60,10 +60,11 @@ export default function GamesEditCreatePage() {
 			date: new Date(),
 			gender: '',
 			season: '',
+			ageGroup: '',
 			ourScore: '',
 			otherScore: '',
 			blog: null,
-			otherTeamName: ''
+			otherTeamName: '',
 		};
 
 		setGames((prevGames) => [...prevGames, newGame]);
@@ -77,26 +78,34 @@ export default function GamesEditCreatePage() {
 				date: new Date(game.date),
 				gender: game.gender,
 				season: game.season,
+				ageGroup: game.ageGroup,
 				ourScore: game.ourScore,
 				otherScore: game.otherScore,
 				blog: game.blog || null,
 				otherTeamName: game.otherTeamName || '', // Fixed property name
 			}));
 
+			console.log({gamesToValidate})
+
 			// Validate using Zod schema
 			const validatedGames =
 				GAMES.gamesArrayValidationSchema.parse(gamesToValidate);
+
+				console.log({validatedGames})
 
 			// Convert to the format expected by the API
 			const apiGames = validatedGames.map((game) => ({
 				date: game.date,
 				gender: game.gender,
 				season: game.season,
+				ageGroup: game.ageGroup,
 				ourScore: parseInt(game.ourScore, 10), // Convert string to number
 				otherScore: parseInt(game.otherScore, 10), // Convert string to number
 				blog: game.blog,
 				otherTeamName: game.otherTeamName,
 			})) as GameInsert[];
+
+			console.log({apiGames})
 
 			await replaceAllGamesMutation.mutateAsync(apiGames);
 
@@ -124,7 +133,7 @@ export default function GamesEditCreatePage() {
 			<GamesPageHeader
 				onAddGame={handleAddGame}
 				onSaveAllGames={handleSaveAllGames}
-				isSaving={replaceAllGamesMutation.isPending} // TODO : Replace with actual saving state later
+				isSaving={replaceAllGamesMutation.isPending}
 			/>
 
 			{games.length === 0 ? (

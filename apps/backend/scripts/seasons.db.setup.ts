@@ -18,18 +18,13 @@ const SESSION_ID_LENGTH = 7;
 
 const now = new Date();
 
-const genders = ['Male', 'Female', 'Mixed'];
-
 // Create a flat array of season objects
-const seasonsArray = YEARS.flatMap((year) =>
-	genders.map((gender) => ({
-		id: nanoid(SESSION_ID_LENGTH),
-		season: year,
-		gender,
-		createdAt: now,
-		updatedAt: now,
-	}))
-);
+const seasonsArray = YEARS.flatMap((year) => ({
+	id: nanoid(SESSION_ID_LENGTH),
+	season: year,
+	createdAt: now,
+	updatedAt: now,
+}));
 
 console.log(seasonsArray);
 

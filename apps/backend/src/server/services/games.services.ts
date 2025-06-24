@@ -83,6 +83,7 @@ export const gamesServices = {
 	 * This is useful for bulk updates from external sources
 	 */
 	async replaceAllGames(newGames: GameInsert[]): Promise<boolean> {
+		console.log({newGames})
 		try {
 			// Transform the data before passing to repository
 			const transformedGames = newGames.map((game) => ({

@@ -30,6 +30,19 @@ interface GameComponentProps {
 	onDelete: (gameId: string | undefined) => void;
 }
 
+/**
+ * GameComponent - Individual game form component
+ *
+ * Handles editing of individual game records including:
+ * - Gender selection (Male/Female/Mixed)
+ * - Age group selection (11-18)
+ * - Date selection via calendar
+ * - Season selection (now gender-independent)
+ * - Score inputs for both teams
+ * - Other team name
+ * - Optional blog association
+ * - Delete functionality
+ */
 export default function GameComponent({
 	game,
 	seasons,
@@ -41,11 +54,17 @@ export default function GameComponent({
 		game.date ? new Date(game.date) : undefined
 	);
 
+	/**
+	 * Generic handler for updating game fields
+	 */
 	const handleUpdate = (field: keyof GameInsert, value: any) => {
 		const updatedGame = { ...game, [field]: value };
 		onUpdate(game.id || game.tempId, updatedGame);
 	};
 
+	/**
+	 * Handle date selection from calendar
+	 */
 	const handleDateSelect = (selectedDate: Date | undefined) => {
 		setDate(selectedDate);
 		if (selectedDate) {
@@ -53,29 +72,28 @@ export default function GameComponent({
 		}
 	};
 
+	/**
+	 * Handle gender change
+	 */
 	const handleGenderChange = (value: string) => {
 		handleUpdate('gender', value);
-		// Clear season when gender changes to ensure consistency
-		if (game.season) {
-			handleUpdate('season', '');
-		}
 	};
 
+	/**
+	 * Handle age group change
+	 */
+	const handleAgeGroupChange = (value: string) => {
+		handleUpdate('ageGroup', value);
+	};
+
+	/**
+	 * Utility function to truncate long blog titles for display
+	 */
 	const truncateTitle = (title: string, maxLength: number = 30) => {
 		return title.length > maxLength
 			? `${title.substring(0, maxLength)}...`
 			: title;
 	};
-
-	// Filter seasons based on selected gender
-	const filteredSeasons = seasons.filter(
-		(season) => !game.gender || season.gender === game.gender
-	);
-
-	// Check if season dropdown should be disabled - should be disabled when NO gender is selected
-	const isSeasonDisabled = () => !game.gender;
-
-	console.log(blogs);
 
 	return (
 		<div className="flex flex-row items-center gap-4 p-4 border rounded-lg bg-card">
@@ -89,6 +107,26 @@ export default function GameComponent({
 						<SelectItem value="Male">Male</SelectItem>
 						<SelectItem value="Female">Female</SelectItem>
 						<SelectItem value="Mixed">Mixed</SelectItem>
+					</SelectContent>
+				</Select>
+			</div>
+
+			{/* Age Dropdown */}
+			<div className="min-w-[120px]">
+				<Select
+					value={game.ageGroup || ''}
+					onValueChange={handleAgeGroupChange}
+				>
+					<SelectTrigger>
+						<SelectValue placeholder="Age" />
+					</SelectTrigger>
+					<SelectContent>
+						{/* Generate age options from 11 to 18 */}
+						{Array.from({ length: 8 }, (_, i) => i + 11).map((age) => (
+							<SelectItem key={age} value={age.toString()}>
+								{age}
+							</SelectItem>
+						))}
 					</SelectContent>
 				</Select>
 			</div>
@@ -119,26 +157,18 @@ export default function GameComponent({
 				</Popover>
 			</div>
 
-			{/* Season Dropdown */}
+			{/* Season Dropdown - Now always enabled since seasons are gender-independent */}
 			<div className="min-w-[150px]">
 				<Select
 					value={game.season || ''}
 					onValueChange={(value) => handleUpdate('season', value)}
-					disabled={isSeasonDisabled()}
 				>
-					<SelectTrigger
-						className={cn(
-							isSeasonDisabled() && 'opacity-50 cursor-not-allowed'
-						)}
-					>
-						<SelectValue
-							placeholder={
-								isSeasonDisabled() ? 'Select Gender First' : 'Season'
-							}
-						/>
+					<SelectTrigger>
+						<SelectValue placeholder="Season" />
 					</SelectTrigger>
 					<SelectContent>
-						{filteredSeasons.map((season) => (
+						{/* Display all available seasons - no filtering needed */}
+						{seasons.map((season) => (
 							<SelectItem key={season.id} value={season.id}>
 								{season.season}
 							</SelectItem>

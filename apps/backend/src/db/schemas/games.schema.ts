@@ -18,7 +18,6 @@ export const seasons = pgTable('seasons', {
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at').defaultNow().notNull(),
 	season: varchar('season', { length: 10 }),
-	gender: varchar('gender', { length: 10 }).notNull(),
 });
 
 export const games = pgTable('games', {
@@ -39,6 +38,7 @@ export const games = pgTable('games', {
 	ourScore: integer('our_score').notNull(),
 	otherScore: integer('other_score').notNull(),
 	otherTeamName: varchar('other_team_name', { length: 50 }).notNull(),
+	ageGroup: varchar('age_group', { length: 10 }).notNull(),
 });
 
 export type Game = typeof games.$inferSelect;
