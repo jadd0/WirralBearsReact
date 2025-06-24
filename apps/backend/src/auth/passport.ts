@@ -14,7 +14,36 @@ passport.use(
 		},
 		async (accessToken, refreshToken, profile, done) => {
 			try {
+				// Get the user's email from the profile
+				const userEmail = profile.emails?.[0]?.value;
 
+				if (!userEmail) {
+					return done(null, false, {
+						message: 'No email found in Google profile',
+					});
+				}
+
+				// CHECK IF EMAIL IS ALLOWED
+				const allowedEmails = [
+					env.ADMIN_EMAIL_JADD,
+					env.ADMIN_EMAIL_WIRRALBEARS,
+					env.ADMIN_EMAIL_MARTIN,
+					env.ADMIN_EMAIL_DOWDSTERS,
+					env.ADMIN_EMAIL_SKYE,
+				];
+
+				console.log(
+					'Email check:',
+					userEmail,
+					allowedEmails.includes(userEmail)
+				);
+
+				// Reject unauthorized emails
+				if (!allowedEmails.includes(userEmail)) {
+					return done(null, false, {
+						message: 'Access denied: Email not authorized',
+					});
+				}
 
 				// Check if user already exists
 				const existingConnection = await db
@@ -29,7 +58,6 @@ passport.use(
 					.limit(1);
 
 				if (existingConnection.length > 0) {
-
 					// Update tokens
 					await db
 						.update(account_connections)
@@ -53,7 +81,6 @@ passport.use(
 
 					return done(null, user[0]);
 				} else {
-
 					// Create new user and connection
 					const newUser = await db
 						.insert(users)
@@ -85,17 +112,13 @@ passport.use(
 	)
 );
 
-// Serialize user for session
 passport.serializeUser((user: any, done) => {
 	done(null, user.id);
 });
 
-// Deserialize user from session
 passport.deserializeUser(async (id: string, done) => {
 	try {
-
 		const user = await db.select().from(users).where(eq(users.id, id)).limit(1);
-
 		done(null, user[0] || null);
 	} catch (error) {
 		done(error, null);
