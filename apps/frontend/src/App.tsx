@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { toast, Toaster } from 'sonner';
 import { OnLoadingErrorView, LoadingView } from './components/layout/Loading';
 import { useMe } from './hooks/auth.hooks';
@@ -64,6 +64,32 @@ function AuthenticatedRouter() {
 	return <Outlet />;
 }
 
+const KeepAlive = () => {
+	useEffect(() => {
+		const keepBackendAwake = async () => {
+			try {
+				await fetch('https://api.wirralbears.com/health', {
+					method: 'GET',
+				});
+				console.log('Keep-alive ping sent');
+			} catch (error) {
+				console.error('Keep-alive ping failed:', error);
+			}
+		};
+
+		// Call immediately on mount
+		keepBackendAwake();
+
+		// Set up interval to call every 3 minutes
+		const interval = setInterval(keepBackendAwake, 3 * 60 * 1000);
+
+		// Cleanup interval on component unmount
+		return () => clearInterval(interval);
+	}, []);
+
+	return null; 
+};
+
 // function UnauthenticatedRouter() {
 // 	const { data, isPending, error, refetch } = useMe();
 
@@ -111,6 +137,7 @@ function App() {
 	return (
 		<div className="font-sans tracking-wide flex flex-col min-h-screen w-full bg-gray-#d3d2d2">
 			<Toaster position="top-right" closeButton={false} />
+			<KeepAlive />
 
 			{shouldShowNav && <Navbar />}
 			{!shouldShowNav && <AdminNavbar />}
