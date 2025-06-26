@@ -80,8 +80,8 @@ const KeepAlive = () => {
 		// Call immediately on mount
 		keepBackendAwake();
 
-		// Set up interval to call every 3 minutes
-		const interval = setInterval(keepBackendAwake, 3 * 60 * 1000);
+		// Set up interval to call every 5 minutes
+		const interval = setInterval(keepBackendAwake, 5 * 60 * 1000);
 
 		// Cleanup interval on component unmount
 		return () => clearInterval(interval);
