@@ -12,7 +12,7 @@ export default function BlogAllPreviews({
 	limit?: number
 }) {
 	return (
-		<section className="w-full h-screen max-w-4xl mx-auto px-4">
+		<section className="w-full max-w-4xl mx-auto px-4">
 			<div className="grid gap-6">
 				{isLoading ? (
 					// Show skeleton loading state
