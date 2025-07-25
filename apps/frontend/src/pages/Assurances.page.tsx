@@ -49,8 +49,7 @@ export default function AssurancesPage() {
 							<CheckIcon />
 							<span className="ml-2">
 								If you notice sudden changes in your child's behaviour or have
-								concerns, speak to a coach or our safeguarding officer, Tom
-								Wilkinson.
+								concerns, speak to a coach or our safeguarding officer, Simon Barker.
 							</span>
 						</li>
 						<li className="flex items-start">
@@ -64,7 +63,7 @@ export default function AssurancesPage() {
 							<CheckIcon />
 							<span className="ml-2">
 								If giving or receiving lifts, ensure everyone feels safe and
-								report any concerns to a coach or Tom Wilkinson.
+								report any concerns to a coach or Simon Barker.
 							</span>
 						</li>
 						<li className="flex items-start">

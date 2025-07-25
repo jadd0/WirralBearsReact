@@ -52,7 +52,7 @@ export default function BallForAllPage() {
 						Ball for All: Our Commitment
 					</h1>
 					<p className="text-lg text-gray-700 mb-6">
-						To join our youth club, every player and coach must commit to the
+						To join our Basketball Club, every player and coach must commit to the
 						Ball for All principles. These create great, enjoyable basketball
 						for everyone.
 					</p>

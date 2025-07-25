@@ -56,7 +56,7 @@ export function Footer() {
 						</li>
 						<li>
 							<a
-								href="https://instagram.com/wirral_bears_basketball_club?r=nametag"
+								href="https://instagram.com/wirralbears2024?r=nametag"
 								className="hover:text-red-400 transition-colors"
 							>
 								Instagram

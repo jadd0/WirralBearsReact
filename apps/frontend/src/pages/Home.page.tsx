@@ -80,8 +80,8 @@ export default function HomePage() {
 				>
 					<p>
 						<span className="font-bold text-red-400">Joining is easy!</span>{' '}
-						Just show up to a session for your age group—your first session is
-						free, and after that it's only £6 per session.
+						Just show up to a session for your age group—your, the first taster session is
+						free to ensure you love it before committing
 						<br />
 						<br />
 						<span className="text-gray-200">
