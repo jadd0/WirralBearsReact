@@ -25,6 +25,7 @@
     "@tanstack+query-core": "link:@types/@tanstack+query-core",
     "@tanstack/react-query": "^5.75.0",
     "@types/mapbox-gl": "^3.4.1",
+    "@vercel/analytics": "^1.5.0",
     "@wirralbears/constants": "workspace:*",
     "@wirralbears/types": "workspace:*",
     "@wirralbears/validation": "workspace:*",
