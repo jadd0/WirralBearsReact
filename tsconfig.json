@@ -19,7 +19,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/shared": ["./shared/*"],
+      "@/constants": ["./shared/constants/"],
+      "@/validation": ["./shared/validation/"],
+      "@/types": ["./shared/types/"]
     }
   },
   "include": [
