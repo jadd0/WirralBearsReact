@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { db } from '@/db';
 import {
 	images,
@@ -184,8 +184,9 @@ export const imageRepository: any = {
 			.from(images)
 			.limit(IMAGE_LIMIT + 1)
 			.offset(cursor)
-			.orderBy(images.createdAt);
+			.orderBy(desc(images.createdAt));
 
+		console.log((result))
 		return result;
 	},
 
