@@ -10,21 +10,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { useLogout } from "@/hooks/auth.hooks";
+import { signOut } from "next-auth/react";
 import { toast } from "sonner";
 
 export function LogoutButton() {
-  const { isPending, mutate } = useLogout({
-    onError: () => toast.error("failed to log out"),
-    onSuccess: () => {
-      toast.success("Logged out!");
-    },
-  });
-
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button disabled={isPending}>Logout</Button>
+        <Button>Logout</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -35,10 +28,7 @@ export function LogoutButton() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={() => mutate(undefined)}
-            disabled={isPending}
-          >
+          <AlertDialogAction onClick={() => signOut()}>
             Log out
           </AlertDialogAction>
         </AlertDialogFooter>

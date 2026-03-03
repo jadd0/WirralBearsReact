@@ -1,5 +1,8 @@
+"use client";
+
 import type React from "react";
-import { cn } from "@/lib/utils";
+import { signIn } from "next-auth/react";
+import { cn } from "@/lib/utils/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 
 /**
  * Button component for OAuth providers
@@ -42,13 +44,10 @@ const OauthProviderButton = ({
     </Button>
   );
 };
-
-/**
- * Google login button
- */
 const GoogleButton = () => {
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_SERVER_ORIGIN}/auth/google`;
+    // NextAuth: start OAuth flow with Google
+    signIn("google", { callbackUrl: "/" });
   };
 
   return (
@@ -67,17 +66,14 @@ const GoogleButton = () => {
   );
 };
 
-/**
- * Apple login button
- */
 const AppleButton = () => {
   const handleAppleLogin = () => {
-    //TODO: handle login
+    signIn("apple", { callbackUrl: "/" });
   };
 
   return (
     <OauthProviderButton
-      disabled={true}
+      disabled={true /* enable once Apple is configured */}
       provider="apple"
       handleClick={handleAppleLogin}
       icon={
@@ -94,12 +90,12 @@ const AppleButton = () => {
 
 const MetaButton = () => {
   const handleMetaLogin = () => {
-    //TODO: handle login
+    signIn("facebook", { callbackUrl: "/" }); // or "meta" if that’s your provider id
   };
 
   return (
     <OauthProviderButton
-      disabled={true}
+      disabled={true /* enable when provider is ready */}
       provider="meta"
       handleClick={handleMetaLogin}
       icon={
@@ -154,7 +150,7 @@ export function LoginForm({
             </div>
           </CardContent>
         </Card>
-        <div className=" mx-8 py-2 text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  mt-4">
+        <div className="mx-8 py-2 text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary mt-4">
           By clicking continue, you agree to our{" "}
           <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
         </div>

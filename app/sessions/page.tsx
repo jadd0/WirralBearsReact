@@ -1,0 +1,49 @@
+import { useFullSchedule } from "@/hooks";
+import SessionGrid from "@/components/sessions/display/SessionGrid";
+import SessionGridSkeleton from "@/components/sessions/display/SessionGridSkeleton";
+import { FullTrainingSessionSchedule } from "@/lib/db/schemas";
+import { LogoBanner } from "@/components/layout/LogoBanner";
+import { Footer } from "@/components/layout/Footer";
+
+export default function SessionsPage() {
+  const { data: schedule, loading, error } = useFullSchedule();
+  const scheduleTyped = schedule as FullTrainingSessionSchedule;
+
+  console.log(scheduleTyped);
+
+  return (
+    <div className="min-h-screen min-w-full">
+      <LogoBanner />
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Training Sessions Schedule
+          </h1>
+          <p className="text-lg text-gray-600">
+            View our weekly training sessions and coaches
+          </p>
+          <p className="text-md text-gray-600">
+            Updated on{" "}
+            {new Date(
+              scheduleTyped?.sessionDays[0].updatedAt,
+            ).toLocaleDateString()}
+          </p>
+        </div>
+
+        {loading && <SessionGridSkeleton />}
+
+        {!loading && !error && scheduleTyped && (
+          <SessionGrid schedule={scheduleTyped} />
+        )}
+
+        <div className="mt-8 text-center text-sm text-gray-500">
+          <p>
+            Schedule subject to change based on weather and coach availability
+          </p>
+          <p className="mt-2">Contact coaches for any special requirements</p>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+}
