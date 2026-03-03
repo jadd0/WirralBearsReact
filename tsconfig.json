@@ -36,6 +36,7 @@
       "@/frontend": ["./lib/frontend/"],
       "@/api": ["./lib/frontend/api/"],
       "@/components/*": ["./lib/frontend/components/*"],
+      "@/actions": ["./lib/backend/actions/"],
     }
   },
   "include": [

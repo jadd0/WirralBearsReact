@@ -1,0 +1,24 @@
+import { useCoachPreviews } from "@/lib/frontend/hooks";
+import CoachAllPreviews from "@/components/coach/CoachAllPreviews";
+import { LogoBanner } from "@/components/layout/LogoBanner";
+import { Footer } from "@/components/layout/Footer";
+
+export default function ViewCoachesPage() {
+  const { data, loading } = useCoachPreviews();
+
+  return (
+    <div className="container mx-auto min-w-full">
+      <LogoBanner />
+      <header className="mb-8 text-center">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">Our Coaches</h1>
+        <p className="text-lg text-gray-600">
+          Meet our experienced coaches who are here to guide you on your
+          basketball journey
+        </p>
+      </header>
+
+      <CoachAllPreviews isLoading={loading} coaches={data || []} />
+      <Footer />
+    </div>
+  );
+}

@@ -202,6 +202,22 @@ export const gamesServices = {
   },
 
   /**
+   * Get games grouped by season with optional gender filter
+   */
+  async getGamesBySeason(gender?: string): Promise<GamesBySeason> {
+    try {
+      return await gamesRepository.getGamesBySeason(gender);
+    } catch (error) {
+      console.error("Failed to fetch games by season:", error);
+      throw new Error(
+        `Failed to retrieve games by season: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+      );
+    }
+  },
+
+  /**
    * Get games statistics with comprehensive data
    */
   async getGamesStatistics(): Promise<{
