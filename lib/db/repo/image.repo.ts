@@ -10,7 +10,7 @@ import {
 import { IMAGE_LIMIT } from "@/shared/constants";
 import { UTApi } from "uploadthing/server";
 
-export const imageRepository: any = {
+export const imageRepository = {
   /**
    * Creates a new image record in the database
    */
@@ -279,4 +279,4 @@ export const imageRepository: any = {
     const result = await db.insert(secondCarousel).values(images);
     return result;
   },
-} as const;
+}
