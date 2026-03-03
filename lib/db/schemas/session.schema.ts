@@ -44,12 +44,12 @@ export const trainingSessions = pgTable("sessions", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export type SessionDay = typeof sessionDays.$inferSelect;
-export type Session = typeof trainingSessions.$inferSelect;
-export type SessionWithCoach = Session & {
+export type TrainingSessionDay = typeof sessionDays.$inferSelect;
+export type TrainingSession = typeof trainingSessions.$inferSelect;
+export type TrainingSessionWithCoach = TrainingSession & {
   coach: typeof coaches.$inferSelect | null;
 };
-export type FullSessionSchedule = {
-  sessionDays: (SessionDay & { sessions: SessionWithCoach[] })[];
+export type FullTrainingSessionSchedule = {
+  sessionDays: (TrainingSessionDay & { sessions: TrainingSessionWithCoach[] })[];
 };
-export type SessionInsert = typeof trainingSessions.$inferInsert;
+export type TrainingSessionInsert = typeof trainingSessions.$inferInsert;
