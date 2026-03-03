@@ -23,7 +23,16 @@
       "@/shared": ["./shared/*"],
       "@/constants": ["./shared/constants/"],
       "@/validation": ["./shared/validation/"],
-      "@/types": ["./shared/types/"]
+      "@/types": ["./shared/types/"],
+      "@/lib": ["./lib/"],
+      "@/db": ["./lib/db/"],
+      "@/schemas": ["./lib/db/schemas/"],
+      "@/utils": ["./lib/utils/"],
+      "@/components": ["./lib/frontend/components/"],
+      "@/hooks": ["./lib/frontend/hooks/"],
+      "@/context": ["./lib/frontend/context/"],
+      "@/services": ["./lib/backend/services/"]
+      
     }
   },
   "include": [
