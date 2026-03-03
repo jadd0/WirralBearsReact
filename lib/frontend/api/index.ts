@@ -1,15 +1,10 @@
-import * as auth from "./auth.api";
-import * as blog from "./blog.api";
-import * as image from "./image.api";
-import * as coach from "./coach.api";
-import * as games from "./games.api";
-import * as session from "./session.api";
+/**
+ * @module frontend/api
+ * @description This module exports all API functions for the frontend. Each API function corresponds to a specific endpoint in the backend and is responsible for making HTTP requests to that endpoint and returning the response data.
+ */
 
-export const api = {
-  auth,
-  blog,
-  image,
-  coach,
-  session,
-  games,
-};
+export * from "./blog.api";
+export * from "./image.api";
+export * from "./coach.api";
+export * from "./games.api";
+export * from "./session.api";

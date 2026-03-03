@@ -33,6 +33,8 @@
       "@/context": ["./lib/frontend/context/"],
       "@/services": ["./lib/backend/services/"],
       "@/repos": ["./lib/db/repo/"],
+      "@/frontend": ["./lib/frontend/"],
+      "@/api": ["./lib/frontend/api/"],
       
     }
   },
