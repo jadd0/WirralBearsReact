@@ -1,32 +1,33 @@
 import { BlogPreview } from "@/lib/db/repo";
 import { Blog } from "@/lib/db/schemas";
 import { jsonFetch } from "./api";
+import { FullBlog } from "@/shared/types";
 
 export async function getAllBlogPreviews() {
-  return jsonFetch<BlogPreview[]>("/api/blogs");
+  return jsonFetch<BlogPreview[]>("/api/manual/blogs");
 }
 
 export async function getBlogById(id: string) {
-  return jsonFetch<Blog>(`/api/blogs/${id}`);
+  return jsonFetch<FullBlog>(`/api/manual/blogs/${id}`);
 }
 
 export async function createBlog(payload: any) {
   //TODO: type
-  return jsonFetch<Blog>("/api/blogs", {
+  return jsonFetch<Blog>("/api/manual/blogs", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
 // TODO: type properly
 export async function updateBlog(id: string, payload: any) {
-  return jsonFetch<Blog>(`/api/blogs/${id}`, {
+  return jsonFetch<Blog>(`/api/manual/blogs/${id}`, {
     method: "PATCH",
     body: JSON.stringify(payload),
   });
 }
 
 export async function deleteBlog(id: string) {
-  await jsonFetch<unknown>(`/api/blogs/${id}`, {
+  await jsonFetch<unknown>(`/api/manual/blogs/${id}`, {
     method: "DELETE",
   });
 }

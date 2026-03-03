@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/app/auth";
 import { gamesRepository } from "@/repos";
 import { type GameInsert } from "@/schemas";
+import { gamesServices } from "@/lib/backend/services/game.services";
 
 type Params = { params: {} };
 
@@ -22,7 +23,7 @@ export async function PUT(req: Request, _ctx: Params) {
   // body should already be validated on the client with Zod GAMES.gamesArrayValidationSchema
   const gamesToInsert = body as GameInsert[];
 
-  const success = await gamesRepository.updateAllGames(gamesToInsert);
+  const success = await gamesServices.replaceAllGames(gamesToInsert);
 
   if (!success) {
     return NextResponse.json(

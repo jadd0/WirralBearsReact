@@ -9,6 +9,7 @@ import {
 } from "@/api";
 import type { Blog } from "@/schemas";
 import { BlogPreview } from "@/lib/db/repo/blog.repo";
+import { FullBlog } from "@/shared/types";
 
 export function useBlogPreviews() {
   return useFetchOnMount<BlogPreview[]>(getAllBlogPreviews);
@@ -19,7 +20,7 @@ export function useBlog(id: string | null) {
     if (!id) throw new Error("No id");
     return getBlogById(id);
   };
-  return useFetchOnMount<Blog>(fn);
+  return useFetchOnMount<FullBlog>(fn);
 }
 
 export function useCreateBlog() {

@@ -1,21 +1,18 @@
-import { eq, and, inArray } from "drizzle-orm";
+import { eq, and, inArray, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import {
   sessionDays,
   trainingSessions,
-  type Session,
-  type SessionDay,
-  type SessionWithCoach,
-  type SessionInsert,
+  type TrainingSession,
+  type TrainingSessionDay,
+  type TrainingSessionWithCoach,
+  type TrainingSessionInsert,
 } from "@/schemas";
-
-export type FullSessionSchedule = {
-  days: SessionDay[];
-  sessions: SessionWithCoach[];
-};
+import { FullSessionSchedule } from "@/shared/types";
+import { SESSION_ID_LENGTH } from "@/shared/constants";
 
 export const sessionRepository = {
-  async createSession(sessionDetails: SessionInsert): Promise<boolean> {
+  async createSession(sessionDetails: TrainingSessionInsert): Promise<boolean> {
     const result = await db.insert(trainingSessions).values(sessionDetails);
 
     // drizzle returns info object; if no error, assume success
@@ -24,7 +21,7 @@ export const sessionRepository = {
 
   async updateSession(
     id: string,
-    updates: Partial<Omit<Session, "id" | "createdAt" | "updatedAt">>,
+    updates: Partial<Omit<TrainingSession, "id" | "createdAt" | "updatedAt">>,
   ): Promise<boolean> {
     const result = await db
       .update(trainingSessions)
@@ -44,7 +41,7 @@ export const sessionRepository = {
     return result.length > 0;
   },
 
-  async getSession(id: string): Promise<Session | null> {
+  async getSession(id: string): Promise<TrainingSession | null> {
     const result = await db
       .select()
       .from(trainingSessions)
@@ -53,7 +50,7 @@ export const sessionRepository = {
     return result[0] ?? null;
   },
 
-  async getAllSessions(): Promise<Session[]> {
+  async getAllSessions(): Promise<TrainingSession[]> {
     return db
       .select()
       .from(trainingSessions)
@@ -75,49 +72,67 @@ export const sessionRepository = {
   },
 
   async getSessionDay(dayId: string) {
-    const [day] = await db
-      .select()
+    const result = await db
+      .select({
+        id: sessionDays.id,
+        day: sessionDays.day,
+        createdAt: sessionDays.createdAt,
+        updatedAt: sessionDays.updatedAt,
+        sessions: sql<
+          TrainingSession[]
+        >`COALESCE(json_agg(${trainingSessions}.*), '[]'::json)`,
+      })
       .from(sessionDays)
-      .where(eq(sessionDays.id, dayId));
+      .where(eq(sessionDays.id, dayId))
+      .leftJoin(trainingSessions, eq(sessionDays.id, trainingSessions.day))
+      .groupBy(sessionDays.id);
 
-    if (!day) return null;
-
-    const daySessions = await db.query.trainingSessions.findMany({
-      where: (s, { eq }) => eq(s.day, dayId),
-      with: { leadCoach: true },
-    });
-
-    return { day, sessions: daySessions };
+    return result[0] ?? null;
   },
 
-  // destroy & recreate everything
-  async replaceAllSessions(schedule: FullSessionSchedule) {
-    return db.transaction(async (tx) => {
-      const dayIds = schedule.days.map((d) => d.id);
+  async replaceAllSessions(
+    fullSchedule: FullSessionSchedule,
+  ): Promise<boolean> {
+    return await db.transaction(async (tx) => {
+      try {
+        // 1. Validate session days exist first
+        const allDayIds = fullSchedule.sessionDays.map((day) => day.id);
+        const existingDays = await tx
+          .select({ id: sessionDays.id })
+          .from(sessionDays)
+          .where(inArray(sessionDays.id, allDayIds));
 
-      // wipe existing sessions for these days
-      if (dayIds.length > 0) {
-        await tx
-          .delete(trainingSessions)
-          .where(inArray(trainingSessions.day, dayIds));
-      }
+        if (existingDays.length !== allDayIds.length) {
+          throw new Error("One or more session days don't exist");
+        }
 
-      // insert new days (onConflictDoNothing equivalent if needed)
-      if (schedule.days.length > 0) {
-        await tx.insert(sessionDays).values(schedule.days as SessionDay[]);
-      }
+        // 2. Delete all sessions
+        await tx.delete(trainingSessions);
 
-      if (schedule.sessions.length > 0) {
-        await tx.insert(trainingSessions).values(
-          schedule.sessions.map((s) => ({
-            ...s,
-            createdAt: s.createdAt ?? new Date(),
-            updatedAt: new Date(),
-          })) as Session[],
+        // 3. Bulk insert new sessions
+        const insertValues = fullSchedule.sessionDays.flatMap((day) =>
+          day.sessions.map((session) => ({
+            day: day.id,
+            time: session.time,
+            age: session.age,
+            gender: session.gender,
+            leadCoach: session.leadCoach,
+          })),
+        );
+
+        if (insertValues.length > 0) {
+          await tx.insert(trainingSessions).values(insertValues);
+        }
+
+        return true;
+      } catch (error) {
+        console.error("Transaction failed:", error);
+        throw new Error(
+          `Session replacement failed: ${
+            error instanceof Error ? error.message : "Unknown error"
+          }`,
         );
       }
-
-      return true;
     });
   },
 };

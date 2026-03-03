@@ -139,8 +139,8 @@ export const blogRepository = {
       createdAt: blogRow.createdAt,
       updatedAt: blogRow.updatedAt,
       author: {
-        id: blogRow.authorUserId,
-        name: blogRow.name,
+        id: blogRow.authorUserId!,
+        name: blogRow.name!,
       },
       headings,
       paragraphs,
