@@ -1,290 +1,137 @@
-// src/server/repositories/coach.repo.ts
-import { and, eq, sql } from "drizzle-orm";
-import { db } from "@/lib/db";
+import { eq, sql, and } from "drizzle-orm";
+import { db } from "@/db";
 import {
-  coaches,
-  coachHeadings,
-  coachParagraphs,
-  coachImages,
-  images,
-  users,
-  type Coaches,
-  type NewCoach,
+  GamesBySeason,
+  Game,
+  GameInsert,
+  games,
+  seasons,
+  Season,
 } from "@/schemas";
 
-export type CoachPreview = {
-  id: string;
-  title: string;
-  username: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  image: {
-    id: string;
-    key: string;
-    url: string;
-    authorId: string;
-    alt: string | null;
-  } | null;
-};
+export const gamesRepository = {
+  async updateAllGames(gamesToInsert: GameInsert[]): Promise<boolean> {
+    console.log(gamesToInsert);
+    return await db.transaction(async (tx) => {
+      try {
+        // First, delete all existing games
+        await tx.delete(games);
 
-export type HeadingElement = {
-  type: "heading";
-  text: string;
-  position?: number;
-};
+        // Then insert all new games
+        if (gamesToInsert.length > 0) {
+          await tx.insert(games).values(gamesToInsert);
+        }
 
-export type ParagraphElement = {
-  type: "paragraph";
-  text: string;
-  position?: number;
-};
-
-export type ImageElement = {
-  type: "image";
-  imageId?: string;
-  url?: string;
-  position?: number;
-};
-
-export const coachRepository = {
-  async findAll() {
-    const lowestPositionImages = db
-      .select({
-        coachId: coachImages.coachId,
-        minPosition: sql<number>`min(${coachImages.position})`.as(
-          "minPosition",
-        ),
-      })
-      .from(coachImages)
-      .groupBy(coachImages.coachId)
-      .as("lowestPositionImages");
-
-    const rows = await db
-      .select({
-        id: coaches.id,
-        title: coaches.title,
-        name: users.name,
-        createdAt: coaches.createdAt,
-        updatedAt: coaches.updatedAt,
-        imageId: images.id,
-        key: images.key,
-        url: images.url,
-        authorId: images.authorId,
-        alt: images.alt,
-      })
-      .from(coaches)
-      .leftJoin(
-        lowestPositionImages,
-        eq(coaches.id, lowestPositionImages.coachId),
-      )
-      .leftJoin(
-        coachImages,
-        and(
-          eq(coaches.id, coachImages.coachId),
-          eq(coachImages.position, lowestPositionImages.minPosition),
-        ),
-      )
-      .leftJoin(images, eq(coachImages.imageId, images.id))
-      .leftJoin(users, eq(coaches.authorId, users.id))
-      .orderBy(coaches.createdAt);
-
-    return rows.map((r) => ({
-      id: r.id,
-      title: r.title,
-      name: r.name ?? null,
-      createdAt: r.createdAt,
-      updatedAt: r.updatedAt,
-      image: r.imageId
-        ? {
-            id: r.imageId,
-            key: r.key!,
-            url: r.url!,
-            authorId: r.authorId!,
-            alt: r.alt ?? null,
-          }
-        : null,
-    }));
+        return true;
+      } catch (error) {
+        console.error("Transaction failed:", error);
+        throw new Error(
+          `Games update failed: ${
+            error instanceof Error ? error.message : "Unknown error"
+          }`,
+        );
+      }
+    });
   },
 
-  async getCoachById(coachId: string) {
-    const coachResult = await db
-      .select({
-        id: coaches.id,
-        title: coaches.title,
-        authorId: coaches.authorId,
-        createdAt: coaches.createdAt,
-        updatedAt: coaches.updatedAt,
-        authorUserId: users.id,
-        name: users.name,
-      })
-      .from(coaches)
-      .leftJoin(users, eq(coaches.authorId, users.id))
-      .where(eq(coaches.id, coachId));
+  async getAllGames(): Promise<Game[]> {
+    try {
+      return await db.select().from(games).orderBy(games.date);
+    } catch (error) {
+      console.error("Failed to fetch all games:", error);
+      throw new Error(
+        `Failed to fetch games: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+      );
+    }
+  },
 
-    if (coachResult.length === 0) return null;
-    const coachRow = coachResult[0];
-
-    const [headings, paragraphs, coachImagesWithDetails] = await Promise.all([
-      db
-        .select()
-        .from(coachHeadings)
-        .where(eq(coachHeadings.coachId, coachId))
-        .orderBy(coachHeadings.position),
-      db
-        .select()
-        .from(coachParagraphs)
-        .where(eq(coachParagraphs.coachId, coachId))
-        .orderBy(coachParagraphs.position),
-      db
+  async getGamesBySeason(gender?: string): Promise<GamesBySeason> {
+    try {
+      const query = db
         .select({
-          id: images.id,
-          key: images.key,
-          url: images.url,
-          alt: images.alt,
-          position: coachImages.position,
+          game: games,
+          seasonName: seasons.season,
         })
-        .from(coachImages)
-        .leftJoin(images, eq(coachImages.imageId, images.id))
-        .where(eq(coachImages.coachId, coachId))
-        .orderBy(coachImages.position),
-    ]);
+        .from(games)
+        .innerJoin(seasons, eq(games.season, seasons.id))
+        .orderBy(seasons.season, games.date);
 
-    return {
-      id: coachRow.id,
-      title: coachRow.title,
-      authorId: coachRow.authorId,
-      createdAt: coachRow.createdAt,
-      updatedAt: coachRow.updatedAt,
-      author: {
-        id: coachRow.authorUserId,
-        name: coachRow.name,
-      },
-      headings,
-      paragraphs,
-      images: coachImagesWithDetails,
-    };
+      // Add gender filter if provided
+      const result = gender
+        ? await query.where(eq(games.gender, gender))
+        : await query;
+
+      // Group games by season
+      const groupedGames: Record<
+        string,
+        {
+          seasonName: string;
+          seasonId: string;
+          games: Game[];
+        }
+      > = {};
+
+      result.forEach(({ game, seasonName }) => {
+        const seasonKey = game.season;
+
+        if (!groupedGames[seasonKey]) {
+          groupedGames[seasonKey] = {
+            seasonName: seasonName || "Unknown Season",
+            seasonId: seasonKey,
+            games: [],
+          };
+        }
+
+        groupedGames[seasonKey].games.push(game);
+      });
+
+      // Convert to array format
+      return Object.values(groupedGames).map(
+        ({ seasonName, seasonId, games }) => ({
+          season: seasonName,
+          seasonId,
+          games,
+        }),
+      );
+    } catch (error) {
+      console.error("Failed to fetch games by season:", error);
+      throw new Error(
+        `Failed to fetch games by season: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+      );
+    }
   },
 
-  async createCoachWithTransaction(
-    title: string,
-    authorId: string,
-    headings: HeadingElement[],
-    paragraphs: ParagraphElement[],
-    imageReferences: { imageId: string; position: number }[],
-  ): Promise<Coaches> {
-    return db.transaction(async (tx) => {
-      const [coach] = await tx
-        .insert(coaches)
-        .values({ title, authorId })
-        .returning();
-
-      if (headings.length > 0) {
-        await tx.insert(coachHeadings).values(
-          headings.map((h) => ({
-            text: h.text,
-            coachId: coach.id,
-            position: h.position ?? 0,
-          })),
-        );
-      }
-
-      if (paragraphs.length > 0) {
-        await tx.insert(coachParagraphs).values(
-          paragraphs.map((p) => ({
-            text: p.text,
-            coachId: coach.id,
-            position: p.position ?? 0,
-          })),
-        );
-      }
-
-      if (imageReferences.length > 0) {
-        await tx.insert(coachImages).values(
-          imageReferences.map((ref) => ({
-            coachId: coach.id,
-            imageId: ref.imageId,
-            position: ref.position,
-          })),
-        );
-      }
-
-      return coach;
-    });
+  async getGamesBySeasonId(seasonId: string): Promise<Game[]> {
+    try {
+      return await db
+        .select()
+        .from(games)
+        .where(eq(games.season, seasonId))
+        .orderBy(games.date);
+    } catch (error) {
+      console.error("Failed to fetch games by season ID:", error);
+      throw new Error(
+        `Failed to fetch games for season: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+      );
+    }
   },
 
-  async updateCoachWithTransaction(
-    coachId: string,
-    title: string,
-    headings: HeadingElement[],
-    paragraphs: ParagraphElement[],
-    imageReferences: { imageId: string; position: number }[],
-  ): Promise<Coaches> {
-    return db.transaction(async (tx) => {
-      const [coach] = await tx
-        .update(coaches)
-        .set({ title, updatedAt: new Date() })
-        .where(eq(coaches.id, coachId))
-        .returning();
-
-      await Promise.all([
-        tx.delete(coachHeadings).where(eq(coachHeadings.coachId, coachId)),
-        tx.delete(coachParagraphs).where(eq(coachParagraphs.coachId, coachId)),
-        tx.delete(coachImages).where(eq(coachImages.coachId, coachId)),
-      ]);
-
-      if (headings.length > 0) {
-        await tx.insert(coachHeadings).values(
-          headings.map((h) => ({
-            text: h.text,
-            coachId: coach.id,
-            position: h.position ?? 0,
-          })),
-        );
-      }
-
-      if (paragraphs.length > 0) {
-        await tx.insert(coachParagraphs).values(
-          paragraphs.map((p) => ({
-            text: p.text,
-            coachId: coach.id,
-            position: p.position ?? 0,
-          })),
-        );
-      }
-
-      if (imageReferences.length > 0) {
-        await tx.insert(coachImages).values(
-          imageReferences.map((ref) => ({
-            coachId: coach.id,
-            imageId: ref.imageId,
-            position: ref.position,
-          })),
-        );
-      }
-
-      return coach;
-    });
-  },
-
-  async updateCoach(
-    id: string,
-    coach: Partial<NewCoach>,
-  ): Promise<Coaches | undefined> {
-    const result = await db
-      .update(coaches)
-      .set({ ...coach, updatedAt: new Date() })
-      .where(eq(coaches.id, id))
-      .returning();
-
-    return result[0];
-  },
-
-  async deleteCoach(id: string): Promise<boolean> {
-    const result = await db
-      .delete(coaches)
-      .where(eq(coaches.id, id))
-      .returning();
-
-    return result.length > 0;
+  async getAllSeasons(): Promise<Season[]> {
+    try {
+      return await db.select().from(seasons).orderBy(seasons.season);
+    } catch (error) {
+      console.error("Failed to fetch all seasons:", error);
+      throw new Error(
+        `Failed to fetch seasons: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+      );
+    }
   },
 };

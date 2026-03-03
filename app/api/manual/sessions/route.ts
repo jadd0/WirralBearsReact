@@ -1,31 +1,20 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/app/auth";
-import { db } from "@/lib/db";
-import { sessions } from "@/schemas";
-import { eq } from "drizzle-orm";
+import { auth } from "@/lib/auth";
+import { sessionRepository } from "@/server/repositories/session.repo";
 
 export async function GET() {
-  const all = await db.select().from(sessions);
-  return NextResponse.json(all);
+  const sessions = await sessionRepository.getAllSessions();
+  return NextResponse.json(sessions);
 }
 
 export async function POST(req: Request) {
   const session = await auth();
-  
   const userId = (session?.user as any)?.id;
-
-  if (!userId) {
-    return new NextResponse("Unauthoried", { status: 401 });
-  }
+  if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
   const body = await req.json();
-  // TODO: validate with  Zod Sessions schema
-  const [created] = await db
-    .insert(sessions)
-    .values({
-      ...body,
-    })
-    .returning();
-
-  return NextResponse.json(created, { status: 201 });
+  // optionally validate with Zod
+  const ok = await sessionRepository.createSession(body);
+  if (!ok) return new NextResponse("Failed to create session", { status: 500 });
+  return NextResponse.json({ success: true }, { status: 201 });
 }

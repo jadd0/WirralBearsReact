@@ -31,7 +31,8 @@
       "@/components": ["./lib/frontend/components/"],
       "@/hooks": ["./lib/frontend/hooks/"],
       "@/context": ["./lib/frontend/context/"],
-      "@/services": ["./lib/backend/services/"]
+      "@/services": ["./lib/backend/services/"],
+      "@/repos": ["./lib/db/repo/"],
       
     }
   },

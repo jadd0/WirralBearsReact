@@ -10,6 +10,7 @@ import {
   type Blog,
   type NewBlog,
 } from "@/schemas";
+import { HeadingElement, ParagraphElement, ImageElement } from "./coach.repo";
 
 export type BlogPreview = {
   id: string;
@@ -27,25 +28,6 @@ export type BlogPreview = {
 };
 
 export type BlogElement = HeadingElement | ParagraphElement | ImageElement;
-
-export type HeadingElement = {
-  type: "heading";
-  text: string;
-  position?: number;
-};
-
-export type ParagraphElement = {
-  type: "paragraph";
-  text: string;
-  position?: number;
-};
-
-export type ImageElement = {
-  type: "image";
-  imageId?: string;
-  url?: string;
-  position?: number;
-};
 
 export type BlogData = {
   elements: BlogElement[];
