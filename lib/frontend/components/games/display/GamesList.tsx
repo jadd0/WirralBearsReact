@@ -32,7 +32,7 @@ export default function GamesList({
             <h3 className="text-lg font-semibold mb-2 text-center">
               No games found
             </h3>
-            <p className="text-muted-foreground text-center max-w-md">
+            <p className="text-muted-foreground text-center max-w-md text-gray-900">
               Try adjusting your filters to see more games.
             </p>
           </CardContent>

@@ -8,7 +8,7 @@ export default function GamesDisplayHeader({
 	return (
 		<div className="flex flex-col gap-2 justify-between items-center">
 			<h1 className="text-3xl font-bold">Games</h1>
-			<p className="text-muted-foreground">
+			<p className="text-muted-foreground text-gray-900">
 				View all {totalGames} games with detailed results
 			</p>
 		</div>

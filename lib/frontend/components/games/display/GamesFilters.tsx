@@ -44,7 +44,7 @@ export default function GamesFilters({
     <div className="w-full">
       <Card>
         <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-2 text-lg">
+          <CardTitle className="flex items-center gap-2 text-lg text-gray-900">
             <Filter className="h-5 w-5" />
             Filters
           </CardTitle>
@@ -58,12 +58,12 @@ export default function GamesFilters({
                 placeholder="Search teams..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9"
+                className="pl-9 text-gray-900"
               />
             </div>
 
             {/* Filter controls in responsive grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-gray-900">
               {/* Gender Filter */}
               <Select value={selectedGender} onValueChange={setSelectedGender}>
                 <SelectTrigger>

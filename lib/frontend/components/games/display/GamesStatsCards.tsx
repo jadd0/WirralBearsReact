@@ -15,12 +15,12 @@ export default function GamesStatsCards({ stats }: GamesStatsCardsProps) {
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <Card className="text-center">
           <CardHeader className="pb-2 px-3 sm:px-6">
-            <CardTitle className="text-xs sm:text-sm font-medium">
+            <CardTitle className="text-xs sm:text-sm font-medium text-gray-900">
               Total Games
             </CardTitle>
           </CardHeader>
           <CardContent className="px-3 sm:px-6">
-            <div className="text-lg sm:text-2xl font-bold">
+            <div className="text-lg sm:text-2xl font-bold text-gray-900">
               {stats.totalGames}
             </div>
           </CardContent>
@@ -67,12 +67,12 @@ export default function GamesStatsCards({ stats }: GamesStatsCardsProps) {
 
         <Card className="text-center col-span-2 sm:col-span-3 lg:col-span-1">
           <CardHeader className="pb-2 px-3 sm:px-6">
-            <CardTitle className="text-xs sm:text-sm font-medium">
+            <CardTitle className="text-xs sm:text-sm font-medium text-gray-900">
               Win Rate
             </CardTitle>
           </CardHeader>
           <CardContent className="px-3 sm:px-6">
-            <div className="text-lg sm:text-2xl font-bold">
+            <div className="text-lg sm:text-2xl font-bold text-gray-900">
               {displayWinRate()}
             </div>
           </CardContent>
