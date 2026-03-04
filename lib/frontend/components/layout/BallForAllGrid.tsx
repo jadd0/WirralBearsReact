@@ -13,6 +13,7 @@ interface CarouselImage {
 export function BallForAllGrid() {
   const { data: carouselImages = [], loading } = useB4ACarouselImages();
 
+
   const titles = [
     "Joy",
     "Positivity",
@@ -27,7 +28,7 @@ export function BallForAllGrid() {
   ];
 
   // Type assertion to tell TypeScript the correct type
-  const typedCarouselImages = carouselImages as CarouselImage[];
+  const typedCarouselImages = carouselImages as CarouselImage[] ?? [];
 
   // Extract headings from the key property of each image
   const headings = typedCarouselImages.map(

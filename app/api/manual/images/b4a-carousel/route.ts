@@ -3,6 +3,7 @@ import { imageRepository } from "@/repos";
 import { auth } from "@/app/auth";
 
 export async function GET() {
+  console.log("hdfjlksdhjflkdshjflkjds")
   const images = await imageRepository.getAllB4ACarouselImages();
   return NextResponse.json(images);
 }

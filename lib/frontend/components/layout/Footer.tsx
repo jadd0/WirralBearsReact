@@ -36,7 +36,7 @@ export function Footer() {
 				{/* Logo Section */}
 				<div className="flex justify-center items-center w-full md:w-1/3 mb-8 md:mb-0">
 					<img
-						src="/images/bears big red.png"
+						src="/images/bearsbigred.png"
 						alt="Bears logo"
 						className="w-32 md:w-40"
 					/>

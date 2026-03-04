@@ -1,3 +1,5 @@
+"use client"
+
 import { useFullSchedule } from "@/hooks";
 import SessionGrid from "@/components/sessions/display/SessionGrid";
 import SessionGridSkeleton from "@/components/sessions/display/SessionGridSkeleton";

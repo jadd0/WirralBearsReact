@@ -1,3 +1,5 @@
+"use client"
+
 import { LogoBanner } from "@/components/layout/LogoBanner";
 import { InfoBox } from "@/components/layout/InfoBox";
 import { CarouselComponent } from "@/components/layout/Carousel";
@@ -19,11 +21,6 @@ interface CarouselImage {
 }
 
 export default function HomePage() {
-  const { data: blogs = [], loading: blogsLoading } = useBlogPreviews();
-  const {
-    data: carouselImages = [] as CarouselImage[],
-    loading: carouselLoading,
-  } = useFirstCarouselImages();
 
   return (
     <div className="min-h-screen w-full font-sans flex flex-col">
@@ -42,34 +39,6 @@ export default function HomePage() {
             Wirral—helping players of all ages and backgrounds find their love
             for the game.
           </p>
-        </section>
-
-        {/* About Us Section */}
-        <InfoBox
-          title="About Us"
-          className="w-full max-w-2xl bg-gray-700 shadow-md shadow-red-700/30"
-        >
-          <p>
-            Whether you're picking up a basketball for the first time or aiming
-            for the next level, you'll find your place here. <br />
-            <span className="text-red-400 font-semibold">
-              Beginner, Intermediate, or Advanced
-            </span>
-            —everyone is welcome.
-          </p>
-          <ul className="list-disc list-inside mt-4 space-y-1 text-gray-200">
-            <li>Friendly, supportive coaching</li>
-            <li>Fun, challenging sessions for all ages</li>
-            <li>Strong community spirit—on and off the court</li>
-          </ul>
-        </InfoBox>
-
-        {/* Carousel Section */}
-        <section className="w-full max-w-3xl my-10">
-          <CarouselComponent
-            images={carouselImages ?? []}
-            isLoading={carouselLoading}
-          />
         </section>
 
         {/* Rest of your components remain the same... */}
@@ -108,11 +77,7 @@ export default function HomePage() {
           <h2 className="text-xl sm:text-2xl font-bold mb-3 text-center">
             Recent Blog Posts
           </h2>
-          <BlogAllPreviews
-            blogs={blogs ?? []}
-            isLoading={blogsLoading}
-            limit={3}
-          />
+
         </div>
 
         {/* Location Section */}
@@ -135,7 +100,7 @@ export default function HomePage() {
             place to play and grow.
           </p>
           <div className="mt-6">
-            <BallForAllGrid />
+
           </div>
         </InfoBox>
       </main>

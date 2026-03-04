@@ -1,3 +1,5 @@
+"use client"
+
 import { useBlogPreviews } from "@/hooks";
 import BlogAllPreviews from "@/components/blog/BlogAllPreviews";
 import { Footer } from "@/components/layout/Footer";

@@ -27,7 +27,7 @@ export const sessionDays = pgTable("session_days", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export const trainingSessions = pgTable("sessions", {
+export const trainingSessions = pgTable("trainingSession", {
   id: varchar("id", { length: SESSION_ID_LENGTH })
     .primaryKey()
     .$defaultFn(() => nanoid(SESSION_ID_LENGTH)),

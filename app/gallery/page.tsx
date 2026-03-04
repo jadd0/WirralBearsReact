@@ -1,3 +1,5 @@
+"use client"
+
 import AllImagesView from "@/components/image/AllImagesView";
 import { LogoBanner } from "@/components/layout/LogoBanner";
 import { Footer } from "@/components/layout/Footer";

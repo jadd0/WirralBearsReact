@@ -52,6 +52,7 @@ export function useReplaceFirstCarouselImages() {
 }
 
 export function useB4ACarouselImages() {
+  console.log("hedllo from this")
   return useAsync<[], CarouselImage[]>(getB4ACarouselImages as any);
 }
 

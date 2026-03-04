@@ -1,3 +1,5 @@
+"use client"
+
 import { useParams } from "next/navigation";
 import CoachDisplay from "@/components/postDisplay/CoachDisplay";
 import { LogoBanner } from "@/components/layout/LogoBanner";

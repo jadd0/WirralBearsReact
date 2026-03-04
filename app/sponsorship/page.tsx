@@ -1,3 +1,5 @@
+"use client"
+
 import { LogoBanner } from "@/components/layout/LogoBanner";
 import { InfoBox } from "@/components/layout/InfoBox";
 import { Footer } from "@/components/layout/Footer";

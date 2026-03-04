@@ -47,7 +47,10 @@ export async function replaceFirstCarouselImages(
 
 // B4A carousel
 export async function getB4ACarouselImages() {
-  return jsonFetch<CarouselImage[]>("/api/manual/images/b4a-carousel");
+  console.log("first")
+  const res = await jsonFetch<CarouselImage[]>("/api/manual/images/b4a-carousel");
+  console.log("jkhvkxfjhvjkdfhkgvjhdfvb")
+  return res
 }
 
 export async function replaceB4ACarouselImages(

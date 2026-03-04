@@ -1,3 +1,5 @@
+"use client"
+
 import { useCoachPreviews } from "@/lib/frontend/hooks";
 import CoachAllPreviews from "@/components/coach/CoachAllPreviews";
 import { LogoBanner } from "@/components/layout/LogoBanner";

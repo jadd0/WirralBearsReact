@@ -5,9 +5,9 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
-import * as schema from "@/schemas"; // adjust to your actual path
+import * as schema from "@/schemas";
 
-const queryClient = postgres(process.env.DATABASE_URL!, {
+const queryClient = postgres("postgresql://myuser:mypassword@127.0.0.1/wirralbears", {
   max: 1,
 });
 

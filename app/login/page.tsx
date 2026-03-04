@@ -1,3 +1,5 @@
+"use client"
+
 import { LoginForm } from "@/components/login-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "next-auth/react";
