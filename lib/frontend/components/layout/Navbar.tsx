@@ -15,9 +15,9 @@ const navLinks = [
   },
   { to: "/sessions", label: "Sessions", key: "sessions" },
   { to: "/sponsorship", label: "Sponsorship", key: "sponsorship" },
-  { to: "/image/viewall", label: "Gallery", key: "gallery" },
-  { to: "/coaches", label: "Coaches", key: "coaches" },
-  { to: "/blog/blogs", label: "Blogs", key: "blogs" },
+  { to: "/gallery", label: "Gallery", key: "gallery" },
+  { to: "/coach/viewCoaches", label: "Coaches", key: "coaches" },
+  { to: "/blog/viewBlogs", label: "Blogs", key: "blogs" },
   { to: "/games", label: "Games", key: "games" },
 ];
 

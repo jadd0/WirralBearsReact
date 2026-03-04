@@ -125,7 +125,7 @@ export default function BallForAllPage() {
           </ul>
         </InfoBox>
 
-        <span className="font-semibold text-xl mt-4">
+        <span className="font-semibold text-xl mt-4 text-gray-900">
           Because it's ball for all, not just some.
         </span>
       </main>

@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Quicksand";
+  src: url("/fonts/Quicksand.ttf") format("truetype");
+}
+
 :root {
-  --background: #ffffff;
+  --background: #d3d2d2;
   --foreground: #171717;
 }
 
@@ -14,13 +19,38 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #d3d2d2;
+    --foreground: #d3d2d2;
   }
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3, h4, h5, h6 {
+    @apply text-gray-900;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.error-toast {
+  background-color: #ef4444 !important; /* Red background */
+  border: 1px solid #dc2626 !important;
+  color: white !important;
+}
+
+.error-toast [data-icon] {
+  color: white !important; /* Make icon white */
 }

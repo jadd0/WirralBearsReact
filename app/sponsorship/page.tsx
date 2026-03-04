@@ -48,7 +48,7 @@ export default function SponsorshipPage() {
             className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center border-t-4 border-red-500 transition-transform hover:scale-105"
           >
             <img
-              src="/images/taylor Brown 1.png"
+              src="/images/taylorBrown1.png"
               alt="Taylor Brown Solicitors"
               className="w-40 h-20 object-contain mb-4"
             />
@@ -63,7 +63,7 @@ export default function SponsorshipPage() {
             className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center border-t-4 border-red-500 transition-transform hover:scale-105"
           >
             <img
-              src="/images/Chester Financial.png"
+              src="/images/ChesterFinancial.png"
               alt="Chester Financial"
               className="w-40 h-20 object-contain mb-4"
             />

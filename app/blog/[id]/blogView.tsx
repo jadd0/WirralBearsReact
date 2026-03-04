@@ -6,12 +6,12 @@ import { LogoBanner } from "@/components/layout/LogoBanner";
 import { Footer } from "@/components/layout/Footer";
 
 export default function BlogView() {
-  const { slug }: { slug: string } = useParams();
+  const { id }: { id: string } = useParams();
 
   return (
     <div className="min-w-full">
       <LogoBanner />
-      <BlogDisplay id={slug ?? ""} />
+      <BlogDisplay id={id ?? ""} />
       <Footer />
     </div>
   );
