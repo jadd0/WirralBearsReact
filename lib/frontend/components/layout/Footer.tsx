@@ -84,7 +84,7 @@ export function Footer() {
 						className="flex justify-center items-center w-40 h-20 bg-white rounded-lg shadow hover:scale-105 transition-transform"
 					>
 						<img
-							src="/images/taylor Brown 1.png"
+							src="/images/taylorBrown1.png"
 							alt="Taylor Brown Solicitors"
 							className="w-full h-full object-contain p-2"
 						/>
@@ -96,7 +96,7 @@ export function Footer() {
 						className="flex justify-center items-center w-40 h-20 bg-white rounded-lg shadow hover:scale-105 transition-transform"
 					>
 						<img
-							src="/images/Chester Financial.png"
+							src="/images/ChesterFinancial.png"
 							alt="Chester Financial"
 							className="w-full h-full object-contain p-2"
 						/>

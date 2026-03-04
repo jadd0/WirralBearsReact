@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useFullSchedule } from "@/hooks";
 import SessionGrid from "@/components/sessions/display/SessionGrid";
@@ -14,10 +14,10 @@ export default function SessionsPage() {
   console.log(scheduleTyped);
 
   return (
-    <div className="min-h-screen min-w-full">
+    <div className="min-h-screen min-w-full font-sans flex flex-col overflow-hidden">
       <LogoBanner />
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 min-h-70">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
             Training Sessions Schedule
           </h1>
