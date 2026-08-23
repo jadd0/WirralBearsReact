@@ -13,3 +13,8 @@ dist
 /apps/backend/data/*.json
 
 .vercel
+.env*
+
+# next
+.next
+next-env.d.ts

@@ -5,17 +5,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "pnpm --stream -r run start:dev",
-    "start": "pnpm --stream -r run start",
-    "dev:frontend": "pnpm --filter frontend run start:dev",
+    "start:dev": "pnpm --stream --filter web --filter backend run start:dev",
+    "start": "pnpm --filter web run start",
+    "dev:web": "pnpm --filter web run dev",
     "dev:backend": "pnpm --filter backend run start:dev",
-    "prebuild": "pnpm i",
     "clean": "pnpm -r clean",
     "build:packages": "pnpm -r --filter \"@wirralbears/constants\" --filter \"@wirralbears/validation\" --filter \"@wirralbears/types\" --filter \"@wirralbears/backend-types\" --workspace-concurrency 1 build",
     "build:backend": "pnpm --filter backend run build",
-    "build:frontend": "pnpm --filter frontend run build",
-    "build": "pnpm run build:packages && pnpm run build:backend && pnpm run build:frontend && pnpm run copy:frontend",
-    "copy:frontend": "cp -r apps/frontend/dist ./dist"
+    "build:web": "pnpm --filter web run build",
+    "build": "pnpm run build:packages && pnpm run build:web"
   },
   "keywords": [],
   "author": "jadd0",
