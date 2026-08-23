@@ -24,7 +24,7 @@ export default function ImagePopup({ image, onClose }: ImagePopupProps) {
 			<div
 				className="
           relative
-          bg-white
+          bg-surface
           rounded-lg
           shadow-lg
           p-4
@@ -44,11 +44,11 @@ export default function ImagePopup({ image, onClose }: ImagePopupProps) {
             absolute
             top-3
             right-3
-            bg-white
+            bg-surface
             rounded-full
             p-2
             shadow
-            hover:bg-red-100
+            hover:bg-brand-soft
             focus:outline-none
             focus:ring-2
             focus:ring-red-400
@@ -56,7 +56,7 @@ export default function ImagePopup({ image, onClose }: ImagePopupProps) {
             z-10
           "
 				>
-					<CircleX className="w-7 h-7 text-red-500" />
+					<CircleX className="w-7 h-7 text-brand" />
 				</button>
 				<img
 					src={image.url}

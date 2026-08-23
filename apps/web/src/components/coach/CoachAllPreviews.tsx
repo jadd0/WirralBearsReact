@@ -1,46 +1,51 @@
 'use client';
 
-import { CoachPreview } from '../../../../backend/src/types/coach.types';
+import { CoachPreview } from '@wirralbears/backend-types';
 import CoachPreviewElement from './CoachPreviewElement';
 import CoachPreviewSkeleton from './CoachPreviewSkeleton';
 
 export default function CoachAllPreviews({
-  coaches,
-  isLoading,
+	coaches,
+	isLoading,
 }: {
-  coaches: CoachPreview[];
-  isLoading: boolean;
+	coaches: CoachPreview[];
+	isLoading: boolean;
 }) {
-  return (
-    <section className="w-full max-w-4xl mx-auto px-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 py-2">
-        {isLoading ? (
-          Array.from({ length: 6 }).map((_, index) => (
-            <CoachPreviewSkeleton key={`skeleton-${index}`} />
-          ))
-        ) : coaches.length > 0 ? (
-          coaches.map((coach) => (
-            <CoachPreviewElement key={coach.id} coach={coach} />
-          ))
-        ) : (
-          <div className="col-span-full flex flex-col items-center justify-center min-w-[250px] py-16">
-            <div className="w-16 h-16 mb-4 text-gray-300">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No coaches found
-            </h3>
-            <p className="text-gray-500">Check back later for new content!</p>
-          </div>
-        )}
-      </div>
-    </section>
-  );
+	if (isLoading) {
+		return (
+			<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+				{Array.from({ length: 6 }).map((_, index) => (
+					<CoachPreviewSkeleton key={`skeleton-${index}`} />
+				))}
+			</div>
+		);
+	}
+
+	if (coaches.length === 0) {
+		return (
+			<div className="rounded-3xl border border-dashed border-line-strong bg-paper-2/60 px-8 py-16 text-center">
+				<h2 className="font-display text-xl font-extrabold text-ink">
+					Coach profiles are on the way
+				</h2>
+				<p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-ink-3">
+					You will meet the coaching team at your first session. Turn up to the
+					one for your age group, or email the club with any questions.
+				</p>
+				<a
+					href="mailto:wirralbears@gmail.com"
+					className="mt-7 inline-flex rounded-xl border border-line-strong bg-surface px-5 py-3 text-[15px] font-semibold text-ink transition-colors hover:bg-paper"
+				>
+					Email the club
+				</a>
+			</div>
+		);
+	}
+
+	return (
+		<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			{coaches.map((coach) => (
+				<CoachPreviewElement key={coach.id} coach={coach} />
+			))}
+		</div>
+	);
 }

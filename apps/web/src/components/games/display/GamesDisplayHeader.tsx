@@ -1,5 +1,7 @@
 'use client';
 
+import { PageHeader } from '@components/layout/PageHeader';
+
 interface GamesDisplayHeaderProps {
 	totalGames: number;
 }
@@ -8,11 +10,14 @@ export default function GamesDisplayHeader({
 	totalGames,
 }: GamesDisplayHeaderProps) {
 	return (
-		<div className="flex flex-col gap-2 justify-between items-center">
-			<h1 className="text-3xl font-bold">Games</h1>
-			<p className="text-muted-foreground">
-				View all {totalGames} games with detailed results
-			</p>
-		</div>
+		<PageHeader
+			eyebrow="Games"
+			title="Fixtures & results"
+			lead={
+				totalGames === 1
+					? 'One game on record, with the full result.'
+					: `${totalGames} games on record, with results and season breakdowns.`
+			}
+		/>
 	);
 }

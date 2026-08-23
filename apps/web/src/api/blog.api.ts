@@ -95,9 +95,6 @@ export async function editBlogOnServer(data: {
 
 	// Add the processed elements JSON to the FormData
 	formData.append('elements', JSON.stringify(processedElements));
-
-	console.log('Editing blog with FormData:', formData);
-
 	// Send the request with FormData
 	const { data: responseData } = await request({
 		url: `/api/blog/editBlog/${id}`,
@@ -155,9 +152,6 @@ export async function saveBlogToServer(blogData: BlogData) {
 
 	// Add the processed elements JSON to the FormData
 	formData.append('elements', JSON.stringify(processedElements));
-
-	console.log(formData);
-
 	// Send the request with FormData
 	const { data } = await request({
 		url: '/api/blog/saveBlog',

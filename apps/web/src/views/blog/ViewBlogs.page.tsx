@@ -1,21 +1,24 @@
 'use client';
 
-import { useGetAllBlogPreviews } from '@/hooks/blog.hooks';
-import BlogAllPreviews from '@/components/blog/BlogAllPreviews';
+import { useGetAllBlogPreviews } from '@hooks/blog.hooks';
+import BlogAllPreviews from '@components/blog/BlogAllPreviews';
+import { PageHeader } from '@components/layout/PageHeader';
 
 export default function ViewBlogsPage() {
 	const { data, isLoading } = useGetAllBlogPreviews();
 
 	return (
-		<div className="container min-w-full mx-auto">
-			<header className="mb-8 text-center">
-				<h1 className="text-4xl font-bold text-gray-900 mb-2">Latest Blogs</h1>
-				<p className="text-lg text-gray-600">
-					Discover our latest articles and insights
-				</p>
-			</header>
-
-			<BlogAllPreviews isLoading={isLoading} blogs={data || []} />
-		</div>
+		<>
+			<PageHeader
+				eyebrow="Club news"
+				title="From the club"
+				lead="Match reports, session news and updates from around Wirral Bears."
+			/>
+			<section className="section">
+				<div className="container-page">
+					<BlogAllPreviews isLoading={isLoading} blogs={data || []} />
+				</div>
+			</section>
+		</>
 	);
 }

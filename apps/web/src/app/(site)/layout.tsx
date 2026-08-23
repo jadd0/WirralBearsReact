@@ -1,5 +1,4 @@
-import { Navbar } from '@components/layout/Navbar';
-import { LogoBanner } from '@components/layout/LogoBanner';
+import { SiteHeader } from '@components/layout/SiteHeader';
 import { Footer } from '@components/layout/Footer';
 
 export default function SiteLayout({
@@ -9,9 +8,8 @@ export default function SiteLayout({
 }) {
 	return (
 		<>
-			<Navbar />
-			<LogoBanner />
-			<main id="main" className="box-border flex w-full flex-1 flex-col items-center">
+			<SiteHeader />
+			<main id="main" className="flex w-full flex-1 flex-col">
 				{children}
 			</main>
 			<Footer />

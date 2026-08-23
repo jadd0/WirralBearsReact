@@ -1,34 +1,40 @@
 'use client';
 
-import { SessionWithCoach } from '@wirralbears/backend-types';
 import Link from 'next/link';
+import { CoachPreview, SessionWithCoach } from '@wirralbears/backend-types';
 
 export default function SessionItem({
 	session,
 	coach,
 }: {
 	session: SessionWithCoach;
-	coach: any;
+	coach?: CoachPreview;
 }) {
 	return (
-		<div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-			<div className="flex justify-between items-start gap-5">
-				<div>
-					<h3 className="text-lg font-semibold text-gray-800">
-						{session.time} - {session.age} years
-					</h3>
-					<p className="text-gray-600">{session.gender} group</p>
-				</div>
-				<div className="text-right">
-					{' '}
-					<Link href={`/coaches/coach/${coach.id}`}>
-						<p className="font-medium text-blue-600 cursor-pointer">
-							{coach.title}
-						</p>
-					</Link>
-					<p className="text-sm text-gray-500">Lead Coach</p>
-				</div>
+		<li className="flex items-start justify-between gap-4 border-b border-line px-5 py-4 transition-colors last:border-b-0 hover:bg-paper sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(3n)]:border-r-0">
+			<div>
+				<h3 className="font-display text-[17px] font-extrabold text-ink tabular">
+					{session.time}
+				</h3>
+				<p className="mt-1 text-[14px] text-ink-3">
+					{session.age} years &middot; {session.gender} group
+				</p>
 			</div>
-		</div>
+			<div className="text-right">
+				{/* Sessions can be listed before a lead coach is assigned, so this
+				    only becomes a link when there is a coach to link to. */}
+				{coach ? (
+					<Link
+						href={`/coaches/coach/${coach.id}`}
+						className="text-[14px] font-semibold text-brand underline-offset-4 hover:underline"
+					>
+						{coach.title}
+					</Link>
+				) : (
+					<span className="text-[14px] font-semibold text-ink-3">Coach TBA</span>
+				)}
+				<p className="mt-0.5 text-[12px] text-ink-4">Lead coach</p>
+			</div>
+		</li>
 	);
 }

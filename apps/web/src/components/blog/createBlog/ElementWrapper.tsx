@@ -35,7 +35,7 @@ export const ElementWrapper = ({ id, children, onDelete }: ElementWrapperProps) 
       className="mb-4 relative group"
     >
       <div 
-        className="absolute left-2 top-1/2 -translate-y-1/2 cursor-grab p-2 text-gray-400 hover:text-gray-600"
+        className="absolute left-2 top-1/2 -translate-y-1/2 cursor-grab p-2 text-ink-4 hover:text-ink-3"
         {...attributes}
         {...listeners}
       >
@@ -48,7 +48,7 @@ export const ElementWrapper = ({ id, children, onDelete }: ElementWrapperProps) 
         <div className="absolute right-2 top-1/2 -translate-y-1/2">
           <button 
             onClick={onDelete} 
-            className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+            className="p-2 text-ink-4 hover:text-brand transition-colors"
             aria-label="Delete element"
           >
             <Trash2 size={20} />

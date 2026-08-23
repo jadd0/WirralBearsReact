@@ -203,7 +203,7 @@ export const ImageUploadElement = ({
 	return (
 		<ElementWrapper id={element.id} onDelete={() => onDelete(element.id)}>
 			<div
-				className={`space-y-4 p-4 bg-white rounded-lg shadow-sm ${
+				className={`space-y-4 p-4 bg-surface rounded-lg shadow-sm ${
 					!isValid && isValidated && userInteracted
 						? 'border border-red-300'
 						: ''
@@ -212,15 +212,15 @@ export const ImageUploadElement = ({
 			>
 				<div className="form-item">
 					<div className="flex items-center justify-between mb-2">
-						<label className="text-lg font-medium text-gray-800">Image</label>
+						<label className="text-lg font-medium text-ink">Image</label>
 						{element.file && (
-							<div className="flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-xs">
+							<div className="flex items-center gap-1 px-2 py-1 bg-blue-50 text-brand rounded-full text-xs">
 								<Upload size={14} />
 								<span>Ready to upload</span>
 							</div>
 						)}
 					</div>
-					<p className="text-sm text-gray-500 mb-3">
+					<p className="text-sm text-ink-4 mb-3">
 						Add an image to enhance your content. Recommended size: 1200×630px.
 					</p>
 
@@ -235,35 +235,35 @@ export const ImageUploadElement = ({
 					</div>
 
 					{uploadError && userInteracted && (
-						<div className="flex items-center gap-2 text-sm text-red-500 mt-2 p-2 bg-red-50 rounded-md">
+						<div className="flex items-center gap-2 text-sm text-brand mt-2 p-2 bg-brand-soft rounded-md">
 							<AlertCircle size={16} />
 							<p>{uploadError}</p>
 						</div>
 					)}
 
 					<div className="flex justify-between items-center mt-2">
-						<p className="text-xs text-gray-400">
+						<p className="text-xs text-ink-4">
 							{images.length > 0
 								? `${images.length} image selected`
 								: 'No image selected'}
 						</p>
-						<p className="text-xs text-gray-400">Max size: 20MB</p>
+						<p className="text-xs text-ink-4">Max size: 20MB</p>
 					</div>
 				</div>
 
 				<div
 					className={`form-item mt-4 border-t pt-4 ${
 						!isValidAlt && isValidImage && isValidated && userInteracted
-							? 'border-red-200 bg-red-50 p-3 rounded-md'
+							? 'border-red-200 bg-brand-soft p-3 rounded-md'
 							: ''
 					}`}
 				>
-					<label className="block text-md font-medium text-gray-700 mb-1">
-						Alt Text <span className="text-red-500">*</span>
+					<label className="block text-md font-medium text-ink-3 mb-1">
+						Alt Text <span className="text-brand">*</span>
 					</label>
 					<div className="flex items-start gap-2 mb-2">
-						<Info size={16} className="text-gray-400 mt-0.5" />
-						<p className="text-sm text-gray-500">
+						<Info size={16} className="text-ink-4 mt-0.5" />
+						<p className="text-sm text-ink-4">
 							Describe the image for accessibility and SEO purposes. This is
 							required for all images.
 						</p>
@@ -274,8 +274,8 @@ export const ImageUploadElement = ({
 						onChange={handleAltTextChange}
 						className={`w-full px-3 py-2 border ${
 							!isValidAlt && isValidImage && isValidated && userInteracted
-								? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-								: 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+								? 'border-red-300 focus:border-brand focus:ring-red-500'
+								: 'border-line-strong focus:border-blue-500 focus:ring-blue-500'
 						} rounded-md shadow-sm transition-all`}
 						placeholder="e.g., 'Team meeting in conference room'"
 						required={isValidImage}
@@ -283,7 +283,7 @@ export const ImageUploadElement = ({
 						onBlur={() => setIsValidated(true)}
 					/>
 					{!isValidAlt && isValidImage && isValidated && userInteracted && (
-						<p className="text-sm text-red-500 mt-1">
+						<p className="text-sm text-brand mt-1">
 							Alt text is required for accessibility
 						</p>
 					)}

@@ -61,12 +61,12 @@ export default function GamesStatsCards({ stats }: GamesStatsCardsProps) {
 
 				<Card className="text-center">
 					<CardHeader className="pb-2 px-3 sm:px-6">
-						<CardTitle className="text-xs sm:text-sm font-medium text-red-600">
+						<CardTitle className="text-xs sm:text-sm font-medium text-brand">
 							Losses
 						</CardTitle>
 					</CardHeader>
 					<CardContent className="px-3 sm:px-6">
-						<div className="text-lg sm:text-2xl font-bold text-red-600">
+						<div className="text-lg sm:text-2xl font-bold text-brand">
 							{stats.overallResults.losses}
 						</div>
 					</CardContent>

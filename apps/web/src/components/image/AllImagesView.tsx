@@ -68,11 +68,11 @@ export default function AllImagesView({
 
   // Skeleton component for loading state
   const ImageSkeleton = () => (
-    <div className="aspect-square bg-gray-200 animate-pulse rounded-lg w-full h-full" />
+    <div className="aspect-square bg-paper-2 animate-pulse rounded-lg w-full h-full" />
   );
 
   return (
-    <div className="flex flex-col min-h-screen px-8 sm:px-4">
+    <div className="flex flex-col min-h-dvh px-8 sm:px-4">
       <div className="w-full max-w-5xl mx-auto mt-10">
         {/* Loading skeleton */}
         {isInitialLoading && (
@@ -106,13 +106,13 @@ export default function AllImagesView({
       </div>
 
       {isFetchingNextPage && (
-        <div className="text-center py-4 text-gray-500">
+        <div className="text-center py-4 text-ink-4">
           Fetching more images...
         </div>
       )}
 
       {!hasNextPage && loadedImages.length > 0 && (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-8 text-ink-4">
           No more images to load
         </div>
       )}

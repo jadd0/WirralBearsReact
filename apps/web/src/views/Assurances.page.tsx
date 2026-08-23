@@ -1,91 +1,107 @@
 'use client';
 
+import Image from 'next/image';
 import { InfoBox } from '@components/layout/InfoBox';
+import { PageHeader } from '@components/layout/PageHeader';
 
-const CheckIcon = () => (
-	<svg
-		className="w-6 h-6 text-red-500 flex-shrink-0"
-		fill="none"
-		stroke="currentColor"
-		strokeWidth={2}
-		viewBox="0 0 24 24"
-	>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-	</svg>
-);
+const safeguardingTips = [
+	"If you notice sudden changes in your child's behaviour or have concerns, speak to a coach or our safeguarding officer, Simon Barker.",
+	'Do not allow your child to share personal details with adults, and vice versa.',
+	'If giving or receiving lifts, ensure everyone feels safe and report any concerns to a coach or Simon Barker.',
+	'Ensure your child is safe getting to and from sessions and is collected on time.',
+];
+
+const policies = [
+	'Transporting children',
+	'Anti-bullying',
+	'Supervision ratios',
+	'Safeguarding',
+	'Social media',
+	'Photography',
+	'Equality',
+	'Conduct',
+];
+
+function CheckIcon() {
+	return (
+		<svg
+			aria-hidden="true"
+			className="mt-0.5 h-5 w-5 shrink-0 text-brand"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={2.5}
+			viewBox="0 0 24 24"
+		>
+			<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+		</svg>
+	);
+}
 
 export default function AssurancesPage() {
 	return (
-		<div className="min-h-screen min-w-full font-sans flex flex-col">
-			<main className="flex-1 flex flex-col items-center px-4">
-				<section className="w-full max-w-2xl text-center py-10">
-					<h1 className="text-4xl font-extrabold mb-4 tracking-tight">
-						Fully aligned with Basketball England
-					</h1>
-					<p className="text-lg text-gray-700 mb-6">
-						We follow Basketball England’s guidance for safe operation. Our full
-						policies—available on request—cover Transporting Children,
-						Anti-Bullying, Supervision Ratios, Safeguarding, Social Media,
-						Photography, Equality, Conduct, and more.
-					</p>
-				</section>
-{/* 
-				<div className="flex justify-center w-full mb-8">
-					<img
-						src="/images/AZ4A5625.jpg"
-						alt="Coach Martin"
-						className="w-full max-w-lg rounded-2xl shadow-xl object-cover"
-					/>
-				</div> 
-				TODO: ADD IMAGE*/}
+		<>
+			<PageHeader
+				eyebrow="Assurance"
+				title="Fully aligned with Basketball England"
+				lead="We follow Basketball England's guidance for safe operation. Our full policies are available on request."
+			/>
 
-				<InfoBox
-					title="Safeguarding Tips"
-					className="w-full max-w-xl bg-gray-700"
-				>
-					<ul className="space-y-3">
-						<li className="flex items-start">
-							<CheckIcon />
-							<span className="ml-2">
-								If you notice sudden changes in your child's behaviour or have
-								concerns, speak to a coach or our safeguarding officer, Simon Barker.
-							</span>
-						</li>
-						<li className="flex items-start">
-							<CheckIcon />
-							<span className="ml-2">
-								Do not allow your child to share personal details with adults,
-								and vice versa.
-							</span>
-						</li>
-						<li className="flex items-start">
-							<CheckIcon />
-							<span className="ml-2">
-								If giving or receiving lifts, ensure everyone feels safe and
-								report any concerns to a coach or Simon Barker.
-							</span>
-						</li>
-						<li className="flex items-start">
-							<CheckIcon />
-							<span className="ml-2">
-								Ensure your child is safe getting to and from sessions and is
-								collected on time.
-							</span>
-						</li>
-					</ul>
-				</InfoBox>
+			<section className="section">
+				<div className="container-page grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+					<div>
+						<InfoBox title="Safeguarding tips">
+							<ul className="space-y-4">
+								{safeguardingTips.map((tip) => (
+									<li key={tip} className="flex gap-3">
+										<CheckIcon />
+										<span>{tip}</span>
+									</li>
+								))}
+							</ul>
+						</InfoBox>
 
-				<h2 className="text-xl sm:text-2xl font-bold mt-10 mb-2 text-center">
-					Social Media Use
-				</h2>
-				<section className="w-full max-w-xl bg-white rounded-2xl shadow-md p-6 mb-10">
-					<p className="text-base sm:text-lg text-gray-700">
-						Please encourage your child to use social media responsibly. If
-						there are any issues, let us know. Young adults may say things
-						online they wouldn’t in person—real-life respect comes first.
-					</p>
-				</section>
-			</main>
-		</div>
+						<InfoBox title="Social media use" className="mt-6">
+							<p>
+								Please encourage your child to use social media responsibly. If
+								there are any issues, let us know. Young adults may say things
+								online they would not say in person, and real-life respect comes
+								first.
+							</p>
+						</InfoBox>
+					</div>
+
+					<div className="lg:pt-2">
+						<div className="overflow-hidden rounded-3xl shadow-[var(--shadow-lift)]">
+							<Image
+								src="/images/AZ4A5625.jpg"
+								alt="A Wirral Bears coach leading a training session"
+								width={1200}
+								height={800}
+								sizes="(min-width: 1024px) 32rem, 92vw"
+								className="h-full w-full object-cover"
+							/>
+						</div>
+
+						<h2 className="mt-10 font-display text-xl font-extrabold tracking-[-0.02em] text-ink">
+							Policies we hold
+						</h2>
+						<ul className="mt-5 flex flex-wrap gap-2">
+							{policies.map((policy) => (
+								<li
+									key={policy}
+									className="rounded-lg border border-line bg-surface px-3.5 py-2 text-[15px] font-medium text-ink-3"
+								>
+									{policy}
+								</li>
+							))}
+						</ul>
+						<p className="mt-6 text-[15px] leading-relaxed text-ink-4">
+							Copies of any policy are available on request. Speak to a coach or
+							email the club.
+						</p>
+					</div>
+				</div>
+			</section>
+		</>
 	);
 }

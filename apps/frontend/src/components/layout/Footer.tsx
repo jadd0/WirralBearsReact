@@ -8,10 +8,10 @@ export function Footer() {
 					<ul className="space-y-2">
 						<li>
 							<a
-								href="mailto:jaddalkwork@gmail.com"
+								href="https://jadd.live"
 								className="hover:text-red-400 transition-colors"
 							>
-								Website Designer: Jadd (jaddalkwork@gmail.com)
+								Website Designer: Jadd (https://jadd.live)
 							</a>
 						</li>
 						<li>

@@ -137,12 +137,11 @@ export default function GamesDisplayPage({
 	}
 
 	return (
-		<div className="min-h-screen w-full flex flex-col">
+		<>
+			<GamesDisplayHeader totalGames={filteredGames.length} />
 
-			<div className="flex-1 px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-				<div className="max-w-7xl mx-auto space-y-6">
-					{/* Header */}
-					<GamesDisplayHeader totalGames={filteredGames.length} />
+			<section className="section">
+				<div className="container-page space-y-6">
 
 					{/* Statistics cards */}
 					{showStats && statistics && <GamesStatsCards stats={statistics} />}
@@ -173,8 +172,7 @@ export default function GamesDisplayPage({
 						compact={compact}
 					/>
 				</div>
-			</div>
-
-		</div>
+			</section>
+		</>
 	);
 }

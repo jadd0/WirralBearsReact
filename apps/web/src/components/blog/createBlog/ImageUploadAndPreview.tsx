@@ -52,15 +52,15 @@ export function ImageUploadAndPreview({
 					className="w-full p-0.5"
 				>
 					<FileInput
-						className="w-full overflow-hidden flex flex-col items-center justify-center border-dashed border-2 border-gray-300 hover:border-blue-400 p-8 rounded-lg transition-all duration-200 bg-gray-50 hover:bg-blue-50"
+						className="w-full overflow-hidden flex flex-col items-center justify-center border-dashed border-2 border-line-strong hover:border-blue-400 p-8 rounded-lg transition-all duration-200 bg-paper hover:bg-blue-50"
 						onMouseEnter={() => onHover && onHover(true)}
 						onMouseLeave={() => onHover && onHover(false)}
 					>
 						<div className="w-full rounded-xl flex flex-col gap-3 items-center justify-center">
 							{isUploading ? (
 								<>
-									<div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-blue-500"></div>
-									<p className="mb-1 text-sm font-medium text-gray-600">
+									<div className="animate-spin rounded-full h-12 w-12 border-4 border-line border-t-blue-500"></div>
+									<p className="mb-1 text-sm font-medium text-ink-3">
 										Uploading...
 									</p>
 								</>
@@ -69,13 +69,13 @@ export function ImageUploadAndPreview({
 									<div className="p-4 bg-blue-100 rounded-full">
 										<ImagePlus className="text-blue-500 w-8 h-8" />
 									</div>
-									<p className="mb-1 text-sm text-gray-700">
-										<span className="font-semibold text-blue-600">
+									<p className="mb-1 text-sm text-ink-3">
+										<span className="font-semibold text-brand">
 											Click to upload
 										</span>{' '}
 										or drag and drop
 									</p>
-									<p className="text-xs text-gray-500">
+									<p className="text-xs text-ink-4">
 										PNG, JPG or GIF (max. 20MB)
 									</p>
 								</>
@@ -108,7 +108,7 @@ export function ImageUploadAndPreview({
 								onClick={
 									hasLocalPreview ? handleDeleteImage : () => setImages([])
 								}
-								className="bg-white/20 backdrop-blur-sm hover:bg-red-500 text-white rounded-full p-2 transition-colors duration-200"
+								className="bg-surface/20 backdrop-blur-sm hover:bg-brand text-white rounded-full p-2 transition-colors duration-200"
 								disabled={isUploading}
 							>
 								<Trash2 className="w-5 h-5" />

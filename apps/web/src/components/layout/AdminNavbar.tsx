@@ -44,7 +44,7 @@ export function AdminNavbar() {
 							key={link.key}
 							href={link.to}
 							className={
-								'font-extralight px-4 py-2 transition-colors duration-200 text-[15px] text-gray-400 hover:text-white'
+								'font-extralight px-4 py-2 transition-colors duration-200 text-[15px] text-ink-4 hover:text-white'
 							}
 						>
 							{link.label}
@@ -65,15 +65,15 @@ export function AdminNavbar() {
 					>
 						{/* Modern Hamburger lines */}
 						<div
-							className={`h-0.5 w-7 my-1 rounded-full bg-white transition-all duration-500 ease-in-out
+							className={`h-0.5 w-7 my-1 rounded-full bg-surface transition-all duration-500 ease-in-out
                 ${open ? 'rotate-45 translate-y-2.5 bg-[#ff0000]' : ''}`}
 						/>
 						<div
-							className={`h-0.5 w-7 my-1 rounded-full bg-white transition-all duration-500 ease-in-out
+							className={`h-0.5 w-7 my-1 rounded-full bg-surface transition-all duration-500 ease-in-out
                 ${open ? 'opacity-0 scale-0' : ''}`}
 						/>
 						<div
-							className={`h-0.5 w-7 my-1 rounded-full bg-white transition-all duration-500 ease-in-out
+							className={`h-0.5 w-7 my-1 rounded-full bg-surface transition-all duration-500 ease-in-out
                 ${open ? '-rotate-45 -translate-y-2.5 bg-[#ff0000]' : ''}`}
 						/>
 					</button>

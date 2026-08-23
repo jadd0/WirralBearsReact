@@ -367,8 +367,8 @@ export const BlogEditor = ({
 						strategy={verticalListSortingStrategy}
 					>
 						{contentElements.length === 0 ? (
-							<div className="text-center py-10 border-2 border-dashed border-gray-300 rounded-md">
-								<p className="text-gray-500">
+							<div className="text-center py-10 border-2 border-dashed border-line-strong rounded-md">
+								<p className="text-ink-4">
 									{coach ? "Coach content" : "Your blog"} is empty. Add elements to get started.
 								</p>
 							</div>

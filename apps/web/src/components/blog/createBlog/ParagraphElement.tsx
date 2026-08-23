@@ -49,9 +49,9 @@ export const ParagraphElement = ({
 					}`}
 					maxLength={maxLength}
 				/>
-				{error && <p className="text-sm text-red-500 font-medium">{error}</p>}
+				{error && <p className="text-sm text-brand font-medium">{error}</p>}
 				<div className="flex items-center gap-2">
-					<div className="h-1 flex-grow bg-gray-100 rounded-full overflow-hidden">
+					<div className="h-1 flex-grow bg-paper-2 rounded-full overflow-hidden">
 						<div
 							className={`h-full transition-all ${
 								isNearLimit ? 'bg-amber-400' : 'bg-blue-400'
@@ -61,7 +61,7 @@ export const ParagraphElement = ({
 					</div>
 					<p
 						className={`text-xs ${
-							isNearLimit ? 'text-amber-600 font-medium' : 'text-gray-400'
+							isNearLimit ? 'text-amber-600 font-medium' : 'text-ink-4'
 						}`}
 					>
 						{charCount}/{maxLength}

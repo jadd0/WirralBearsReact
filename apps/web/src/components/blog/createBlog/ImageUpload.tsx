@@ -94,8 +94,8 @@ const FileUploadImagePlaceholder = ({
 		>
 			<FileInput className="w-full h-full overflow-hidden flex flex-col items-center justify-center border-dashed border-2">
 				<div className="w-full h-full rounded-xl flex flex-col gap-2 items-center justify-center">
-					<ImagePlus className="text-gray-500 w-10 h-10" />
-					<p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
+					<ImagePlus className="text-ink-4 w-10 h-10" />
+					<p className="mb-1 text-sm text-ink-4 dark:text-ink-4">
 						<span className="font-semibold">Click to upload</span>
 					</p>
 				</div>

@@ -91,7 +91,7 @@ export function CarouselComponent({
 				<CarouselContent>
 					{!allImagesLoaded || isLoading ? (
 						<div
-							className="h-64 w-full animate-pulse bg-gray-300 rounded-2xl shadow-md"
+							className="h-64 w-full animate-pulse bg-line rounded-2xl shadow-md"
 							aria-busy="true"
 							aria-label="Loading images"
 						/>
@@ -115,11 +115,11 @@ export function CarouselComponent({
 				</CarouselContent>
 
 				<CarouselPrevious
-					className="absolute top-1/2 left-3 -translate-y-1/2 z-20 bg-white bg-opacity-90 border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white rounded-full p-3 shadow transition-all"
+					className="absolute top-1/2 left-3 -translate-y-1/2 z-20 bg-surface bg-opacity-90 border-2 border-brand text-brand hover:bg-brand hover:text-white rounded-full p-3 shadow transition-all"
 					aria-label="Previous slide"
 				/>
 				<CarouselNext
-					className="absolute top-1/2 right-3 -translate-y-1/2 z-20 bg-white bg-opacity-90 border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white rounded-full p-3 shadow transition-all"
+					className="absolute top-1/2 right-3 -translate-y-1/2 z-20 bg-surface bg-opacity-90 border-2 border-brand text-brand hover:bg-brand hover:text-white rounded-full p-3 shadow transition-all"
 					aria-label="Next slide"
 				/>
 			</Carousel>
@@ -137,7 +137,7 @@ export function CarouselComponent({
 							<span
 								key={idx}
 								className={`block w-3 h-3 rounded-full transition-all cursor-pointer ${
-									current === idx ? 'bg-red-600 shadow' : 'bg-gray-300'
+									current === idx ? 'bg-brand shadow' : 'bg-line'
 								}`}
 								aria-label={`Go to slide ${idx + 1}`}
 								onClick={() => api?.scrollTo(idx)}

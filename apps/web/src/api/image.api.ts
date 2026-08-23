@@ -23,9 +23,6 @@ export async function getAllFirstCarouselImages() {
 		url: `/api/image/getAllFirstCarouselImages`,
 		method: 'GET',
 	});
-
-	console.log({data})
-
 	return data;
 }
 
@@ -44,7 +41,6 @@ export async function replaceAllFirstCarouselImages(
 		key: string;
 	}[]
 ) {
-	console.log(images)
 	const { data } = await request({
 		url: `/api/image/replaceAllFirstCarouselImages`,
 		method: 'PUT',

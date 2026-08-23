@@ -1,15 +1,21 @@
 'use client';
 
-import AllImagesView from '@/components/image/AllImagesView';
+import AllImagesView from '@components/image/AllImagesView';
+import { PageHeader } from '@components/layout/PageHeader';
 
 export default function AllImagesViewPage() {
 	return (
-		<div className="min-h-screen min-w-full font-sans flex flex-col">
-			<h1 className="text-3xl font-bold mb-4 text-center">Image Gallery</h1>
-			<p className="text-lg text-gray-600 text-center">
-				View a collection of images taken at games, training etc.
-			</p>
-			<AllImagesView popUpActivated={true} deleteImage={false} />
-		</div>
+		<>
+			<PageHeader
+				eyebrow="Gallery"
+				title="Photographs from the club"
+				lead="Images from games, training sessions and club events, shot by Giannis of Icona Photo Service."
+			/>
+			<section className="section">
+				<div className="container-page">
+					<AllImagesView popUpActivated={true} deleteImage={false} />
+				</div>
+			</section>
+		</>
 	);
 }

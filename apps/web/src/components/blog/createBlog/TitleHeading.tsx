@@ -46,10 +46,10 @@ export const TitleHeadingElement = ({
 
 	return (
 		<div className="mb-8 border-b pb-6">
-			<h2 className="text-lg font-semibold mb-3 text-gray-800 flex items-center">
+			<h2 className="text-lg font-semibold mb-3 text-ink flex items-center">
 				<span className="inline-block w-1.5 h-6 bg-blue-500 rounded-sm mr-2"></span>
 				{coach ? 'Coach Name' : 'Blog Title'}
-				<span className="ml-1 text-xs font-normal text-gray-500">
+				<span className="ml-1 text-xs font-normal text-ink-4">
 					(Required)
 				</span>
 			</h2>
@@ -66,9 +66,9 @@ export const TitleHeadingElement = ({
 					maxLength={maxLength}
 					required
 				/>
-				{error && <p className="text-sm text-red-500 font-medium">{error}</p>}
+				{error && <p className="text-sm text-brand font-medium">{error}</p>}
 				<div className="flex items-center gap-2">
-					<div className="h-1.5 flex-grow bg-gray-100 rounded-full overflow-hidden">
+					<div className="h-1.5 flex-grow bg-paper-2 rounded-full overflow-hidden">
 						<div
 							className={`h-full transition-all ${
 								isEmpty
@@ -83,10 +83,10 @@ export const TitleHeadingElement = ({
 					<p
 						className={`text-xs ${
 							isEmpty
-								? 'text-red-600 font-medium'
+								? 'text-brand font-medium'
 								: isNearLimit
 								? 'text-amber-600 font-medium'
-								: 'text-gray-400'
+								: 'text-ink-4'
 						}`}
 					>
 						{charCount}/{maxLength}

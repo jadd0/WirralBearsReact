@@ -1,7 +1,7 @@
 'use client';
 
 import { FullSessionSchedule } from '@wirralbears/backend-types';
-import { useGetAllCoachPreviews } from '@/hooks/coach.hooks';
+import { useGetAllCoachPreviews } from '@hooks/coach.hooks';
 import SessionDay from './SessionDay';
 
 export default function SessionGrid({
@@ -13,8 +13,10 @@ export default function SessionGrid({
 
 	if (!schedule?.sessionDays?.length) return null;
 
+	// Days stack in order rather than sitting in a grid. A grid would either
+	// size every row to the busiest day, or reflow the week out of sequence.
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+		<div className="flex flex-col gap-4">
 			{!coachesLoading &&
 				schedule.sessionDays.map((sessionDay) => (
 					<SessionDay

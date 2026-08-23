@@ -54,9 +54,6 @@ export async function editCoachOnServer(data: {
 
 	// Add the processed elements JSON to the FormData
 	formData.append('elements', JSON.stringify(processedElements));
-
-	console.log('Editing coach with FormData:', formData);
-
 	// Send the request with FormData
 	const { data: responseData } = await request({
 		url: `/api/coach/editCoach/${id}`,
@@ -114,9 +111,6 @@ export async function saveCoachToServer(coachData: BlogData) {
 
 	// Add the processed elements JSON to the FormData
 	formData.append('elements', JSON.stringify(processedElements));
-
-	console.log(formData);
-
 	// Send the request with FormData
 	const { data } = await request({
 		url: '/api/coach/saveCoach',
@@ -133,14 +127,10 @@ export async function saveCoachToServer(coachData: BlogData) {
  * @returns The coach data
  */
 export async function fetchCoach(id: string) {
-	console.log("dhfkjh")
 	const { data } = await request({
 		url: `/api/coach/getCoach/${id}`,
 		method: 'GET',
 	});
-
-	console.log({data})
-
 	return data.coach as FullCoach;
 }
 

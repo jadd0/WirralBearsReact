@@ -1,12 +1,13 @@
 'use client';
 
+/** Matches CoachPreviewElement so the grid does not shift when data lands. */
 export default function CoachPreviewSkeleton() {
 	return (
-		<div className="flex flex-col items-center gap-6 bg-white border border-gray-200 rounded-2xl shadow-md overflow-hidden p-8 animate-pulse">
-			{/* Skeleton image */}
-			<div className="w-full aspect-[4/3] rounded-xl bg-gray-200" />
-			{/* Skeleton title */}
-			<div className="w-3/4 h-7 bg-gray-200 rounded mb-2" />
+		<div className="flex h-full animate-pulse flex-col overflow-hidden rounded-2xl border border-line bg-surface">
+			<div className="aspect-[4/3] w-full bg-paper-2" />
+			<div className="p-6">
+				<div className="h-5 w-3/4 rounded bg-paper-2" />
+			</div>
 		</div>
 	);
 }

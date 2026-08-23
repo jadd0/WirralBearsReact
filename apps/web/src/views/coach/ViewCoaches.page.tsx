@@ -1,22 +1,24 @@
 'use client';
 
-import { useGetAllCoachPreviews } from '@/hooks/coach.hooks';
-import CoachAllPreviews from '@/components/coach/CoachAllPreviews';
+import { useGetAllCoachPreviews } from '@hooks/coach.hooks';
+import CoachAllPreviews from '@components/coach/CoachAllPreviews';
+import { PageHeader } from '@components/layout/PageHeader';
 
 export default function ViewCoachesPage() {
 	const { data, isLoading } = useGetAllCoachPreviews();
 
 	return (
-		<div className="container mx-auto min-w-full">
-			<header className="mb-8 text-center">
-				<h1 className="text-4xl font-bold text-gray-900 mb-2">Our Coaches</h1>
-				<p className="text-lg text-gray-600">
-					Meet our experienced coaches who are here to guide you on your
-					basketball journey
-				</p>
-			</header>
-
-			<CoachAllPreviews isLoading={isLoading} coaches={data || []} />
-		</div>
+		<>
+			<PageHeader
+				eyebrow="Coaches"
+				title="The people on the sideline"
+				lead="Experienced, teacher-led coaches who know every player by name and build the club from the bottom up."
+			/>
+			<section className="section">
+				<div className="container-page">
+					<CoachAllPreviews isLoading={isLoading} coaches={data || []} />
+				</div>
+			</section>
+		</>
 	);
 }

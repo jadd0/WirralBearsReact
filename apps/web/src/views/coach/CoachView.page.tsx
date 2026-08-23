@@ -8,7 +8,7 @@ export default function CoachViewPage() {
 	const slug = params?.slug;
 
   return (
-    <div className="min-h-screen flex flex-col min-w-full">
+    <div className="min-h-dvh flex flex-col min-w-full">
       <div className="flex-1">
         <CoachDisplay id={slug ?? ''} />
       </div>

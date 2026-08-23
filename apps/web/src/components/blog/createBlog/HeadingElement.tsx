@@ -41,8 +41,8 @@ export const HeadingElement = ({
 					placeholder="Heading"
 					maxLength={ELEMENT_CONSTRAINTS.heading.maxLength}
 				/>
-				{error && <p className="text-sm text-red-500">{error}</p>}
-				<p className="text-xs text-gray-400">
+				{error && <p className="text-sm text-brand">{error}</p>}
+				<p className="text-xs text-ink-4">
 					{element.text.length}/{ELEMENT_CONSTRAINTS.heading.maxLength}
 				</p>
 			</div>

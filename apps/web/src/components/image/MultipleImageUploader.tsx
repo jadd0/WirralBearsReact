@@ -113,21 +113,21 @@ export function MultipleImageUploader({
 					className="w-full p-0.5"
 					disabled={disabled}
 				>
-					<FileInput className="w-full overflow-hidden flex flex-col items-center justify-center border-dashed border-2 border-gray-300 hover:border-blue-400 p-8 rounded-lg transition-all duration-200 bg-gray-50 hover:bg-blue-50">
+					<FileInput className="w-full overflow-hidden flex flex-col items-center justify-center border-dashed border-2 border-line-strong hover:border-blue-400 p-8 rounded-lg transition-all duration-200 bg-paper hover:bg-blue-50">
 						<div className="w-full rounded-xl flex flex-col gap-3 items-center justify-center">
 							<div className="p-4 bg-blue-100 rounded-full">
 								<ImagePlus className="text-blue-500 w-8 h-8" />
 							</div>
-							<p className="mb-1 text-sm text-gray-700">
-								<span className="font-semibold text-blue-600">
+							<p className="mb-1 text-sm text-ink-3">
+								<span className="font-semibold text-brand">
 									Click to upload
 								</span>{' '}
 								or drag and drop
 							</p>
-							<p className="text-xs text-gray-500">
+							<p className="text-xs text-ink-4">
 								PNG, JPG or GIF (max. 20MB each)
 							</p>
-							<p className="text-xs text-gray-400">
+							<p className="text-xs text-ink-4">
 								{files.length} of {maxFiles} files selected
 							</p>
 							<p className="text-xs text-blue-500 font-medium">
@@ -142,7 +142,7 @@ export function MultipleImageUploader({
 			{hasFiles && (
 				<div className="space-y-4">
 					<div className="flex justify-between items-center">
-						<h3 className="text-sm font-medium text-gray-700">
+						<h3 className="text-sm font-medium text-ink-3">
 							Selected Files ({files.length}/{maxFiles})
 						</h3>
 						<Button
@@ -161,7 +161,7 @@ export function MultipleImageUploader({
 						{files.map((file, index) => (
 							<div
 								key={`${file.name}-${index}`}
-								className="relative group aspect-square rounded-lg overflow-hidden border border-gray-200 bg-gray-50"
+								className="relative group aspect-square rounded-lg overflow-hidden border border-line bg-paper"
 							>
 								<img
 									src={imagePreviewUrls[index]}
@@ -174,7 +174,7 @@ export function MultipleImageUploader({
 									<button
 										type="button"
 										onClick={() => removeFile(index)}
-										className="self-end bg-white/20 backdrop-blur-sm hover:bg-red-500 text-white rounded-full p-1 transition-colors duration-200"
+										className="self-end bg-surface/20 backdrop-blur-sm hover:bg-brand text-white rounded-full p-1 transition-colors duration-200"
 										disabled={disabled}
 									>
 										<X className="w-4 h-4" />

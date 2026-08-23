@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Navbar } from '@components/layout/Navbar';
-import { LogoBanner } from '@components/layout/LogoBanner';
+import { SiteHeader } from '@components/layout/SiteHeader';
 import { Footer } from '@components/layout/Footer';
 
 export const metadata: Metadata = {
@@ -11,29 +10,29 @@ export const metadata: Metadata = {
 export default function NotFound() {
 	return (
 		<>
-			<Navbar />
-			<LogoBanner />
-			<main id="main" className="flex w-full flex-1 flex-col items-center px-6 py-24">
-				<p className="text-sm font-semibold tracking-[0.2em] text-red-600 uppercase">
-					404
-				</p>
-				<h1 className="mt-4 text-center text-4xl font-bold tracking-tight">
+			<SiteHeader />
+			<main
+				id="main"
+				className="container-page flex w-full flex-1 flex-col items-center py-28 md:py-36"
+			>
+				<p className="eyebrow">404</p>
+				<h1 className="mt-4 text-center text-4xl font-extrabold tracking-tight text-ink md:text-6xl">
 					We couldn&rsquo;t find that page
 				</h1>
-				<p className="mt-4 max-w-md text-center text-gray-600">
+				<p className="mt-5 max-w-md text-center text-lg text-ink-3">
 					The page may have moved, or the link that brought you here may be out
 					of date.
 				</p>
 				<div className="mt-10 flex flex-wrap justify-center gap-3">
 					<Link
 						href="/"
-						className="rounded-lg bg-red-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-red-700"
+						className="rounded-xl bg-brand px-6 py-3.5 font-semibold text-white shadow-[var(--shadow-brand)] transition-all duration-200 hover:-translate-y-px hover:bg-brand-strong active:translate-y-0 active:scale-[0.98]"
 					>
 						Back to home
 					</Link>
 					<Link
 						href="/sessions"
-						className="rounded-lg border border-black/20 px-6 py-3 font-semibold transition-colors hover:bg-black/5"
+						className="rounded-xl border border-line-strong px-6 py-3.5 font-semibold text-ink transition-colors hover:bg-ink/5"
 					>
 						See training sessions
 					</Link>
