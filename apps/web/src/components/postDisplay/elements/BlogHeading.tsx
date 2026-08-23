@@ -1,12 +1,8 @@
 'use client';
 
-interface BlogHeadingProps {
-	text: string;
-}
-
-export default function BlogHeading({ text }: BlogHeadingProps) {
+export default function BlogHeading({ text }: { text: string }) {
 	return (
-		<h2 className="text-2xl font-semibold text-gray-800 mt-2 break-words">
+		<h2 className="mt-6 font-display text-2xl leading-tight font-extrabold tracking-[-0.02em] break-words text-ink md:text-3xl">
 			{text}
 		</h2>
 	);

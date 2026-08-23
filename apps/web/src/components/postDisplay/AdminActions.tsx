@@ -19,7 +19,7 @@ export default function AdminActions({
 				onClick={() =>
 					router.push(`/admin/${coach ? 'coach' : 'blog'}/edit/${id}`)
 				}
-				className="cursor-pointer text-blue-500 hover:underline"
+				className="cursor-pointer text-brand hover:underline"
 			>
 				Edit {coach ? 'Coach' : 'Blog'} Post
 			</button>

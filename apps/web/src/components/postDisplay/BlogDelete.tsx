@@ -25,20 +25,20 @@ export default function BlogDelete({
 	if (showConfirm) {
 		return (
 			<div className="flex items-center gap-2">
-				<span className="text-sm text-red-600">
+				<span className="text-sm text-brand">
 					Delete {title ? `"${title}"` : 'this blog'}?
 				</span>
 				<button
 					onClick={handleDelete}
 					disabled={isPending}
-					className="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
+					className="px-2 py-1 text-xs bg-brand text-white rounded hover:bg-brand disabled:opacity-50"
 				>
 					{isPending ? 'Deleting...' : 'Yes'}
 				</button>
 				<button
 					onClick={() => setShowConfirm(false)}
 					disabled={isPending}
-					className="px-2 py-1 text-xs bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+					className="px-2 py-1 text-xs bg-line text-ink-3 rounded hover:bg-line-strong"
 				>
 					Cancel
 				</button>
@@ -49,7 +49,7 @@ export default function BlogDelete({
 	return (
 		<Trash
 			onClick={() => setShowConfirm(true)}
-			className="cursor-pointer hover:text-red-500 transition-colors"
+			className="cursor-pointer hover:text-brand transition-colors"
 		/>
 	);
 }

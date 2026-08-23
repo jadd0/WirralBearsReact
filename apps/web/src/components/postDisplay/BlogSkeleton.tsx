@@ -1,49 +1,21 @@
 'use client';
 
+/** Matches the article layout so nothing jumps when the post lands. */
 export default function BlogSkeleton() {
 	return (
-		<div className="flex flex-col gap-4 animate-pulse">
-			{/* Header skeleton */}
-			<div className="flex flex-col gap-3">
-				{/* Title skeleton */}
-				<div className="h-10 bg-gray-200 rounded w-3/4"></div>
-
-				{/* Author and date skeleton */}
-				<div className="flex items-center gap-6">
-					<div className="flex items-center gap-2">
-						<div className="w-4 h-4 bg-gray-200 rounded"></div>
-						<div className="h-4 bg-gray-200 rounded w-20"></div>
-					</div>
-					<div className="flex items-center gap-2">
-						<div className="w-4 h-4 bg-gray-200 rounded"></div>
-						<div className="h-4 bg-gray-200 rounded w-24"></div>
-					</div>
-				</div>
+		<div className="animate-pulse">
+			<div className="border-b border-line pb-8">
+				<div className="h-11 w-11/12 rounded bg-paper-2" />
+				<div className="mt-3 h-11 w-2/3 rounded bg-paper-2" />
+				<div className="mt-6 h-4 w-56 rounded bg-paper-2" />
 			</div>
-
-			{/* Content skeleton */}
-			<div className="flex flex-col gap-4 mt-4">
-				{/* First heading */}
-				<div className="h-8 bg-gray-200 rounded w-1/2"></div>
-
-				{/* First paragraph */}
-				<div className="space-y-2 max-w-[300px]">
-					<div className="h-4 bg-gray-200 rounded"></div>
-					<div className="h-4 bg-gray-200 rounded w-5/6"></div>
-					<div className="h-4 bg-gray-200 rounded w-4/6"></div>
-				</div>
-
-				{/* Image skeleton */}
-				<div className="h-48 bg-gray-200 rounded max-w-[400px]"></div>
-
-				{/* Second heading */}
-				<div className="h-8 bg-gray-200 rounded w-2/5"></div>
-
-				{/* Second paragraph */}
-				<div className="space-y-2 max-w-[300px]">
-					<div className="h-4 bg-gray-200 rounded"></div>
-					<div className="h-4 bg-gray-200 rounded w-4/5"></div>
-				</div>
+			<div className="mt-10 flex flex-col gap-4">
+				<div className="h-4 w-full rounded bg-paper-2" />
+				<div className="h-4 w-11/12 rounded bg-paper-2" />
+				<div className="h-4 w-4/6 rounded bg-paper-2" />
+				<div className="mt-4 h-56 w-full rounded-2xl bg-paper-2" />
+				<div className="mt-4 h-4 w-full rounded bg-paper-2" />
+				<div className="h-4 w-5/6 rounded bg-paper-2" />
 			</div>
 		</div>
 	);

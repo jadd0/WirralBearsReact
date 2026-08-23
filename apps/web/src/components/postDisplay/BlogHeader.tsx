@@ -1,7 +1,5 @@
 'use client';
 
-import { Calendar, User } from 'lucide-react';
-
 interface BlogHeaderProps {
 	title: string;
 	author: { username: string } | null;
@@ -13,32 +11,28 @@ export default function BlogHeader({
 	author,
 	createdAt,
 }: BlogHeaderProps) {
-	// Format the date for display
-	const formattedDate = new Date(createdAt).toLocaleDateString('en-GB', {
-		day: 'numeric',
-		month: 'long',
-		year: 'numeric',
-	});
+	const date = new Date(createdAt);
 
 	return (
-		<div className="flex flex-col gap-3">
-			{/* Main blog title */}
-			<h1 className="text-4xl font-bold text-gray-900">{title}</h1>
-
-			{/* Author and date information */}
-			<div className="flex items-center gap-6 text-gray-600">
+		<header className="border-b border-line pb-8">
+			<h1 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] leading-[1.04] font-extrabold tracking-[-0.035em] text-ink">
+				{title}
+			</h1>
+			<div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[15px] text-ink-4">
 				{author && (
-					<div className="flex items-center gap-2">
-						<User size={16} />
-						<span className="text-sm">{author.username}</span>
-					</div>
+					<>
+						<span className="font-medium text-ink-3">{author.username}</span>
+						<span aria-hidden="true">&middot;</span>
+					</>
 				)}
-
-				<div className="flex items-center gap-2">
-					<Calendar size={16} />
-					<span className="text-sm">{formattedDate}</span>
-				</div>
+				<time dateTime={date.toISOString()}>
+					{date.toLocaleDateString('en-GB', {
+						day: 'numeric',
+						month: 'long',
+						year: 'numeric',
+					})}
+				</time>
 			</div>
-		</div>
+		</header>
 	);
 }

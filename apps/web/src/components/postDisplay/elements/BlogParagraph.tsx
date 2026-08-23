@@ -1,13 +1,5 @@
 'use client';
 
-interface BlogParagraphProps {
-	text: string;
-}
-
-export default function BlogParagraph({ text }: BlogParagraphProps) {
-	return (
-		<p className="text-gray-700 leading-relaxed max-w-[500px]">
-			{text}
-		</p>
-	);
+export default function BlogParagraph({ text }: { text: string }) {
+	return <p className="text-[17px] leading-[1.75] text-ink-3">{text}</p>;
 }
