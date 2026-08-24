@@ -23,8 +23,7 @@
       "@hooks/*": ["src/hooks/*"],
       "@views/*": ["src/views/*"],
       "@lib/*": ["src/lib/*"],
-      "@apptypes/*": ["src/types/*"],
-      "@wirralbears/*": ["../../packages/*/src"]
+      "@apptypes/*": ["src/types/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
