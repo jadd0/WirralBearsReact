@@ -8,10 +8,6 @@
 dist
 **/tsconfig.tsbuildinfo
 
-
-# data
-/apps/backend/data/*.json
-
 .vercel
 .env*
 

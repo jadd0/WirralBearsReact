@@ -5,26 +5,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "pnpm --stream --filter web --filter backend run start:dev",
+    "start:dev": "pnpm --filter web run dev",
     "start": "pnpm --filter web run start",
     "dev:web": "pnpm --filter web run dev",
-    "dev:backend": "pnpm --filter backend run start:dev",
     "clean": "pnpm -r clean",
-    "build:packages": "pnpm -r --filter \"@wirralbears/constants\" --filter \"@wirralbears/validation\" --filter \"@wirralbears/types\" --filter \"@wirralbears/backend-types\" --workspace-concurrency 1 build",
-    "build:backend": "pnpm --filter backend run build",
-    "build:web": "pnpm --filter web run build",
-    "build": "pnpm run build:packages && pnpm run build:web"
+    "build": "pnpm --filter web run build"
   },
   "keywords": [],
   "author": "jadd0",
   "license": "ISC",
-  "dependencies": {
-    "nodemon": "^3.1.9"
-  },
   "devDependencies": {
     "@types/node": "^22.13.4",
     "rimraf": "^6.0.1",
-    "tsx": "^4.19.2",
     "typescript": "~5.7.2"
   }
 }
