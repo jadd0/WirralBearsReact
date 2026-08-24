@@ -27,6 +27,7 @@ export type Session = {
 	id?: string;
 	day: WeekDay;
 	time: TimeString;
+	endTime?: TimeString;
 	leadCoach: string;
 	age: number;
 	gender: GENDER_ENUM;

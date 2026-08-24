@@ -45,6 +45,7 @@ export const sessionRepository = {
 			// Provide defaults for required fields missing in updates
 			day: updates.day ?? 'defaultDay',
 			time: updates.time ?? 'defaultTime',
+			endTime: updates.endTime ?? null,
 			age: updates.age ?? 0,
 			gender: updates.gender ?? 'Mixed',
 			leadCoach: updates.leadCoach ?? '',
@@ -185,6 +186,7 @@ export const sessionRepository = {
 						id: nanoid(SESSION_ID_LENGTH),
 						day: day.id,
 						time: session.time,
+						endTime: session.endTime,
 						age: session.age,
 						gender: session.gender,
 						leadCoach: session.leadCoach,

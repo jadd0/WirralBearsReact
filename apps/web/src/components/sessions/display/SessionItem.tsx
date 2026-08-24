@@ -15,6 +15,7 @@ export default function SessionItem({
 			<div>
 				<h3 className="font-display text-[17px] font-extrabold text-ink tabular">
 					{session.time}
+					{session.endTime ? ` - ${session.endTime}` : ''}
 				</h3>
 				<p className="mt-1 text-[14px] text-ink-3">
 					{session.age} years &middot; {session.gender} group

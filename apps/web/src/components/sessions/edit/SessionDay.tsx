@@ -37,6 +37,7 @@ export default function SessionDayComponent({
 				id: `new-${sessions.length}`,
 				day: sessionDay.id,
 				time: '',
+				endTime: '',
 				age: 5,
 				gender: 'Mixed',
 				leadCoach: '',

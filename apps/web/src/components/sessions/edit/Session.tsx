@@ -43,6 +43,13 @@ export default function SessionComponent({
 				id={session.id}
 			/>
 			<SessionDropdown
+				title="End Time"
+				values={timeSlots}
+				currentValue={session.endTime}
+				onClick={(value) => handleUpdate({ endTime: value })}
+				id={session.id}
+			/>
+			<SessionDropdown
 				title="Gender"
 				values={GENDER}
 				currentValue={session.gender}

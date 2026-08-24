@@ -35,6 +35,7 @@ export const sessions = pgTable('sessions', {
 		.notNull()
 		.references(() => sessionDays.id, { onDelete: 'cascade' }),
 	time: varchar('time', { length: 5 }).notNull(), // Stores HH:MM format
+	endTime: varchar('end_time', { length: 5 }), // Stores HH:MM format, optional
 	age: integer('age').notNull(),
 	gender: varchar('gender', { enum: GENDER_ENUM }).notNull(),
 	leadCoach: varchar('lead_coach', { length: SESSION_ID_LENGTH })

@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const sessionSchema = z.object({
 	time: z.string().min(1, 'Time is required'),
+	endTime: z.string().optional(),
 	age: z.number().int().positive('Age must be positive'),
 	gender: z.string().min(1, 'Gender is required'),
 	leadCoach: z.string().min(1, 'Coach is required'),
@@ -26,6 +27,10 @@ export const validateFullSchedule = (schedule: any) => {
 				errors.push(`Session ${sessionIdx + 1} (${day.day}): Gender required`);
 			if (!session.leadCoach)
 				errors.push(`Session ${sessionIdx + 1} (${day.day}): Coach required`);
+			if (session.endTime && session.time && session.endTime <= session.time)
+				errors.push(
+					`Session ${sessionIdx + 1} (${day.day}): End time must be after start time`
+				);
 		}
 	}
 
