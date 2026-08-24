@@ -6,7 +6,6 @@
   "extends": "./tsconfig.base.json",
   "files": [],
   "references": [
-    { "path": "./apps/frontend" },
     { "path": "./apps/backend" },
     { "path": "./packages/constants" },
     { "path": "./packages/validation" },
