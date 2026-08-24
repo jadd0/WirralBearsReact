@@ -32,6 +32,10 @@
 	--shadow-lg: 0 18px 48px -12px rgba(45, 35, 25, 0.18);
 	--shadow-brand: 0 12px 32px -10px rgba(152, 21, 31, 0.45);
 
+	/* Sticky SiteHeader height. Utility strip (md+ only) + main bar + its 1px
+	   bottom border. The hero bounds itself to the viewport below this. */
+	--header-h: 69px;
+
 	/* shadcn/ui compatibility layer, repointed at the tokens above */
 	--background: var(--paper);
 	--foreground: var(--ink);
@@ -61,6 +65,12 @@
 	--sidebar-accent-foreground: var(--ink);
 	--sidebar-border: var(--line);
 	--sidebar-ring: var(--brand);
+}
+
+@media (min-width: 768px) {
+	:root {
+		--header-h: 113px;
+	}
 }
 
 @theme inline {

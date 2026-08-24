@@ -108,8 +108,12 @@ never a bare "no results" line.
 
 The ten Ball 4 All principles are club copy, not CMS content: they live in
 `src/lib/ballForAll.ts` and always render. Photography is enhancement, and only
-five of the ten have an image, so every card carries the same media slot and
-falls back to a numbered dark panel to keep the row aligned.
+some of the ten have an image. The grid splits on that: the photographed ones
+render as wide 4:3 photo cards, three up, and the rest as a compact text band,
+five up, with no media slot at all. Two tile shapes rather than one shape with a
+placeholder, so the imageless principles read as a different kind of tile rather
+than as a failed image. Both bands are derived from the data, so the section
+stays correct if the photo library grows.
 
 ## Imagery
 

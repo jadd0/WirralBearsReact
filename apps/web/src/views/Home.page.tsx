@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { CarouselComponent } from '@components/layout/Carousel';
+import { GalleryCarousel } from '@components/layout/Carousel';
 import { MapboxMap } from '@components/layout/Mapbox';
 import { BallForAllGrid } from '@components/layout/BallForAllGrid';
 import BlogAllPreviews from '@components/blog/BlogAllPreviews';
@@ -51,24 +51,23 @@ export default function HomePage() {
 					className="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent"
 				/>
 
-				<div className="container-page relative flex min-h-[560px] flex-col justify-end py-16 md:min-h-[660px] md:py-24 lg:min-h-[720px]">
-					<div className="max-w-2xl">
+				<div className="container-page relative flex min-h-[520px] flex-col justify-end py-14 md:min-h-[600px] md:py-16 lg:min-h-[min(calc(100dvh-var(--header-h)),52rem)]">
+					<div className="max-w-[46rem]">
 						<p className="text-[12px] font-semibold tracking-[0.18em] text-white/60 uppercase">
 							Woodchurch, Wirral
 						</p>
-						<h1 className="mt-5 font-display text-[clamp(2.5rem,6.5vw,4.75rem)] leading-[0.95] font-extrabold tracking-[-0.035em] text-white">
+						<h1 className="mt-5 font-display text-[clamp(1.875rem,5.2vw,4rem)] leading-[0.95] font-extrabold tracking-[-0.035em] text-white">
 							Building skills.
 							<br />
 							Building confidence.
 							<br />
 							<span className="text-brand">Building community.</span>
 						</h1>
-						<p className="mt-7 max-w-lg text-lg leading-relaxed text-white/70">
-							Whether you are picking up a basketball for the first time or
-							aiming for the next level, there is a place for you here.
-							Beginner, intermediate or advanced.
+						<p className="mt-7 max-w-lg text-[17px] leading-relaxed text-white/70">
+							New to basketball or chasing the next level, there is a place for
+							you here. Your first session is free.
 						</p>
-						<div className="mt-9 flex flex-wrap items-center gap-3">
+						<div className="mt-8 flex flex-wrap items-center gap-3">
 							<a
 								href={JOIN_FORM_URL}
 								target="_blank"
@@ -84,9 +83,6 @@ export default function HomePage() {
 								See the timetable
 							</Link>
 						</div>
-						<p className="mt-6 text-[15px] text-white/50">
-							Your first taster session is free.
-						</p>
 					</div>
 				</div>
 			</section>
@@ -166,15 +162,12 @@ export default function HomePage() {
 
 			{/* Gallery carousel, only when there is something to show */}
 			{(hasCarousel || carouselLoading) && (
-				<section className="section bg-paper-2 py-20 md:py-24">
+				<section className="section bg-paper-2">
 					<div className="container-page">
 						<div className="flex flex-wrap items-end justify-between gap-4">
-							<div>
-								<p className="eyebrow">From the court</p>
-								<h2 className="mt-3 font-display text-[clamp(1.75rem,3vw,2.5rem)] leading-tight font-extrabold tracking-[-0.03em] text-ink">
-									Recent photographs
-								</h2>
-							</div>
+							<h2 className="font-display text-[clamp(1.75rem,3vw,2.5rem)] leading-tight font-extrabold tracking-[-0.03em] text-ink">
+								Recent photographs
+							</h2>
 							<Link
 								href="/image/viewall"
 								className="text-[15px] font-semibold text-brand underline-offset-4 transition-colors hover:text-brand-strong hover:underline"
@@ -183,7 +176,7 @@ export default function HomePage() {
 							</Link>
 						</div>
 						<div className="mt-10">
-							<CarouselComponent
+							<GalleryCarousel
 								images={carouselImages as CarouselImage[]}
 								isLoading={carouselLoading}
 							/>

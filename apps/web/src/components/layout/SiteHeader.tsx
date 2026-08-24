@@ -48,6 +48,8 @@ export function SiteHeader() {
 	}, [open]);
 
 	return (
+		// Heights here are mirrored by --header-h in globals.css (69px / 113px at
+		// md+). Change one and change the other, or the hero stops fitting.
 		<header className="sticky top-0 z-50">
 			{/* Utility strip */}
 			<div className="hidden bg-ink text-white md:block">
