@@ -1,8 +1,8 @@
 // @/lib/editorUtils.ts
 
 import { v4 as uuidv4 } from 'uuid';
-import { BlogData, BlogElement, ElementType } from '@wirralbears/types';
-import { FullBlog } from '@wirralbears/backend-types';
+import { BlogData, BlogElement, ElementType } from '@/lib/types';
+import { FullBlog } from '@/server/types/blog.types';
 
 /**
  * Converts a FullBlog object (from API) into BlogData format for the editor.

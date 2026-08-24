@@ -1,6 +1,6 @@
 import { request } from '@/lib/network';
-import { BlogData } from '@wirralbears/types';
-import { CoachPreview, FullCoach } from '@wirralbears/backend-types';
+import { BlogData } from '@/lib/types';
+import { CoachPreview, FullCoach } from '@/server/types/coach.types';
 
 /**
  * Updates an existing coach on the server

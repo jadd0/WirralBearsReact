@@ -1,22 +1,11 @@
 'use client';
 
 import { LoginForm } from '@/components/login-form';
-import { useMe } from '@hooks/auth.hooks';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useAuthError } from '@/hooks/error.hooks';
 import { Toaster } from 'sonner';
 
 export default function LoginPage() {
-	const { isLoading, error } = useMe();
 	useAuthError();
-
-	if (isLoading)
-		return (
-			<div>
-				<Skeleton className="h-16 w-16" />
-			</div>
-		);
-	if (error) return `Error: ${error.message}`;
 
 	return (
 		<div className="w-screen h-screen flex items-center justify-center">

@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { CoachPreview, SessionWithCoach } from '@wirralbears/backend-types';
+import { CoachPreview } from '@/server/types/coach.types';
+import { SessionWithCoach } from '@/db/schema';
 
 export default function SessionItem({
 	session,

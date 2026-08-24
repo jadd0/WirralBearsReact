@@ -9,8 +9,8 @@ import {
 	DropdownMenuTrigger,
 	DropdownMenuLabel,
 } from '@components/ui/dropdown-menu';
-import { ElementType } from '@wirralbears/types';
-import { ELEMENT_LABELS } from '@wirralbears/constants';
+import { ElementType } from '@/lib/types';
+import { ELEMENT_LABELS } from '@/lib/constants';
 
 interface AddElementButtonProps {
 	onAdd: (type: ElementType) => void;

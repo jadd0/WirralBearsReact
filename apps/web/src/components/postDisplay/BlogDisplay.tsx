@@ -3,16 +3,16 @@
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useGetBlog } from '@hooks/blog.hooks';
-import { useMe } from '@hooks/auth.hooks';
+import { useSession } from 'next-auth/react';
 import BlogHeader from './BlogHeader';
 import BlogContent from './BlogContent';
 import BlogSkeleton from './BlogSkeleton';
 import AdminActions from './AdminActions';
-import { FullBlog } from '@wirralbears/backend-types';
+import { FullBlog } from '@/server/types/blog.types';
 
 export default function BlogDisplay({ id }: { id: string }) {
 	const { data, isLoading, error } = useGetBlog(id);
-	const { data: auth } = useMe();
+	const { data: session } = useSession();
 	const blogData = data as FullBlog;
 
 	if (error) {
@@ -30,7 +30,7 @@ export default function BlogDisplay({ id }: { id: string }) {
 						&larr; All posts
 					</Link>
 
-					{auth?.authenticated && blogData && (
+					{session?.user?.isAdmin && blogData && (
 						<div className="mt-6">
 							<AdminActions id={id} coach={false} />
 						</div>

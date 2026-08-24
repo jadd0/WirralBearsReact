@@ -3,8 +3,8 @@
 import { useLayoutEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { BlogEditor } from '@/components/blog/createBlog/BlogEditor';
-import { BlogData } from '@wirralbears/types';
-import { FullBlog } from '@wirralbears/backend-types';
+import { BlogData } from '@/lib/types';
+import { FullBlog } from '@/server/types/blog.types';
 import { toast } from 'sonner';
 import { useGetBlog, useEditBlog } from '@/hooks/blog.hooks';
 import { convertFullBlogToBlogData } from '@/lib/editorUtils';

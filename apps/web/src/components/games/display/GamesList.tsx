@@ -1,6 +1,6 @@
 'use client';
 
-import { Game, Season } from '@wirralbears/backend-types';
+import { Game, Season } from '@/db/schema';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trophy } from 'lucide-react';
 import GameCard from './GameCard';

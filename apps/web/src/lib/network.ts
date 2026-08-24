@@ -1,10 +1,11 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 /**
- * Axios client to make requests to the server
+ * Axios client to make requests to the app's own Next.js API routes.
+ * No baseURL: every caller passes a path starting with /api/..., resolved
+ * relative to the current origin.
  */
 const client = axios.create({
-	baseURL: process.env.NEXT_PUBLIC_SERVER_ORIGIN as string,
 	withCredentials: true,
 });
 
@@ -27,11 +28,3 @@ export const request = async (config: AxiosRequestConfig) => {
 
 export const is404Error = (error: unknown): boolean =>
 	error instanceof AxiosError && error.response?.status === 404;
-
-/**
- * Constructs a full URL from a path and the server origin
- * @param path The path to append to the server origin
- * @returns The full URL as a string
- */
-export const serverOriginUrl = (path: string) =>
-	new URL(path, process.env.NEXT_PUBLIC_SERVER_ORIGIN).toString();

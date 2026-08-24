@@ -6,7 +6,7 @@ import { FileUploader, FileInput } from '@/components/ui/file-upload';
 import { Trash2, ImagePlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ClassNameValue } from 'tailwind-merge';
-import { IMAGE_UPLOAD_CONFIG } from '@wirralbears/constants';
+import { IMAGE_UPLOAD_CONFIG } from '@/lib/constants';
 import imageCompression from 'browser-image-compression';
 
 type ImageUploadContext = {

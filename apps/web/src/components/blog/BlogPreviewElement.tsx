@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { BlogPreview } from '@wirralbears/backend-types';
+import { BlogPreview } from '@/server/types/blog.types';
 
 export default function BlogPreviewElement({ blog }: { blog: BlogPreview }) {
 	return (

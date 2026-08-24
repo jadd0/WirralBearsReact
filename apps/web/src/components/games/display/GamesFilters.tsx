@@ -11,7 +11,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Search, Filter } from 'lucide-react';
-import { Season } from '@wirralbears/backend-types';
+import { Season } from '@/db/schema';
 
 interface GamesFiltersProps {
 	searchTerm: string;

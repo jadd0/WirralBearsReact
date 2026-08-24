@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Game } from '@wirralbears/backend-types';
+import { Game } from '@/db/schema';
 
 export function useGamesFiltering(games: Game[]) {
 	const [searchTerm, setSearchTerm] = useState('');

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { SessionDayWithSessions, Session } from '@wirralbears/backend-types';
+import { Session } from '@/db/schema';
+import { SessionDayWithSessions } from '@/server/types/session.types';
 import SessionComponent from './Session';
 
 export default function SessionDayComponent({

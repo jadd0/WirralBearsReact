@@ -1,9 +1,6 @@
 import { request } from '@/lib/network';
-import {
-	Session,
-	SessionDayWithSessions,
-	FullSessionSchedule,
-} from '@wirralbears/backend-types';
+import { Session, FullSessionSchedule } from '@/db/schema';
+import { SessionDayWithSessions } from '@/server/types/session.types';
 
 
 /**

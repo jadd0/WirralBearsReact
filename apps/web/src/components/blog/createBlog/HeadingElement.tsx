@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { ElementWrapper } from './ElementWrapper';
 import { Input } from '@components/ui/input';
-import { HeadingElement as HeadingElementType } from '@wirralbears/types';
-import { ELEMENT_CONSTRAINTS } from '@wirralbears/constants';
+import { HeadingElement as HeadingElementType } from '@/lib/types';
+import { ELEMENT_CONSTRAINTS } from '@/lib/constants';
 
 interface HeadingElementProps {
 	element: HeadingElementType;

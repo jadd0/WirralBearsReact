@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { ElementWrapper } from './ElementWrapper';
 import { Textarea } from '@components/ui/textarea';
-import { ParagraphElement as ParagraphElementType } from '@wirralbears/types';
-import { ELEMENT_CONSTRAINTS } from '@wirralbears/constants';
+import { ParagraphElement as ParagraphElementType } from '@/lib/types';
+import { ELEMENT_CONSTRAINTS } from '@/lib/constants';
 
 interface ParagraphElementProps {
 	element: ParagraphElementType;

@@ -1,5 +1,5 @@
-import { BlogData, BlogElement } from '@wirralbears/types';
-import { FullBlog } from '@wirralbears/backend-types';
+import { BlogData, BlogElement } from '@/lib/types';
+import { FullBlog } from '@/server/types/blog.types';
 
 /**
  * Converts a FullBlog object into BlogData format for editing or display.

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { GameInsert, Season } from '@wirralbears/backend-types';
+import { Season } from '@/db/schema';
+import type { EditableGame } from '@/views/admin/games/GamesCreate.page';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Calendar } from '@/components/ui/calendar';
@@ -22,13 +23,10 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
 interface GameComponentProps {
-	game: GameInsert & { tempId?: string };
+	game: EditableGame;
 	seasons: Season[];
 	blogs: Array<{ id: string; title: string }>;
-	onUpdate: (
-		gameId: string | undefined,
-		updatedGame: GameInsert & { tempId?: string }
-	) => void;
+	onUpdate: (gameId: string | undefined, updatedGame: EditableGame) => void;
 	onDelete: (gameId: string | undefined) => void;
 }
 
@@ -59,7 +57,7 @@ export default function GameComponent({
 	/**
 	 * Generic handler for updating game fields
 	 */
-	const handleUpdate = (field: keyof GameInsert, value: any) => {
+	const handleUpdate = (field: keyof EditableGame, value: any) => {
 		const updatedGame = { ...game, [field]: value };
 		onUpdate(game.id || game.tempId, updatedGame);
 	};

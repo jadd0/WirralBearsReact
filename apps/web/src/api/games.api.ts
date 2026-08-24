@@ -1,5 +1,5 @@
 import { request } from '@/lib/network';
-import { Game, GameInsert, GamesBySeason, Season } from '@wirralbears/backend-types';
+import { Game, GameInsert, GamesBySeason, Season } from '@/db/schema';
 
 /**
  * Fetches all games from the server

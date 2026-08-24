@@ -3,7 +3,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { FileUploader, FileInput } from '@/components/ui/file-upload';
 import { ImagePlus, Trash2, X } from 'lucide-react';
-import { IMAGE_UPLOAD_CONFIG } from '@wirralbears/constants';
+import { IMAGE_UPLOAD_CONFIG } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
 import imageCompression from 'browser-image-compression';
 

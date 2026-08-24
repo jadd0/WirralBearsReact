@@ -1,6 +1,6 @@
 'use client';
 
-import { CoachPreview } from '@wirralbears/backend-types';
+import { CoachPreview } from '@/server/types/coach.types';
 import CoachPreviewElement from './CoachPreviewElement';
 import CoachPreviewSkeleton from './CoachPreviewSkeleton';
 

@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useState } from 'react';
 import { BlogEditor } from '@/components/blog/createBlog/BlogEditor';
-import { BlogData } from '@wirralbears/types';
+import { BlogData } from '@/lib/types';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 

@@ -4,7 +4,7 @@ import { useGetFullSchedule } from '@hooks/session.hooks';
 import SessionGrid from '@components/sessions/display/SessionGrid';
 import SessionGridSkeleton from '@components/sessions/display/SessionGridSkeleton';
 import { PageHeader } from '@components/layout/PageHeader';
-import { FullSessionSchedule } from '@wirralbears/backend-types';
+import { FullSessionSchedule } from '@/db/schema';
 
 const JOIN_FORM_URL =
 	'https://docs.google.com/forms/d/1xyuIacKZlv96QKh8mAARyrk7MR2WHATB1tTouBxo0CU/viewform?edit_requested=true';

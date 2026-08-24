@@ -22,11 +22,11 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Save } from 'lucide-react';
 
-import { ElementType, BlogData, BlogElement } from '@wirralbears/types';
+import { ElementType, BlogData, BlogElement } from '@/lib/types';
 import { AddElementButton } from './AddElementButton';
 import { TitleHeadingElement } from './TitleHeading';
-import { HeadingElement as HeadingElementType } from '@wirralbears/types';
-import { BLOG } from '@wirralbears/validation';
+import { HeadingElement as HeadingElementType } from '@/lib/types';
+import { BLOG } from '@/lib/validation';
 import { ElementRenderer } from '../ElementRenderer';
 
 /**

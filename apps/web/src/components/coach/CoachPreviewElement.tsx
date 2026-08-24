@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { CoachPreview } from '@wirralbears/backend-types';
+import { CoachPreview } from '@/server/types/coach.types';
 
 export default function CoachPreviewElement({
 	coach,

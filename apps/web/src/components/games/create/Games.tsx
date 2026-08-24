@@ -1,13 +1,14 @@
 'use client';
 
-import { GameInsert, Season } from '@wirralbears/backend-types';
+import { Season } from '@/db/schema';
+import type { EditableGame } from '@/views/admin/games/GamesCreate.page';
 import GameComponent from './Game';
 
 interface GamesComponentProps {
-  games: (GameInsert & { tempId?: string })[];
+  games: EditableGame[];
   seasons: Season[];
   blogs: Array<{ id: string; title: string }>;
-  onUpdateGame: (gameId: string | undefined, updatedGame: GameInsert & { tempId?: string }) => void;
+  onUpdateGame: (gameId: string | undefined, updatedGame: EditableGame) => void;
   onDeleteGame: (gameId: string | undefined) => void;
 }
 

@@ -1,7 +1,6 @@
 'use client';
 
-import { Image } from '@wirralbears/backend-types';
-import ImagePopup from './ImagePopup';
+import ImagePopup, { type DisplayableImage } from './ImagePopup';
 import { useState, useEffect } from 'react';
 import { useDeleteImage } from '@/hooks/image.hooks';
 
@@ -12,7 +11,7 @@ export default function ImageDisplay({
 	clickable = false,
 	onImageClick = (imageId: string, imageUrl: string) => {},
 }: {
-	image: Image;
+	image: DisplayableImage;
 	popUpActivated?: boolean;
 	deleteImage?: boolean;
 	clickable?: boolean;
@@ -75,16 +74,15 @@ export default function ImageDisplay({
 					}
 
 					if (clickable) {
-						onImageClick(image.id, image.url);
+						onImageClick(image.id, image.url ?? '');
 					}
 				}}
 			>
 				<img
-					src={image.url}
-					alt={image.alt}
+					src={image.url ?? ''}
+					alt={image.alt ?? ''}
 					className="w-full h-auto rounded-md"
 				/>
-				<p className="mt-2">{image.title}</p>
 			</div>
 		</div>
 	);

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { BLOG_MAX_TITLE_LENGTH } from '@wirralbears/constants';
+import { BLOG_MAX_TITLE_LENGTH } from '@/lib/constants';
 import { Input } from '@/components/ui/input';
-import { HeadingElement } from '../../../../../../packages/types/src/blog.types';
+import { HeadingElement } from '@/lib/types/blog.types';
 
 export const TitleHeadingElement = ({
 	element,

@@ -1,10 +1,7 @@
 'use client';
 
-import {
-	CoachPreview,
-	SessionDay,
-	SessionWithCoach,
-} from '@wirralbears/backend-types';
+import { SessionDay, SessionWithCoach } from '@/db/schema';
+import { CoachPreview } from '@/server/types/coach.types';
 import SessionItem from './SessionItem';
 
 export default function SessionDayComponent({

@@ -1,9 +1,9 @@
 'use client';
 
-import { Session } from '@wirralbears/backend-types';
+import { Session } from '@/db/schema';
 import SessionDelete from './SessionDelete';
 import { SessionDropdown } from './SessionDropdown';
-import { GENDER, SESSION_AGE_GROUPS } from '@wirralbears/constants';
+import { GENDER, SESSION_AGE_GROUPS } from '@/lib/constants';
 import { useGetAllCoachPreviews } from '@/hooks/coach.hooks';
 
 export default function SessionComponent({

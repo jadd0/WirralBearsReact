@@ -7,8 +7,8 @@ import {
 	useGetFullSchedule,
 	useUpdateFullSchedule,
 } from '@/hooks/session.hooks';
-import { FullSessionSchedule } from '@wirralbears/backend-types';
-import { validateFullSchedule } from '@wirralbears/validation/src/session.validation';
+import { FullSessionSchedule } from '@/db/schema';
+import { validateFullSchedule } from '@/lib/validation/session.validation';
 import { sessionToasts } from '@/lib/toasts';
 
 export default function EditSessionsPage() {

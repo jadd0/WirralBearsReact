@@ -2,7 +2,7 @@
 
 interface BlogHeaderProps {
 	title: string;
-	author: { username: string } | null;
+	author: { username: string | null } | null;
 	createdAt: Date;
 }
 

@@ -1,10 +1,18 @@
 'use client';
 
-import { Image } from '@wirralbears/backend-types';
 import { CircleX } from 'lucide-react';
 
+/** The minimal shape any image-display consumer here actually needs, so a
+ * full DB row (nullable url/alt) and a loaded/decoded image (non-null,
+ * with dimensions) are interchangeable. */
+export type DisplayableImage = {
+	id: string;
+	url?: string | null;
+	alt?: string | null;
+};
+
 interface ImagePopupProps {
-	image: Image;
+	image: DisplayableImage;
 	onClose: () => void;
 }
 
@@ -59,7 +67,7 @@ export default function ImagePopup({ image, onClose }: ImagePopupProps) {
 					<CircleX className="w-7 h-7 text-brand" />
 				</button>
 				<img
-					src={image.url}
+					src={image.url ?? ''}
 					alt=""
 					className="max-h-[70vh] w-auto rounded-md object-contain"
 				/>

@@ -1,6 +1,7 @@
 'use client';
 
 import type React from "react";
+import { signIn } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,7 +51,7 @@ const OauthProviderButton = ({
  */
 const GoogleButton = () => {
   const handleGoogleLogin = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_SERVER_ORIGIN}/auth/google`;
+    signIn("google", { callbackUrl: "/admin" });
   };
 
   return (

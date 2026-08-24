@@ -1,6 +1,6 @@
 'use client';
 
-import { FullSessionSchedule } from '@wirralbears/backend-types';
+import { FullSessionSchedule } from '@/db/schema';
 import { useGetAllCoachPreviews } from '@hooks/coach.hooks';
 import SessionDay from './SessionDay';
 

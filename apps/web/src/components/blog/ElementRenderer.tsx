@@ -1,6 +1,6 @@
 'use client';
 
-import { BlogElement } from '@wirralbears/types';
+import { BlogElement } from '@/lib/types';
 import { HeadingElement } from './createBlog/HeadingElement';
 import { ParagraphElement } from './createBlog/ParagraphElement';
 import { ImageUploadElement } from './createBlog/ImageElement';

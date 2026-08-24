@@ -7,11 +7,8 @@ import {
 	CreateMutationOptions,
 	CreateMutationResult,
 } from '@tanstack/react-query';
-import {
-	Session,
-	SessionDayWithSessions,
-	FullSessionSchedule,
-} from '@wirralbears/backend-types';
+import { Session, FullSessionSchedule } from '@/db/schema';
+import { SessionDayWithSessions } from '@/server/types/session.types';
 import { useRouter } from 'next/navigation';
 
 /**

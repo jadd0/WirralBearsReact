@@ -8,7 +8,7 @@ import {
 	CreateMutationOptions,
 	CreateMutationResult,
 } from '@tanstack/react-query';
-import { Game, GameInsert, GamesBySeason } from '@wirralbears/backend-types';
+import { Game, GameInsert, GamesBySeason } from '@/db/schema';
 
 const staleTime = 1000 * 60 * 60; // 1 hour
 /**

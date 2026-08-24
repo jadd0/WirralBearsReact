@@ -1,6 +1,6 @@
 import { request } from '@/lib/network';
-import { BlogData } from '@wirralbears/types';
-import { BlogPreview, FullBlog } from '@wirralbears/backend-types';
+import { BlogData } from '@/lib/types';
+import { BlogPreview, FullBlog } from '@/server/types/blog.types';
 
 /**
  * Uploads multiple images and returns their data

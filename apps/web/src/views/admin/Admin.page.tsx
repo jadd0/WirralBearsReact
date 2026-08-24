@@ -1,9 +1,9 @@
 'use client';
 
-import { useMe } from '@/hooks/auth.hooks';
+import { useSession } from 'next-auth/react';
 
 export default function AdminPage() {
-	const { data, isLoading } = useMe();
+	const { data: session } = useSession();
 
 	return (
 		<div className="min-h-dvh min-w-full font-sans flex flex-col items-center">
@@ -12,7 +12,7 @@ export default function AdminPage() {
 					Admin Page
 				</h1>
 				<p className="text-lg text-gray-700 mb-6">
-					Welcome, {data?.user?.username}. To customise the site in any way,
+					Welcome, {session?.user?.name}. To customise the site in any way,
 					please click on the destination through the navbar.
 				</p>
 			</section>

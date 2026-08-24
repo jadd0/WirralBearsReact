@@ -3,16 +3,16 @@
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useGetCoach } from '@hooks/coach.hooks';
-import { useMe } from '@hooks/auth.hooks';
+import { useSession } from 'next-auth/react';
 import BlogContent from './BlogContent';
 import BlogSkeleton from './BlogSkeleton';
 import AdminActions from './AdminActions';
 import { NotFoundNotice } from './BlogDisplay';
-import { FullBlog } from '@wirralbears/backend-types';
+import { FullBlog } from '@/server/types/blog.types';
 
 export default function CoachDisplay({ id }: { id: string }) {
 	const { data, isLoading, error } = useGetCoach(id);
-	const { data: auth } = useMe();
+	const { data: session } = useSession();
 	const coachData = data as FullBlog;
 
 	if (error) {
@@ -30,7 +30,7 @@ export default function CoachDisplay({ id }: { id: string }) {
 						&larr; All coaches
 					</Link>
 
-					{auth?.authenticated && coachData && (
+					{session?.user?.isAdmin && coachData && (
 						<div className="mt-6">
 							<AdminActions id={id} coach={true} />
 						</div>

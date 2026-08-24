@@ -4,16 +4,24 @@ import { useState, useEffect } from 'react';
 import { useGetAllGames, useReplaceAllGames } from '@/hooks/games.hooks';
 import { useGetAllBlogPreviews } from '@/hooks/blog.hooks';
 import { useGetAllSeasons } from '@/hooks/games.hooks';
-import { GameInsert, Season } from '@wirralbears/backend-types';
+import { GameInsert, Season } from '@/db/schema';
 import { toast } from 'sonner';
-import { GAMES } from '@wirralbears/validation';
+import { GAMES } from '@/lib/validation';
 import GamesComponent from '@/components/games/create/Games';
 import GamesPageHeader from '@/components/games/create/GameHeader';
 import GamesEmptyState from '@/components/games/create/GamesEmpty';
 import GamesLoading from '@/components/games/GamesLoading';
 
+// The editor keeps scores as free-typed text (so an in-progress "" or "1"
+// isn't coerced mid-keystroke) and only parses them to numbers on save.
+export type EditableGame = Omit<GameInsert, 'ourScore' | 'otherScore'> & {
+	tempId?: string;
+	ourScore: string | number;
+	otherScore: string | number;
+};
+
 export default function GamesEditCreatePage() {
-	const [games, setGames] = useState<(GameInsert & { tempId?: string })[]>([]);
+	const [games, setGames] = useState<EditableGame[]>([]);
 	const [tempIdCounter, setTempIdCounter] = useState(0);
 
 	// Hook calls
@@ -38,7 +46,7 @@ export default function GamesEditCreatePage() {
 
 	const handleUpdateGame = (
 		gameId: string | undefined,
-		updatedGame: GameInsert & { tempId?: string }
+		updatedGame: EditableGame
 	) => {
 		setGames((prevGames) =>
 			prevGames.map((game) =>
@@ -57,7 +65,7 @@ export default function GamesEditCreatePage() {
 		const newTempId = `temp_${tempIdCounter}`;
 		setTempIdCounter((prev) => prev + 1);
 
-		const newGame: GameInsert & { tempId: string } = {
+		const newGame: EditableGame & { tempId: string } = {
 			tempId: newTempId,
 			date: new Date(),
 			gender: '',

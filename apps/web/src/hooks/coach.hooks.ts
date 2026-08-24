@@ -2,10 +2,10 @@ import { api } from '@/api/api';
 import { createConfigurableMutation } from '@/hooks/util/configurableMutation';
 import { queries } from '@/queries';
 import { useQuery } from '@tanstack/react-query';
-import { BlogData } from '@wirralbears/types';
+import { BlogData } from '@/lib/types';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CoachPreview } from '@wirralbears/backend-types';
+import { CoachPreview } from '@/server/types/coach.types';
 
 /**
  * Updates an existing coach
